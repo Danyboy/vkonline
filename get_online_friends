@@ -1,0 +1,34 @@
+#!/bin/bash
+
+id=749972
+vkapi_token='cd7781010610415dd8d3a039d5cbaedc0309b19ff19c58d3e8ab67294fa7ab85ed5d29837bedd1a05758a'
+friends_json="/tmp/friends_json"
+history_dir="/home/danil/Projects/FunProjects/parse/vk/online/history/"
+online_file="$history_dir/$(date +friends-%x_%H:%M:%S)"
+
+get_friends(){
+    curl -fsg https://api.vk.com/method/friends.get?user_id=$id\&access_token=$vkapi_token &> $friends_json
+}
+
+get_json(){
+    sed -i "s/\(.*:\[\|\]}\)//g" $friends_json 
+    curl -fsg "https://api.vk.com/method/users.get?user_ids=$(cat $friends_json),$id\&fields=online" &> $online_file
+#    cat $online_file 
+}
+
+get_online_history(){
+    cat $online_file >> "$history_dir/friends-all"
+    python parse_json.py | grep -v " 0" | sort | uniq -c 
+}
+
+get_friends
+get_json $id
+#get_online_history
+
+
+#cat friends-05.11.2014_20:30:02 | python -c "import json, sys; j=json.load(sys.stdin); for print j['response'][0]['uid']"
+#wget https://api.vk.com/method/friends.get?user_id=$1 -O history/`date +friends-%x_%H:%M`
+#    request_friends="https://api.vk.com/method/users.get?user_id=$($get_friends)\&fields=online"
+#    curl -g $request_friends -o history/$(date +friends-%x_%H:%M)
+#\ | python -c "import json, sys; print json.load(sys.stdin)['id, online']"
+#wget --no-check-certificate "https://api.vk.com/method/audio.get.xml?oid=$id&fields=uid&access_token=$vkapi_token" -qO - >> "${sys_temp}/vksearch.out" 

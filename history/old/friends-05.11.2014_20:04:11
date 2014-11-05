@@ -1,0 +1,1 @@
+{"error":{"error_code":113,"error_msg":"Invalid user id","request_params":[{"key":"oauth","value":"1"},{"key":"method","value":"users.get"},{"key":"user_id","value":""},{"key":"fields","value":"online"}]}}
