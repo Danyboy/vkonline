@@ -1,13 +1,8 @@
+#!/usr/bin/python
+
 import json, sys;
-#import argparse
 
-#parser = argparse.ArgumentParser(description='Process some integers.')
-#parser.add_option("-f", "--file", dest="filename",
-#                  help="get json from FILE", const="jsonURL")
-
-print sys.argv
-
-jsonFile = open(jsonURL, 'r')
+jsonFile = open(sys.argv[1], 'r')
 values = json.load(jsonFile)
 jsonFile.close()
 for criteria in values['response']:
