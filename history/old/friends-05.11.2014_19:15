@@ -1,1 +1,0 @@
-{"error":{"error_code":100,"error_msg":"One of the parameters specified was missing or invalid: user_id not integer","request_params":[{"key":"oauth","value":"1"},{"key":"method","value":"users.get"},{"key":"user_id","value":"$($get_friends)"},{"key":"fields","value":"online"}]}}

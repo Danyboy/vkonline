@@ -1,10 +1,16 @@
 #!/bin/bash
 
+cd $(dirname $0) #cd to sript location dir 
+
 id=749972
 vkapi_token='cd7781010610415dd8d3a039d5cbaedc0309b19ff19c58d3e8ab67294fa7ab85ed5d29837bedd1a05758a'
 friends_json="/tmp/friends_json"
-history_dir="/home/danil/Projects/vkonline/history/"
-online_file="$history_dir/$(date +json-%d.%m.%y_%H:%M:%S)"
+history_dir="./history/$(date +%d.%m.%y)/"
+online_file="$history_dir/$(date +json-%H:%M:%S)"
+day_file=${history_dir}/day_history
+
+
+mkdir -p $history_dir
 
 get_friends(){
     curl -fsg https://api.vk.com/method/friends.get?user_id=$id\&access_token=$vkapi_token &> $friends_json
@@ -16,13 +22,25 @@ get_json(){
 }
 
 get_online_history(){
-    python parse_json.py $online_file | grep -v " 0" | sort | uniq -c >> ${online_file}_parsed
+    parsed_file=_parsed
+    ./parse_json.py $online_file | grep -v " 0" | cut -f 1 -d' '  >> ${online_file}$parsed_file
+    cat ${history_dir}*${parsed_file} | sort -n | uniq -c | awk '{sub(/^[ \t]+/, ""); print}' > $day_file #TODO added only changed file
+}
+
+create_html(){
+    index_file=index.html
+    cat index.html_start > $index_file
+    while read n uid ; do
+        echo "<tr> <td><a href='http://vk.com/id$uid'>$uid</a></td> <td>$(($n*5)) m</td></tr>" >> $index_file
+    done < $day_file
+    cat index.html_end >> $index_file
+
 }
 
 get_friends
 get_json
 get_online_history
-
+create_html
 
 #cat friends-05.11.2014_20:30:02 | python -c "import json, sys; j=json.load(sys.stdin); for print j['response'][0]['uid']"
 #wget https://api.vk.com/method/friends.get?user_id=$1 -O history/`date +friends-%x_%H:%M`
