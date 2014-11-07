@@ -3,8 +3,8 @@
 id=749972
 vkapi_token='cd7781010610415dd8d3a039d5cbaedc0309b19ff19c58d3e8ab67294fa7ab85ed5d29837bedd1a05758a'
 friends_json="/tmp/friends_json"
-history_dir="/home/danil/Projects/FunProjects/parse/vk/online/history/"
-online_file="$history_dir/$(date +friends-%x_%H:%M:%S)"
+history_dir="/home/danil/Projects/vkonline/history/"
+online_file="$history_dir/$(date +friends-%d.%m.%y_%H:%M:%S)"
 
 get_friends(){
     curl -fsg https://api.vk.com/method/friends.get?user_id=$id\&access_token=$vkapi_token &> $friends_json
