@@ -4,7 +4,7 @@ id=749972
 vkapi_token='cd7781010610415dd8d3a039d5cbaedc0309b19ff19c58d3e8ab67294fa7ab85ed5d29837bedd1a05758a'
 friends_json="/tmp/friends_json"
 history_dir="/home/danil/Projects/vkonline/history/"
-online_file="$history_dir/$(date +friends-%d.%m.%y_%H:%M:%S)"
+online_file="$history_dir/$(date +json-%d.%m.%y_%H:%M:%S)"
 
 get_friends(){
     curl -fsg https://api.vk.com/method/friends.get?user_id=$id\&access_token=$vkapi_token &> $friends_json
@@ -13,17 +13,15 @@ get_friends(){
 get_json(){
     sed -i "s/\(.*:\[\|\]}\)//g" $friends_json 
     curl -fsg "https://api.vk.com/method/users.get?user_ids=$(cat $friends_json),$id\&fields=online" &> $online_file
-#    cat $online_file 
 }
 
 get_online_history(){
-    cat $online_file >> "$history_dir/friends-all"
-    python parse_json.py | grep -v " 0" | sort | uniq -c 
+    python parse_json.py $online_file | grep -v " 0" | sort | uniq -c >> ${online_file}_parsed
 }
 
 get_friends
-get_json $id
-#get_online_history
+get_json
+get_online_history
 
 
 #cat friends-05.11.2014_20:30:02 | python -c "import json, sys; j=json.load(sys.stdin); for print j['response'][0]['uid']"
