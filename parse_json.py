@@ -7,7 +7,7 @@ values = json.load(jsonFile)
 jsonFile.close()
 for criteria in values['response']:
     for key, value in criteria.iteritems():
-	if key == 'uid' or key == 'online':
+	if key == 'online_app' or key == 'hidden':
     	    print value,
     print ''
 
