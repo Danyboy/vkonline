@@ -26,7 +26,7 @@ get_online_history(){
     parsed_file=_parsed
 #    ./parse_json.py $online_file | grep -v " 0" | cut -f 1 -d' '  >> ${online_file}$parsed_file
     ./parse_json.py $online_file | grep -v " 0" >> ${online_file}$parsed_file
-    cat ${history_dir}*${parsed_file} | sort -rn | uniq -c | awk '{sub(/^[ \t]+/, ""); print}' | sort -n > $day_file #TODO added only changed file
+    cat ${history_dir}*${parsed_file} | sort -n | uniq -c | awk '{sub(/^[ \t]+/, ""); print}' | sort -rn > $day_file #TODO added only changed file
 }
 
 create_html(){
