@@ -18,7 +18,8 @@ get_friends(){
 
 get_json(){
     sed -i "s/\(.*:\[\|\]}\)//g" $friends_json 
-    curl -fsg "https://api.vk.com/method/users.get?user_ids=$(cat $friends_json),$id,\&fields=online,photo_50,\&lang=en" &> $online_file
+#    curl -fsg "https://api.vk.com/method/users.get?user_ids=$(cat $friends_json),$id,\&fields=online,photo_50,\&lang=en" &> $online_file
+    curl -fsg "https://api.vk.com/method/users.get?user_ids=$(cat $friends_json),$id,\&fields=online,\&lang=en" &> $online_file
 }
 
 get_online_history(){
