@@ -25,22 +25,23 @@ get_json(){
 get_online_history(){
     parsed_file=_parsed
 #    ./parse_json.py $online_file | grep -v " 0" | cut -f 1 -d' '  >> ${online_file}$parsed_file
-    ./parse_json.py $online_file | grep -v " 0" >> ${online_file}$parsed_file
+#    ./parse_json.py $online_file | grep -v " 0" >> ${online_file}$parsed_file
+    php check_online_friends.php | grep -v " 0" >> ${online_file}$parsed_file
     cat ${history_dir}*${parsed_file} | sort -n | uniq -c | awk '{sub(/^[ \t]+/, ""); print}' | sort -rn > $day_file #TODO added only changed file
 }
 
 create_html(){
     index_file=index.html
     cat index.html_start > $index_file
-    while read n uid ; do
-        echo "<tr> <td><a href='http://vk.com/id$uid'>$uid</a></td> <td>$(($n*5)) m</td></tr>" >> $index_file
+    while read n uid online name family photo ; do
+        echo "<tr> <td><a href='http://vk.com/id$uid'><img src="$photo" alt="$name $family"> $name $family</a></td> <td>$(($n*5)) m</td></tr>" >> $index_file
     done < $day_file
     cat index.html_end >> $index_file
 
 }
 
-get_friends
-get_json
+#get_friends
+#get_json
 get_online_history
 create_html
 
