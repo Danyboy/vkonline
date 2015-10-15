@@ -5,7 +5,8 @@ cd $(dirname $0) #cd to sript location dir
 id=749972
 vkapi_token='cd7781010610415dd8d3a039d5cbaedc0309b19ff19c58d3e8ab67294fa7ab85ed5d29837bedd1a05758a'
 friends_json="/tmp/friends_json"
-history_dir="./history/$(date +%d.%m.%y)/"
+mydate="$(date +%d.%m.%y)"
+history_dir="./history/${mydate}/"
 online_file="$history_dir/$(date +json-%H:%M:%S)"
 day_file=${history_dir}/day_history
 
@@ -27,23 +28,43 @@ get_online_history(){
 #    ./parse_json.py $online_file | grep -v " 0" | cut -f 1 -d' '  >> ${online_file}$parsed_file
 #    ./parse_json.py $online_file | grep -v " 0" >> ${online_file}$parsed_file
     php check_online_friends.php | grep -v " 0" >> ${online_file}$parsed_file
+    
+    #TODO has a bug if user changed avatar. Check only vk id 
     cat ${history_dir}*${parsed_file} | sort -n | uniq -c | awk '{sub(/^[ \t]+/, ""); print}' | sort -rn > $day_file #TODO added only changed file
+}
+
+get_previous_date(){
+    echo $(date -d "$1 day ago" '+%d.%m.%y')
+}
+
+add_history_url(){
+    tempdate="$(get_previous_date $1)"
+    echo "<li><a href="http://vk.pr.etersoft.ru/all/${tempdate}.html">"${tempdate}"</a></li>"
+}
+
+add_history_urls(){
+    for i in {5..1}; do
+	add_history_url "$i"
+    done
 }
 
 create_html(){
     index_file=index.html
     cat index.html_start > $index_file
+    add_history_urls >> $index_file
+    cat index.html_middle >> $index_file
     while read n uid online name family photo ; do
         echo "<tr> <td><a href='http://vk.com/id$uid'><img src="$photo" alt="$name $family"> $name $family</a></td> <td>$(($n*5)) m</td></tr>" >> $index_file
-    done < $day_file
+    done < $1
     cat index.html_end >> $index_file
-
+    
+    yes | cp $index_file ./history/all/"${mydate}".html
 }
 
 #get_friends
 #get_json
 get_online_history
-create_html
+create_html "$day_file"
 
 #cat friends-05.11.2014_20:30:02 | python -c "import json, sys; j=json.load(sys.stdin); for print j['response'][0]['uid']"
 #wget https://api.vk.com/method/friends.get?user_id=$1 -O history/`date +friends-%x_%H:%M`
