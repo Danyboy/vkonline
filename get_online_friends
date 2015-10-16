@@ -19,14 +19,11 @@ get_friends(){
 
 get_json(){
     sed -i "s/\(.*:\[\|\]}\)//g" $friends_json 
-#    curl -fsg "https://api.vk.com/method/users.get?user_ids=$(cat $friends_json),$id,\&fields=online,photo_50,\&lang=en" &> $online_file
     curl -fsg "https://api.vk.com/method/users.get?user_ids=$(cat $friends_json),$id,\&fields=online,\&lang=en" &> $online_file
 }
 
 get_online_history(){
     parsed_file=_parsed
-#    ./parse_json.py $online_file | grep -v " 0" | cut -f 1 -d' '  >> ${online_file}$parsed_file
-#    ./parse_json.py $online_file | grep -v " 0" >> ${online_file}$parsed_file
     php check_online_friends.php | grep -v " 0" >> ${online_file}$parsed_file
     
     #TODO has a bug if user changed avatar. Check only vk id 
