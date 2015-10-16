@@ -18,3 +18,4 @@ find ./history/ -type f -iname "day_history" -print0 | while IFS= read -r -d $'\
 done
 
 
+#json-
