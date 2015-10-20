@@ -78,8 +78,16 @@ class OnlineHistory
 
 	function get_minutes_by_id($id){
 		$this->connect();
-		$count_query = "select extract(hour from status) as hours, count (extract(hour from status)) * 5 as count from user_online where user_id={$id} group by hours order by hours asc;";
+		$count_query = "select extract(hour from status) as hours, count (extract(hour from status)) * 5 as count from user_online where user_id in ({$id}) group by hours order by hours asc;";
 		return $this->query_to_json($count_query);
+	}
+
+	function get_minutes_by_ids($id,$id2){
+		//TODO change by array and for
+		$ids = array();
+		$ids[0] = $this->get_minutes_by_id($id);
+		$ids[1] = $this->get_minutes_by_id($id2);
+		return $ids;
 	}
 
 }
@@ -94,7 +102,7 @@ class OnlineHistory
 <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 <script type="text/javascript">
 
-var hourse_count = new Array(24);
+var hours_count = new Array(24);
 var categories = new Array(24);
 
 function graph_by_id(id){
@@ -105,18 +113,43 @@ function graph_by_id(id){
     ?>
 
     var data = <?php echo $my_data ?>;
-    hourse_count = new Array(24);
-    categories = new Array(24);
-    for(var i=0; i<data.length;i++) {
-	hourse_count[i] = parseInt(data[i][1], 10);
-    	categories[i] = parseInt(data[i][0], 10);
-    }
 
-    //alert(hourse_count);
+    return parse_data_from_array(data);
+//    alert(data);
 }
 
-graph_by_id(749972);
+function parse_data_from_array(data){
+    var my_hours_count = new Array(24);
+    //TODO change
+    categories = new Array(24);
+    for(var i=0; i<data.length;i++) {
+	my_hours_count[i] = parseInt(data[i][1], 10);
+    	categories[i] = parseInt(data[i][0], 10);
+    }
+    
+    return my_hours_count;
+}
 
+//graph_by_id(749972);
+
+var hours_counts = new Array(2);
+
+function graph_by_ids(id,id2){
+    <?php 
+        $myOnlineHistiry = new OnlineHistory();
+	$my_data = $myOnlineHistiry->get_minutes_by_ids(749972,42606657);
+    ?>
+
+    var data0 = <?php echo $my_data[0] ?>;
+    var data1 = <?php echo $my_data[1] ?>;
+
+    hours_counts[0] = parse_data_from_array(data0);
+    hours_counts[1] = parse_data_from_array(data1);
+    
+    //alert(hours_counts[0]);
+}
+
+graph_by_ids(749972,42606657);
 
 jQuery.noConflict();
 
@@ -168,10 +201,11 @@ theme = 'default';
         series: [{
             name: 'John',
             //data: [3, 4, 3, 5, 4, 10, 12, 11]
-            data: hourse_count
+            data: hours_counts[0]
         }, {
             name: 'Jane',
-            data: [1, 3, 4, 3, 3, 5, 4]
+            data: hours_counts[1]
+            //data: [1, 3, 4, 3, 3, 5, 4]
         }]
     });
 });
