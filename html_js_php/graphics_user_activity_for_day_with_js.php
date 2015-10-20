@@ -46,7 +46,7 @@ class OnlineHistory
 		//connection to the database
 		$this->dbconn = pg_connect("dbname=vk user=root password=***REMOVED***")
 		  or die("Unable to connect to PostgreSQL");
-		echo "Connected to PostgreSQL<br>";
+		//echo "Connected to PostgreSQL<br>";
 
 		//$selected = mysql_select_db($my_db,$this->dbhandle) 
 		  //or die("Could not select examples");
@@ -76,32 +76,47 @@ class OnlineHistory
 		return $json;
 	}
 
+	function get_minutes_by_id($id){
+		$this->connect();
+		$count_query = "select extract(hour from status) as hours, count (extract(hour from status)) * 5 as count from user_online where user_id={$id} group by hours order by hours asc;";
+		return $this->query_to_json($count_query);
+	}
 
 }
-	
-$myOnlineHistiry = new OnlineHistory();
-$myOnlineHistiry->connect();
-$hours_query = "select extract(hour from status) as hours from user_online where user_id=749972 group by hours order by hours desc;";
-$my_categories = $myOnlineHistiry->query_to_json($hours_query);
 
-$count_query = "select extract(hour from status) as hours, count (extract(hour from status)) as count from user_online where user_id=749972 group by hours order by hours desc;";
-$my_data = $myOnlineHistiry->query_to_json($count_query);
+//$myOnlineHistiry = new OnlineHistory();
+//$my_data = $myOnlineHistiry->get_minutes_by_id(749972);
 
-//$count_query2 = "select count (extract(hour from status)) as count from user_online where user_id=749972 group by hours order by hours desc;";
-//$my_data2 = $myOnlineHistiry->query_to_json($count_query2);
-
-echo "$my_data";
+//echo "$my_data";
 
 ?>
 
 <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 <script type="text/javascript">
 
-var cat = <?php echo $my_categories ?>;
-var data = <?php echo $my_data ?>;
-//arr hourse_count;
-//for(var i=0; i<data.length;i++) hourse_count[i] = parseInt(ar[i], 10);
-//alert(ar);
+var hourse_count = new Array(24);
+var categories = new Array(24);
+
+function graph_by_id(id){
+    //TODO remove php echo
+    <?php 
+        $myOnlineHistiry = new OnlineHistory();
+	$my_data = $myOnlineHistiry->get_minutes_by_id(749972);
+    ?>
+
+    var data = <?php echo $my_data ?>;
+    hourse_count = new Array(24);
+    categories = new Array(24);
+    for(var i=0; i<data.length;i++) {
+	hourse_count[i] = parseInt(data[i][1], 10);
+    	categories[i] = parseInt(data[i][0], 10);
+    }
+
+    //alert(hourse_count);
+}
+
+graph_by_id(749972);
+
 
 jQuery.noConflict();
 
@@ -114,7 +129,7 @@ theme = 'default';
             type: 'areaspline'
         },
         title: {
-            text: 'Average fruit consumption during one week'
+            text: 'Hours of day by popularity'
         },
         legend: {
             layout: 'vertical',
@@ -127,24 +142,23 @@ theme = 'default';
             backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
         },
         xAxis: {
-            categories: cat,
-            plotBands: [{ // visualize the weekend
-                from: 4.5,
-                to: 6.5,
-                color: 'rgba(68, 170, 213, .2)'
-            }]
+            categories: categories,
+            title: {
+                text: 'Hours'
+            }
         },
         yAxis: {
             title: {
-                text: 'Fruit units'
+                text: 'Online minutes in this hours per year'
             }
         },
         tooltip: {
             shared: true,
-            valueSuffix: ' units'
+            valueSuffix: ' minutes'
         },
         credits: {
-            enabled: false
+            enabled: false,
+            valueSuffix: ' hour'
         },
         plotOptions: {
             areaspline: {
@@ -153,8 +167,8 @@ theme = 'default';
         },
         series: [{
             name: 'John',
-            data: [3, 4, 3, 5, 4, 10, 12, 11]
-            //data: ar
+            //data: [3, 4, 3, 5, 4, 10, 12, 11]
+            data: hourse_count
         }, {
             name: 'Jane',
             data: [1, 3, 4, 3, 3, 5, 4]
@@ -168,10 +182,5 @@ jQuery(document).ready(function(){jQuery("#view-menu").click(function(e){jQuery(
 <script src="http://code.highcharts.com/highcharts.js"></script>
 
 <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-    // pass PHP variable declared above to JavaScript variable
-//    var ar = <?php echo json_encode($result) ?>;
-
-
-
 </body>
 </html>
