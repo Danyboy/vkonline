@@ -105,21 +105,7 @@ var hours_count = new Array(24);
 var hours_counts = new Array(2);
 var categories = new Array(24);
 var my_hours_count = new Array();
-var my_hours_count2 = [[1,2,3],[3,2,1]];
-var my_hours_counts = new Array();
-
-function parse_data_from_array(data){
-    var my_hours_count = new Array(24);
-    //TODO change
-    for(var i=0; i<data.length;i++) {
-	my_hours_count[i] = parseInt(data[i][2], 10);
-    }
-    
-    return my_hours_count;
-}
-
 var my_series = new Array();
-categories = [1,2,3,4,5];
 
 function generate_array_for_graphs(data){
     data = JSON.parse(data);
@@ -130,23 +116,28 @@ function generate_array_for_graphs(data){
 	prevId = data[i-1][0];
 
 	if (currentId != prevId || i == (data.length - 1) ){
+	    if (i == (data.length - 1)){
+	    prevCounter = prevCounter - 1;
+	    my_hours_count = new Array(i - prevCounter);
+	    for (var j = 0; j < i - prevCounter; j++){
+	        categories[j] = parseInt(data[j + prevCounter][1], 10);
+		my_hours_count[j] = parseInt(data[j + prevCounter][2], 10);
+		
+	    }
+	    } else {
 	    my_hours_count = new Array(i - prevCounter);
 	    for (var j = 0; j < i - prevCounter; j++){
 	        categories[j] = parseInt(data[j + prevCounter][1], 10);
 		my_hours_count[j] = parseInt(data[j + prevCounter][2], 10);
 	    }
+	    }
 	    prevCounter = i;
-	    console.debug (categories);
-	    console.debug (my_series_count, i, j, prevCounter, data.length);
 	    my_series[my_series_count] = {
 			    name: prevId,
 			    data: my_hours_count
-		            //data: my_hours_count2[my_series_count]
-	    	            //data: [21,11]
 	    	            };
 	    my_series_count++;
 	    console.debug (my_hours_count);
-	    console.debug (my_series);
 	}
     }
 }
