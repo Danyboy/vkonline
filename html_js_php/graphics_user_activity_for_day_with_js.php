@@ -109,7 +109,6 @@ var hours_counts = new Array(2);
 var categories = new Array(24);
 
 function parse_data_from_array(data){
-//    alert(data[0][0]);
     var my_hours_count = new Array(24);
     //TODO change
     categories = new Array(24);
@@ -138,22 +137,11 @@ function graph_by_ids(){
 	
         $myOnlineHistiry = new OnlineHistory();
 	$my_data = $myOnlineHistiry->get_minutes_by_ids($users);
-//	$js_array = json_encode($my_data);
-//	echo "var data = ". $js_array . ";\n";
     ?>
-    
-//
-    var data = <?php echo json_encode($my_data) ?>;
-//    alert(data[0]);
-    generate_array_for_graphs(data);
 
-    //var data0 = <?php echo $my_data[0] ?>;
-    //var data1 = <?php echo $my_data[1] ?>;
     //TODO bug if one of id hasnt online minutes in hours
-    //hours_counts[1] = parse_data_from_array(data1);
-    //hours_counts[0] = parse_data_from_array(data0);
-    
-    //alert(hours_counts[0]);
+    var data = <?php echo json_encode($my_data) ?>;
+    generate_array_for_graphs(data);
 }
 
 graph_by_ids();
