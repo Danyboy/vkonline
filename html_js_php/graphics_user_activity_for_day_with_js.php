@@ -135,16 +135,23 @@ function parse_data_from_array(data){
 var hours_counts = new Array(2);
 
 function graph_by_ids(id,id2){
-    <?php 
+    <?php
+    
+	$user1 = $_GET['user1'];
+	$user2 = $_GET['user2'];
+	
         $myOnlineHistiry = new OnlineHistory();
-	$my_data = $myOnlineHistiry->get_minutes_by_ids(749972,42606657);
+	$my_data = $myOnlineHistiry->get_minutes_by_ids($user1,$user2);
+//	$my_data = $myOnlineHistiry->get_minutes_by_ids(749972,42606657);
     ?>
 
     var data0 = <?php echo $my_data[0] ?>;
     var data1 = <?php echo $my_data[1] ?>;
+    
+    //TODO bug if one of id hasnt online minutes in hours
 
-    hours_counts[0] = parse_data_from_array(data0);
     hours_counts[1] = parse_data_from_array(data1);
+    hours_counts[0] = parse_data_from_array(data0);
     
     //alert(hours_counts[0]);
 }
