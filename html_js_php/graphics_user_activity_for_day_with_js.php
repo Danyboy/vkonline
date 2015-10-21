@@ -116,20 +116,10 @@ function generate_array_for_graphs(data){
 	prevId = data[i-1][0];
 
 	if (currentId != prevId || i == (data.length - 1) ){
-	    if (i == (data.length - 1)){
-	    prevCounter = prevCounter - 1;
 	    my_hours_count = new Array(i - prevCounter);
 	    for (var j = 0; j < i - prevCounter; j++){
 	        categories[j] = parseInt(data[j + prevCounter][1], 10);
 		my_hours_count[j] = parseInt(data[j + prevCounter][2], 10);
-		
-	    }
-	    } else {
-	    my_hours_count = new Array(i - prevCounter);
-	    for (var j = 0; j < i - prevCounter; j++){
-	        categories[j] = parseInt(data[j + prevCounter][1], 10);
-		my_hours_count[j] = parseInt(data[j + prevCounter][2], 10);
-	    }
 	    }
 	    prevCounter = i;
 	    my_series[my_series_count] = {
@@ -137,7 +127,7 @@ function generate_array_for_graphs(data){
 			    data: my_hours_count
 	    	            };
 	    my_series_count++;
-	    console.debug (my_hours_count);
+	    //console.debug (my_hours_count);
 	}
     }
 }
