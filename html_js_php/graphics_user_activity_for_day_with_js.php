@@ -82,11 +82,13 @@ class OnlineHistory
 		return $this->query_to_json($count_query);
 	}
 
-	function get_minutes_by_ids($id,$id2){
+	function get_minutes_by_ids($users){
 		//TODO change by array and for
 		$ids = array();
-		$ids[0] = $this->get_minutes_by_id($id);
-		$ids[1] = $this->get_minutes_by_id($id2);
+		
+		for($i = 0; $i < count($users); ++$i) {
+			$ids[$i] = $this->get_minutes_by_id($users[$i]);
+		}
 		return $ids;
 	}
 
@@ -103,60 +105,58 @@ class OnlineHistory
 <script type="text/javascript">
 
 var hours_count = new Array(24);
+var hours_counts = new Array(2);
 var categories = new Array(24);
 
-function graph_by_id(id){
-    //TODO remove php echo
-    <?php 
-        $myOnlineHistiry = new OnlineHistory();
-	$my_data = $myOnlineHistiry->get_minutes_by_id(749972);
-    ?>
-
-    var data = <?php echo $my_data ?>;
-
-    return parse_data_from_array(data);
-//    alert(data);
-}
-
 function parse_data_from_array(data){
+//    alert(data[0][0]);
     var my_hours_count = new Array(24);
     //TODO change
     categories = new Array(24);
     for(var i=0; i<data.length;i++) {
-	my_hours_count[i] = parseInt(data[i][1], 10);
     	categories[i] = parseInt(data[i][0], 10);
+	my_hours_count[i] = parseInt(data[i][1], 10);
     }
     
     return my_hours_count;
 }
 
-//graph_by_id(749972);
+var my_series;
+function generate_array_for_graphs(data){
+    my_series = new Array(2);
+    for(var i=0; i<data.length;i++) {
+	my_series[i] = {name: 'i',
+	                data: parse_data_from_array(JSON.parse(data[i]))};
+    }
 
-var hours_counts = new Array(2);
+}
 
-function graph_by_ids(id,id2){
+function graph_by_ids(){
     <?php
     
-	$user1 = $_GET['user1'];
-	$user2 = $_GET['user2'];
+	$users = json_decode($_GET['users']);
 	
         $myOnlineHistiry = new OnlineHistory();
-	$my_data = $myOnlineHistiry->get_minutes_by_ids($user1,$user2);
-//	$my_data = $myOnlineHistiry->get_minutes_by_ids(749972,42606657);
+	$my_data = $myOnlineHistiry->get_minutes_by_ids($users);
+//	$js_array = json_encode($my_data);
+//	echo "var data = ". $js_array . ";\n";
     ?>
-
-    var data0 = <?php echo $my_data[0] ?>;
-    var data1 = <?php echo $my_data[1] ?>;
     
-    //TODO bug if one of id hasnt online minutes in hours
+//
+    var data = <?php echo json_encode($my_data) ?>;
+//    alert(data[0]);
+    generate_array_for_graphs(data);
 
-    hours_counts[1] = parse_data_from_array(data1);
-    hours_counts[0] = parse_data_from_array(data0);
+    //var data0 = <?php echo $my_data[0] ?>;
+    //var data1 = <?php echo $my_data[1] ?>;
+    //TODO bug if one of id hasnt online minutes in hours
+    //hours_counts[1] = parse_data_from_array(data1);
+    //hours_counts[0] = parse_data_from_array(data0);
     
     //alert(hours_counts[0]);
 }
 
-graph_by_ids(749972,42606657);
+graph_by_ids();
 
 jQuery.noConflict();
 
@@ -205,15 +205,7 @@ theme = 'default';
                 fillOpacity: 0.5
             }
         },
-        series: [{
-            name: 'John',
-            //data: [3, 4, 3, 5, 4, 10, 12, 11]
-            data: hours_counts[0]
-        }, {
-            name: 'Jane',
-            data: hours_counts[1]
-            //data: [1, 3, 4, 3, 3, 5, 4]
-        }]
+        series: my_series
     });
 });
 })(jQuery);
