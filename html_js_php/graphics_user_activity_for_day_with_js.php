@@ -78,26 +78,23 @@ class OnlineHistory
 
 	function get_minutes_by_id($id){
 		$this->connect();
-		$count_query = "select extract(hour from status) as hours, count (extract(hour from status)) * 5 as count from user_online where user_id in ({$id}) group by hours order by hours asc;";
+		$count_query = "select extract(hour from status) as hours, count (extract(hour from status)) / 12 as count 
+				from user_online where user_id in ({$id}) group by hours order by hours asc;";
 		return $this->query_to_json($count_query);
 	}
 
 	function get_minutes_by_ids($users){
-		//TODO change by array and for
-		$ids = array();
+		$this->connect();
 		
-		for($i = 0; $i < count($users); ++$i) {
-			$ids[$i] = $this->get_minutes_by_id($users[$i]);
-		}
-		return $ids;
+		$users_string = implode(",", $users);
+		$count_query = "SELECT user_id, EXTRACT(hour FROM status) AS hours, COUNT (EXTRACT(hour FROM status)) / 12 AS count 
+				FROM user_online 
+				WHERE user_id IN ({$users_string}) GROUP BY hours, user_id ORDER BY user_id, hours ASC";
+		
+		return $this->query_to_json($count_query);
 	}
 
 }
-
-//$myOnlineHistiry = new OnlineHistory();
-//$my_data = $myOnlineHistiry->get_minutes_by_id(749972);
-
-//echo "$my_data";
 
 ?>
 
@@ -107,34 +104,57 @@ class OnlineHistory
 var hours_count = new Array(24);
 var hours_counts = new Array(2);
 var categories = new Array(24);
+var my_hours_count = new Array();
+var my_hours_count2 = [[1,2,3],[3,2,1]];
+var my_hours_counts = new Array();
 
 function parse_data_from_array(data){
     var my_hours_count = new Array(24);
     //TODO change
-    categories = new Array(24);
     for(var i=0; i<data.length;i++) {
-    	categories[i] = parseInt(data[i][0], 10);
-	my_hours_count[i] = parseInt(data[i][1], 10);
+	my_hours_count[i] = parseInt(data[i][2], 10);
     }
     
     return my_hours_count;
 }
 
-var my_series;
-function generate_array_for_graphs(data){
-    my_series = new Array(2);
-    for(var i=0; i<data.length;i++) {
-	my_series[i] = {name: 'i',
-	                data: parse_data_from_array(JSON.parse(data[i]))};
-    }
+var my_series = new Array();
+categories = [1,2,3,4,5];
 
+function generate_array_for_graphs(data){
+    data = JSON.parse(data);
+    my_series_count = 0;
+    prevCounter = 0;
+    for(var i = 1 ; i < data.length ; i++) {
+	currentId = data[i][0];
+	prevId = data[i-1][0];
+
+	if (currentId != prevId || i == (data.length - 1) ){
+	    my_hours_count = new Array(i - prevCounter);
+	    for (var j = 0; j < i - prevCounter; j++){
+	        categories[j] = parseInt(data[j + prevCounter][1], 10);
+		my_hours_count[j] = parseInt(data[j + prevCounter][2], 10);
+	    }
+	    prevCounter = i;
+	    console.debug (categories);
+	    console.debug (my_series_count, i, j, prevCounter, data.length);
+	    my_series[my_series_count] = {
+			    name: prevId,
+			    data: my_hours_count
+		            //data: my_hours_count2[my_series_count]
+	    	            //data: [21,11]
+	    	            };
+	    my_series_count++;
+	    console.debug (my_hours_count);
+	    console.debug (my_series);
+	}
+    }
 }
+
 
 function graph_by_ids(){
     <?php
-    
 	$users = json_decode($_GET['users']);
-	
         $myOnlineHistiry = new OnlineHistory();
 	$my_data = $myOnlineHistiry->get_minutes_by_ids($users);
     ?>
@@ -177,7 +197,7 @@ theme = 'default';
         },
         yAxis: {
             title: {
-                text: 'Online minutes in this hours per year'
+                text: 'Online hours in this hour per year'
             }
         },
         tooltip: {
@@ -200,7 +220,9 @@ theme = 'default';
 jQuery(document).ready(function(){jQuery("#view-menu").click(function(e){jQuery("#wrap").toggleClass("toggled")}),jQuery("#sidebar-close").click(function(e){jQuery("#wrap").removeClass("toggled")}),jQuery(document).keydown(function(e){var t;"INPUT"!=e.target.tagName&&(39==e.keyCode?t=document.getElementById("next-example"):37==e.keyCode&&(t=document.getElementById("previous-example")),t&&(location.href=t.href))}),jQuery("#switcher-selector").bind("change",function(){var e=jQuery(this).val();return e&&(window.location=e),!1})});
 </script>
 <body>
-<script src="http://code.highcharts.com/highcharts.js"></script>
+
+<script src="http://code.highcharts.com/highcharts.src.js"></script>
+<!-<script src="http://code.highcharts.com/highcharts.js"></script>->>
 
 <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 </body>
