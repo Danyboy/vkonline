@@ -94,7 +94,13 @@ class OnlineHistory
 		return $this->query_to_json($user_online_minutes_by_hourse);;
 	}
 	
-	function get_users_online_hours(){
+	function get_users_online_hours($my_date){
+	
+		if (DateTime::createFromFormat('d.m.y', $my_date) == FALSE){
+		    date_default_timezone_set('MSK');
+		    $my_date = date("d.m.y");
+		}
+		
 		//TODO change DATE
 		$count_query_without_data = "SELECT user_id, COUNT (EXTRACT(hour FROM status)) * 5 AS count 
                                 FROM user_online 
@@ -102,18 +108,18 @@ class OnlineHistory
                                 
                 $count_query = "SELECT user_id, link, name, COUNT (EXTRACT(hour FROM status)) * 5 AS minutes 
                                 FROM user_online JOIN users ON (user_online.user_id = users.id)
-				WHERE DATE(status) = '11-9-2015' 
+				WHERE DATE(status) = '{$my_date}' 
 				GROUP BY user_id, link, name ORDER BY minutes DESC;";
-                                
 		
 		return $this->query_to_json($count_query);
 	}
 	
-	function show_today_online_users(){
-		foreach (json_decode($this->get_users_online_hours()) as $row) {
+	function show_today_online_users($my_date){
+		foreach (json_decode($this->get_users_online_hours($my_date)) as $row) {
 		echo "<tr>
 			<td><a href='http://vk.com/id{$row[0]}'>
-			<img src='{$row[1]}' alt='$row[2]'> {$row[2]}</a></td> 
+			    <img src='{$row[1]}' alt='$row[2]'> {$row[2]}</a></td> 
+			<td><a href='./u?users=[{$row[0]},749972,42606657]'>{$row[2]} online activity graphics</td>
 			<td>{$row[3]} m</td>
 		      </tr>";
 	        }
@@ -200,7 +206,7 @@ class OnlineHistory
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">VKonline</a>
+          <a class="navbar-brand" href="/">VKonline</a>
         </div>
        <nav id="bs-navbar" class="collapse navbar-collapse">
       <ul class="nav navbar-nav">
@@ -226,6 +232,7 @@ class OnlineHistory
               <thead>
                 <tr>
                   <th>User</th>
+                  <th>Graphics user online activity</th>
                   <th>Time on vk</th>
                 </tr>
               </thead>
@@ -234,7 +241,7 @@ class OnlineHistory
     
 <?php 
 $myOnlineHistiry = new OnlineHistory();
-$myOnlineHistiry->show_today_online_users();
+$myOnlineHistiry->show_today_online_users($_GET['d']);
 ?>
 
 </tr>
