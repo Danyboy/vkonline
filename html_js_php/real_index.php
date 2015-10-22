@@ -46,18 +46,22 @@ class OnlineHistory
 
 	function my_query($query){
 		$this->connect();
-		$this->result = pg_query($this->dbconn, "$query");
-		if (!$this->result) {
+		$result = pg_query($this->dbconn, "$query");
+
+		if (!$result) {
 			echo "Произошла ошибка.\n";
 			echo pg_last_error($this->dbconn);
 			exit;
 		}
+		
+		return $result;
 	}
 	
 	function query_to_json($query){
-		$this->my_query($query);
+		$result = $this->my_query($query);
 		$myarray = array();
-		while ($row = pg_fetch_row($this->result)) {
+
+		while ($row = pg_fetch_row($result)) {
 		    $myarray[] = $row;
 		}
 
@@ -71,9 +75,52 @@ class OnlineHistory
 		$users_string = implode(",", $users);
 		$count_query = "SELECT user_id, EXTRACT(hour FROM status) AS hours, COUNT (EXTRACT(hour FROM status)) / 12 AS count 
 				FROM user_online 
-				WHERE user_id IN ({$users_string}) GROUP BY hours, user_id ORDER BY user_id, hours ASC";
+				WHERE user_id IN ({$users_string}) 
+				GROUP BY hours, user_id 
+				ORDER BY user_id ASC, hours ASC";
 		
 		return $this->query_to_json($count_query);
+	}
+	
+	function get_user_online_minutes_by_hourse(){
+		//Temporary
+		$user_online_minutes_by_hourse = "SELECT user_id, EXTRACT(hour FROM status) AS hours, COUNT (EXTRACT(hour FROM status)) * 5 AS count 
+                                FROM user_online 
+                                WHERE user_id IN (749972) AND DATE(status) = '11-9-2015' GROUP BY hours, user_id ORDER BY user_id, hours ASC;";
+                                
+		$user_online_minutes = "SELECT user_id, COUNT (EXTRACT(hour FROM status)) * 5 AS count 
+                                FROM user_online 
+                                WHERE user_id IN (749972) AND DATE(status) = '11-9-2015' GROUP BY user_id;";
+		return $this->query_to_json($user_online_minutes_by_hourse);;
+	}
+	
+	function get_users_online_hours(){
+		//TODO change DATE
+		$count_query_without_data = "SELECT user_id, COUNT (EXTRACT(hour FROM status)) * 5 AS count 
+                                FROM user_online 
+                                WHERE DATE(status) = '11-9-2015' GROUP BY user_id;";
+                                
+                $count_query = "SELECT user_id, link, name, COUNT (EXTRACT(hour FROM status)) * 5 AS minutes 
+                                FROM user_online JOIN users ON (user_online.user_id = users.id)
+				WHERE DATE(status) = '11-9-2015' 
+				GROUP BY user_id, link, name ORDER BY minutes DESC;";
+                                
+		
+		return $this->query_to_json($count_query);
+	}
+	
+	function show_today_online_users(){
+		foreach (json_decode($this->get_users_online_hours()) as $row) {
+		echo "<tr>
+			 <td><a href='http://vk.com/id{$row[0]}'>
+			<img src="{$row[1]}" alt="$row[2]"> $row[2]</a></td> 
+			<td>{$row[3]} m</td>
+		      </tr>"
+    	    	    print $row[0] . "\t";
+    	    	    print $row[1] . "\t";
+    	    	    print $row[2] . "\t";
+		    print $row[3] . "\n";
+	        }
 	}
 	
 	function remove_offline_users($value){
@@ -84,14 +131,20 @@ class OnlineHistory
 
         function save_to_db($value){
                 $my_name = $value->first_name . " " . $value->last_name;
+		
+	        $check_user_query = "SELECT COUNT(id) FROM users WHERE id={$value->uid};";
+	        $insert_user_query = "INSERT INTO users (id, name, link) VALUES ({$value->uid}, '{$my_name}', '{$value->photo_50}';";
+	        $insert_date_query = "INSERT INTO user_online (user_id, status) VALUES ({$value->uid}, CURRENT_TIMESTAMP(0));";
 
-	        $insert_user_query = "INSERT INTO users (id, name, link) VALUES ($value->uid, '{$my_name}', '{$value->photo_50}';";
-	        $insert_date_query = "INSERT INTO user_online (user_id, status) VALUES ($value->uid, CURRENT_TIMESTAMP(0));";
-
-//                echo ($insert_user_query . "\n");
-                echo ($insert_date_query . "\n");
-                //my_query($insert_user_query);
+                //echo ($insert_date_query . "\n");
                 //my_query($insert_date_query);
+                
+                $is_user_exists = (strcmp($this->query_to_json($check_user_query), '[["1"]]') !== 0);
+            
+                if ($is_user_exists){
+            	    echo ($insert_user_query . "\n");
+                    //my_query($insert_user_query);
+                }
         }
 	
         function add_users_activity(){
@@ -104,7 +157,8 @@ class OnlineHistory
 }
 
 $myOnlineHistiry = new OnlineHistory();
-$myOnlineHistiry->add_users_activity();
+//$myOnlineHistiry->add_users_activity();
+$myOnlineHistiry->show_today_online_users();
 
 //<html><body></body></html>
 ?>
