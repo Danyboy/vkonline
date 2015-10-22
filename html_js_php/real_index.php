@@ -112,14 +112,10 @@ class OnlineHistory
 	function show_today_online_users(){
 		foreach (json_decode($this->get_users_online_hours()) as $row) {
 		echo "<tr>
-			 <td><a href='http://vk.com/id{$row[0]}'>
-			<img src="{$row[1]}" alt="$row[2]"> $row[2]</a></td> 
+			<td><a href='http://vk.com/id{$row[0]}'>
+			<img src='{$row[1]}' alt='$row[2]'> {$row[2]}</a></td> 
 			<td>{$row[3]} m</td>
-		      </tr>"
-    	    	    print $row[0] . "\t";
-    	    	    print $row[1] . "\t";
-    	    	    print $row[2] . "\t";
-		    print $row[3] . "\n";
+		      </tr>";
 	        }
 	}
 	
@@ -156,10 +152,107 @@ class OnlineHistory
 	}
 }
 
-$myOnlineHistiry = new OnlineHistory();
+//$myOnlineHistiry = new OnlineHistory();
 //$myOnlineHistiry->add_users_activity();
-$myOnlineHistiry->show_today_online_users();
+//$myOnlineHistiry->show_today_online_users();
 
-//<html><body></body></html>
+//
 ?>
 
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>How much your friend online in vk</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../../dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="dashboard.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="../../assets/js/ie-emulation-modes-warning.js"></script>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">VKonline</a>
+        </div>
+       <nav id="bs-navbar" class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+      
+      
+      
+        <li>
+          <a href="http://vk.pr.etersoft.ru/all/13.10.15.html">13.10.15</a>
+        </li>
+      </ul>
+    </nav>
+
+      </div>
+    </div>
+    <div class="container-fluid">
+      <div class="row">
+          <h2 class="sub-header">
+          <?php  date_default_timezone_set('UTC'); echo date("d.m.y"); ?>
+          
+          </h2>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>User</th>
+                  <th>Time on vk</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+    
+<?php 
+$myOnlineHistiry = new OnlineHistory();
+$myOnlineHistiry->show_today_online_users();
+?>
+
+</tr>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="../../dist/js/bootstrap.min.js"></script>
+    <script src="../../assets/js/docs.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+  </body>
+</html>
