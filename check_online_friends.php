@@ -47,6 +47,7 @@ class OnlineHistory
 	}
 
 	function save_to_db($id){
+		
 		$sql="INSERT INTO user_time (mytime, userid) VALUES (current_timestamp(), $id);";
 		if(!mysql_query($sql,$this->dbhandle)) //dbhandle is mysql connection object
 		{
@@ -58,7 +59,6 @@ class OnlineHistory
 	{	
 // 		$json = $this->get_friends($this->url);
  		$json = $this->get_online();
-// 		print($json);
 		$obj = json_decode($json);
 // 		print_r($obj);
 // 		$this->connect();
