@@ -5,10 +5,9 @@
 <?php 
 //include './real_index.php';
 
-class OnlineHistory
+class OnlineHistoryCharts
 {
-	function connect()
-	{	
+	function connect(){	
 		$username = "root";
 		$password = "***REMOVED***";
 		$hostname = "localhost"; 
@@ -23,8 +22,8 @@ class OnlineHistory
 		  //or die("Could not select examples");
 	}
 	
-	function my_query($query)
-	{
+	function my_query($query){
+		$this->connect();
 		$this->result = pg_query($this->dbconn, "$query");
 		if (!$this->result) {
 		  echo "Произошла ошибка.\n";
@@ -48,7 +47,6 @@ class OnlineHistory
 	}
 
 	function get_minutes_by_ids($users){
-		$this->connect();
 		
 		$users_string = implode(",", $users);
 		$count_query = "SELECT user_id, EXTRACT(hour FROM status) AS hours, COUNT (EXTRACT(hour FROM status)) / 12 AS count 
@@ -107,7 +105,7 @@ function generate_array_for_graphs(data,names){
 function graph_by_ids(){
     <?php
 	$users = json_decode($_GET['users']);
-        $myOnlineHistiry = new OnlineHistory();
+        $myOnlineHistiry = new OnlineHistoryCharts();
 	$my_data = $myOnlineHistiry->get_minutes_by_ids($users);
 	$my_users = $myOnlineHistiry->get_current_users_name($users);
     ?>
