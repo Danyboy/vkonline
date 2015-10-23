@@ -151,9 +151,9 @@ class OnlineHistory
 	function get_previous_dates($int, $my_date){
 	        date_default_timezone_set('Europe/Moscow');
 		
-		$date = isset($my_date) ? date_create_from_format('d-m-y', $my_date) : date_create_from_format('d-m-y' , date('d-m-y'));
+		$date = isset($my_date) ? date_create_from_format('d.m.y', $my_date) : date_create_from_format('d.m.y' , date('d.m.y'));
 		date_sub($date, date_interval_create_from_date_string($int . ' days'));
-		return date_format($date, 'd-m-y');
+		return date_format($date, 'd.m.y');
 		//return $date;
 	}
 
