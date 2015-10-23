@@ -4,7 +4,7 @@
                 <tr>
                   <th>User</th>
                     <th>Charts user online activity</th>
-                  <th>Time on vk</th>
+                  <th>Hourse online on vk</th>
                 </tr>
               </thead>
               <tbody>

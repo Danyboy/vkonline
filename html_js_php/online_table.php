@@ -114,11 +114,12 @@ class OnlineHistory
 	
 	function show_today_online_users($my_date){
 		foreach (json_decode($this->get_users_online_hours($my_date)) as $row) {
-		echo "<tr>
+		    $my_time = date('H:i', mktime(0,$row[3]));
+			echo "<tr>
 			<td><a href='http://vk.com/id{$row[0]}'>
 			    <img src='{$row[1]}' alt='$row[2]'> {$row[2]}</a></td> 
 			<td><a href='./u?users=[{$row[0]},749972,42606657]'>{$row[2]} online activity charts</td>
-			<td>{$row[3]} m</td>
+			<td>{$my_time} m</td>
 		      </tr>";
 	        }
 	}
