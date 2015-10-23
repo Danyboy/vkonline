@@ -1,5 +1,4 @@
 <?php 
-//include '/home/danil/Projects/vkonline/html_js_php/online_table.php';
 include '/home/danil/Projects/vkonline/html_js_php/start.php';
 
 class OnlineHistoryCharts extends OnlineHistory{
@@ -17,9 +16,8 @@ class OnlineHistoryCharts extends OnlineHistory{
 		return $this->query_to_json($count_query);
 	}
 
-	function get_users_activity_by_day($date){
+	function get_all_users_activity_by_day($my_date){
 		
-		$users_string = implode(",", $users);
 		$count_query = "SELECT EXTRACT(hour FROM status) AS hours, COUNT (EXTRACT(hour FROM status)) * 5 AS count 
                                 FROM user_online 
                                 WHERE DATE(status) = '11-8-2015' GROUP BY hours ORDER BY hours;";
@@ -27,12 +25,14 @@ class OnlineHistoryCharts extends OnlineHistory{
 		return $this->query_to_json($count_query);
 	}
 
-	function get_user_activity_by_day($users, $date){
+	function get_user_activity_by_day($users, $my_date){
+	
+		$my_date = get_correct_date($my_date);		
 		
 		$users_string = implode(",", $users);
 		$count_query = "SELECT user_id, EXTRACT(hour FROM status) AS hours, COUNT (EXTRACT(hour FROM status)) * 5 AS count 
                                 FROM user_online 
-                                WHERE user_id IN (749972) AND DATE(status) = '11-8-2015' GROUP BY hours, user_id ORDER BY user_id, hours";
+                                WHERE user_id IN ({$users_string}) AND DATE(status) = '{$my_date}' GROUP BY hours, user_id ORDER BY user_id, hours";
 		
 		return $this->query_to_json($count_query);
 	}
@@ -62,8 +62,6 @@ class OnlineHistoryCharts extends OnlineHistory{
 <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 <script type="text/javascript">
 
-var hours_count = new Array(24);
-var hours_counts = new Array(2);
 var categories = new Array(24);
 var my_hours_count = new Array();
 var my_series = new Array();
@@ -101,6 +99,7 @@ function graph_by_ids(){
         $myOnlineHistiry = new OnlineHistoryCharts();
 	$my_data = $myOnlineHistiry->get_activity_by_user($users);
 	$my_users = $myOnlineHistiry->get_current_users_name($users);
+	get_user_activity_by_day()
     ?>
 
     //TODO bug if one of id hasnt online minutes in hours
@@ -113,15 +112,7 @@ graph_by_ids();
 
 </script>
 
-
-<script src="http://code.highcharts.com/highcharts.src.js"></script>
-<!--<script src="http://code.highcharts.com/highcharts.js"></script>-->
-
-
-
-<?php
-//include '/home/danil/Projects/vkonline/html_js_php/start.php';
-?>
+<script src="http://code.highcharts.com/highcharts.js"></script>
 
 <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 <script type="text/javascript">
