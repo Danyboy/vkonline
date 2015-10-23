@@ -30,7 +30,7 @@ class OnlineHistoryCharts extends OnlineHistory{
 				FROM user_online 
 				WHERE user_id IN ({$users_string}) 
 				GROUP BY hours, user_id 
-				ORDER BY user_id, hours";
+				ORDER BY user_id, hours;";
 		
 		return $this->query_to_json($count_query);
 	}
@@ -44,7 +44,7 @@ class OnlineHistoryCharts extends OnlineHistory{
                                 FROM user_online
                                 WHERE user_id IN ({$users_string}) AND DATE(status) = '{$my_date}' 
                                 GROUP BY hours, user_id 
-                                ORDER BY user_id, hours";
+                                ORDER BY user_id, hours;";
 		
 		return $this->query_to_json($count_query);
 	}
@@ -61,8 +61,8 @@ class OnlineHistoryCharts extends OnlineHistory{
 <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 <script type="text/javascript">
 
-var categories = new Array(24);
-var my_hours_count = new Array();
+//var my_hours_count = new Array();
+var categories;
 
 function generate_array_for_graphs(data,names){
     var my_series = new Array();
@@ -78,29 +78,54 @@ function generate_array_for_graphs(data,names){
 	prevId = data[i-1][0];
 
 	if (currentId != prevId || i == (data.length - 1) ){
-	    my_hours_count = new Array(i - prevCounter);
-	    for (var j = 0; j < i - prevCounter; j++){
+	    var my_hours_count = new Array(24);
+	    categories = new Array(24);
+
+	    var all_empty_hours = 0;
+
+	    for (var j = 0; j <= i - prevCounter; j++){
 
 	        cur_x = parseInt(data[j + prevCounter][1], 10);
+	        
 	        if (j > 0){ //Add empty hours with 0 online minutes
 	    	    prev_x = parseInt(data[j + prevCounter - 1][1], 10);
 	        }
-	        var empty_hours = cur_x - prev_x
-	        if (empty_hours > 1){
-	    	    for (var z = 1; z < empty_hours; z++){
-			my_hours_count[j + z] = 0;
-			categories[j + z] = j + z;
-	    	    }
+	        
+	        if ( i < 23 && j == i){ //if empty last hours
+		    cur_x = 23;
+		    prev_x = j;	        
 	        }
+	        
+	        var empty_hours = cur_x - prev_x;
+	        if (empty_hours > 0){
+	    	    //for (var z = prev_x + 1; z < cur_x; z++)
+	    	    for (var z = j + all_empty_hours; z < cur_x; z++){
+			my_hours_count[z] = 0;
+			categories[z] = z + 1;
 
+			console.debug (categories[z]);
+	    	    }
+	    	    
+	    	    //j = j + empty_hours - 1;
+	        }
+	        if (all_empty_hours + empty_hours - 1 > 0){
+	    	    all_empty_hours = all_empty_hours + empty_hours - 1;
+	        }
+	        categories[j + all_empty_hours] = parseInt(data[j + prevCounter][1], 10);
+                my_hours_count[j + all_empty_hours] = parseInt(data[j + prevCounter][2], 10);
+
+                console.debug (categories[j] , j + all_empty_hours );
+	        console.debug (categories);
 	    }
+	    //console.debug (my_hours_count);
+	    console.debug (categories);
+
 	    prevCounter = i;
 	    my_series[my_series_count] = {
 			    name: names[my_series_count],
 			    data: my_hours_count
 	    	            };
 	    my_series_count++;
-	    //console.debug (my_hours_count);
 	}
     }
     
@@ -163,7 +188,9 @@ theme = 'default';
             backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
         },
         xAxis: {
-            categories: categories,
+            categories: 
+            categories,
+            //[1,2],
             title: {
                 text: 'Hours'
             }
@@ -222,19 +249,21 @@ theme = 'default';
             backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
         },
         xAxis: {
-            categories: categories,
+            categories: 
+            categories,
+            //[1,2],
             title: {
                 text: 'Hours'
             }
         },
         yAxis: {
             title: {
-                text: 'Online hours in this hour per day'
+                text: 'Online minutes in this hour per day'
             }
         },
         tooltip: {
             shared: true,
-            valueSuffix: ' hours'
+            valueSuffix: ' minutes'
         },
         credits: {
             enabled: false,
