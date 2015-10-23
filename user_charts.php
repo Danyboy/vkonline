@@ -97,7 +97,7 @@ function generate_array_for_graphs(data,names){
 	        }
 	        
 	        var empty_hours = cur_x - prev_x;
-	        if (empty_hours > 0){
+	        if (empty_hours > 1){
 	    	    //for (var z = prev_x + 1; z < cur_x; z++)
 	    	    for (var z = j + all_empty_hours; z < cur_x; z++){
 			my_hours_count[z] = 0;
