@@ -7,7 +7,7 @@ class OnlineHistoryCharts extends OnlineHistory{
 	//$myOnlineHistiry = new OnlineHistory();
 	//$myOnlineHistiry->add_users_activity();
 	
-	function get_minutes_by_ids($users){
+	function get_activity_by_user($users){
 		
 		$users_string = implode(",", $users);
 		$count_query = "SELECT user_id, EXTRACT(hour FROM status) AS hours, COUNT (EXTRACT(hour FROM status)) / 12 AS count 
@@ -17,7 +17,7 @@ class OnlineHistoryCharts extends OnlineHistory{
 		return $this->query_to_json($count_query);
 	}
 
-	function get_minutes_in_day($date){
+	function get_users_activity_by_day($date){
 		
 		$users_string = implode(",", $users);
 		$count_query = "SELECT EXTRACT(hour FROM status) AS hours, COUNT (EXTRACT(hour FROM status)) * 5 AS count 
@@ -27,7 +27,7 @@ class OnlineHistoryCharts extends OnlineHistory{
 		return $this->query_to_json($count_query);
 	}
 
-	function get_minutes_by_ids_in_day($users, $date){
+	function get_user_activity_by_day($users, $date){
 		
 		$users_string = implode(",", $users);
 		$count_query = "SELECT user_id, EXTRACT(hour FROM status) AS hours, COUNT (EXTRACT(hour FROM status)) * 5 AS count 
@@ -37,7 +37,7 @@ class OnlineHistoryCharts extends OnlineHistory{
 		return $this->query_to_json($count_query);
 	}
 
-	function get_minutes_for_all(){
+	function get_activity_for_all_users_and_dates(){
 		//Long query - collect all data
 		
 		$users_string = implode(",", $users);
@@ -99,7 +99,7 @@ function graph_by_ids(){
     <?php
 	$users = json_decode($_GET['users']);
         $myOnlineHistiry = new OnlineHistoryCharts();
-	$my_data = $myOnlineHistiry->get_minutes_by_ids($users);
+	$my_data = $myOnlineHistiry->get_activity_by_user($users);
 	$my_users = $myOnlineHistiry->get_current_users_name($users);
     ?>
 
