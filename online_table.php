@@ -123,7 +123,7 @@ class OnlineHistory
 			echo "<tr>
 			<td><a href='http://vk.com/id{$row[0]}'>
 			    <img src='{$row[1]}' alt='$row[2]'> {$row[2]}</a></td> 
-			<td><a href='./u?users=[{$row[0]},749972,42606657]'>{$row[2]} online activity charts</td>
+			<td><a href='./u?users=[{$row[0]},749972,42606657]&d={$my_date}'>{$row[2]} online activity charts</td>
 			<td>{$my_time} m</td>
 		      </tr>";
 	        }

@@ -41,7 +41,7 @@ class OnlineHistoryCharts extends OnlineHistory{
 		
 		$users_string = implode(",", $users);
 		$count_query = "SELECT user_id, EXTRACT(hour FROM status) AS hours, COUNT (EXTRACT(hour FROM status)) * 5 AS count 
-                                FROM user_online 
+                                FROM user_online
                                 WHERE user_id IN ({$users_string}) AND DATE(status) = '{$my_date}' 
                                 GROUP BY hours, user_id 
                                 ORDER BY user_id, hours";
@@ -112,8 +112,8 @@ function graph_by_ids(){
     var data_by_day = <?php echo json_encode($activity_user_by_day ) ?>;
     var data = <?php echo json_encode($activity_by_user) ?>;
     var names = <?php echo json_encode($my_users) ?>;
-    series_activity_by_user = generate_array_for_graphs(data_by_day, names);
-//    series_activity_by_user = generate_array_for_graphs(data, names);
+    series_activity_by_user = generate_array_for_graphs(data, names);
+    series_activity_user_by_day = generate_array_for_graphs(data_by_day, names);
 }
 
 graph_by_ids();
@@ -123,8 +123,9 @@ graph_by_ids();
 <script src="http://code.highcharts.com/highcharts.js"></script>
 
 <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-<script type="text/javascript">
+<div id="container_day" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 
+<script type="text/javascript">
 jQuery.noConflict();
 
 var example = 'areaspline', 
@@ -178,6 +179,66 @@ theme = 'default';
 })(jQuery);
 jQuery(document).ready(function(){jQuery("#view-menu").click(function(e){jQuery("#wrap").toggleClass("toggled")}),jQuery("#sidebar-close").click(function(e){jQuery("#wrap").removeClass("toggled")}),jQuery(document).keydown(function(e){var t;"INPUT"!=e.target.tagName&&(39==e.keyCode?t=document.getElementById("next-example"):37==e.keyCode&&(t=document.getElementById("previous-example")),t&&(location.href=t.href))}),jQuery("#switcher-selector").bind("change",function(){var e=jQuery(this).val();return e&&(window.location=e),!1})});
 </script>
+
+<?php 
+//Next chart
+?>
+
+<script type="text/javascript">
+jQuery.noConflict();
+
+var example = 'areaspline', 
+theme = 'default';
+(function($){ // encapsulate jQuery
+    $(function () {
+    $('#container_day').highcharts({
+        chart: {
+            type: 'areaspline'
+        },
+        title: {
+            text: 'Time of day by popularity'
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'left',
+            verticalAlign: 'top',
+            x: 150,
+            y: 100,
+            floating: true,
+            borderWidth: 1,
+            backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+        },
+        xAxis: {
+            categories: categories,
+            title: {
+                text: 'Hours'
+            }
+        },
+        yAxis: {
+            title: {
+                text: 'Online hours in this hour per day'
+            }
+        },
+        tooltip: {
+            shared: true,
+            valueSuffix: ' hours'
+        },
+        credits: {
+            enabled: false,
+            valueSuffix: ' hour'
+        },
+        plotOptions: {
+            areaspline: {
+                fillOpacity: 0.5
+            }
+        },
+        series: series_activity_user_by_day
+    });
+});
+})(jQuery);
+jQuery(document).ready(function(){jQuery("#view-menu").click(function(e){jQuery("#wrap").toggleClass("toggled")}),jQuery("#sidebar-close").click(function(e){jQuery("#wrap").removeClass("toggled")}),jQuery(document).keydown(function(e){var t;"INPUT"!=e.target.tagName&&(39==e.keyCode?t=document.getElementById("next-example"):37==e.keyCode&&(t=document.getElementById("previous-example")),t&&(location.href=t.href))}),jQuery("#switcher-selector").bind("change",function(){var e=jQuery(this).val();return e&&(window.location=e),!1})});
+</script>
+
 
 <?php
 include '/home/danil/Projects/vkonline/end.php';
