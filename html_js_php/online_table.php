@@ -1,14 +1,12 @@
-
 <?php 
 
 class OnlineHistory
 {
 	public $id="749972";
 	public $json;
-	private $dbhandle;
+	public $dbconn; 	//Why working if remove this?
 	private $vkapi_token='cd7781010610415dd8d3a039d5cbaedc0309b19ff19c58d3e8ab67294fa7ab85ed5d29837bedd1a05758a';
 	public $result;
-	//public $dbhandle;
 
 	function send_req($url){
 	     $ch = curl_init(); 
@@ -83,7 +81,7 @@ class OnlineHistory
 	}
 	
 	function get_user_online_minutes_by_hourse(){
-		//Temporary
+		//Temporary not used request
 		$user_online_minutes_by_hourse = "SELECT user_id, EXTRACT(hour FROM status) AS hours, COUNT (EXTRACT(hour FROM status)) * 5 AS count 
                                 FROM user_online 
                                 WHERE user_id IN (749972) AND DATE(status) = '11-9-2015' GROUP BY hours, user_id ORDER BY user_id, hours ASC;";
@@ -97,7 +95,7 @@ class OnlineHistory
 	function get_users_online_hours($my_date){
 	
 		if (DateTime::createFromFormat('d.m.y', $my_date) == FALSE){
-		    date_default_timezone_set('MSK');
+		    date_default_timezone_set('Europe/Moscow');
 		    $my_date = date("d.m.y");
 		}
 		
@@ -125,7 +123,7 @@ class OnlineHistory
 	        }
 	}
 	
-	function remove_offline_users($value){
+	function save_online_users($value){
 		if (strcmp("{$value->online}", "0") !== 0){
             	    $this->save_to_db($value);
 		}
@@ -135,131 +133,55 @@ class OnlineHistory
                 $my_name = $value->first_name . " " . $value->last_name;
 		
 	        $check_user_query = "SELECT COUNT(id) FROM users WHERE id={$value->uid};";
-	        $insert_user_query = "INSERT INTO users (id, name, link) VALUES ({$value->uid}, '{$my_name}', '{$value->photo_50}';";
+	        $insert_user_query = "INSERT INTO users (id, name, link) VALUES ({$value->uid}, '{$my_name}', '{$value->photo_50}');";
 	        $insert_date_query = "INSERT INTO user_online (user_id, status) VALUES ({$value->uid}, CURRENT_TIMESTAMP(0));";
 
                 //echo ($insert_date_query . "\n");
-                //my_query($insert_date_query);
-                
-                $is_user_exists = (strcmp($this->query_to_json($check_user_query), '[["1"]]') !== 0);
+                $is_user_exists = (strcmp($this->query_to_json($check_user_query), '[["0"]]') == 0);
             
                 if ($is_user_exists){
-            	    echo ($insert_user_query . "\n");
-                    //my_query($insert_user_query);
+            	    //echo ($insert_user_query . "\n");
+                    $myqr = $this->my_query($insert_user_query);
+		    //echo "{$myqr}";
                 }
+
+                $this->my_query($insert_date_query);
         }
+
+	function get_previous_dates($int, $my_date){
+	        date_default_timezone_set('Europe/Moscow');
+		
+		$date = isset($my_date) ? date_create_from_format('d-m-y', $my_date) : date_create_from_format('d-m-y' , date('d-m-y'));
+		date_sub($date, date_interval_create_from_date_string($int . ' days'));
+		return date_format($date, 'd-m-y');
+		//return $date;
+	}
+
+	function show_previous_dates($my_dates){
+		for ($i = 5; $i > 0; $i --){
+		    $current_date = $this->get_previous_dates($i, $my_dates);
+		    echo "<li><a href='/?d=" . $current_date . "'>" . $current_date . "</a></li>";
+		}
+	}
 	
         function add_users_activity(){
 		$json = $this->get_online();
                 $obj = json_decode($json);
                 foreach( $obj->response as $value){
-		    $this->remove_offline_users($value);
+		    $this->save_online_users($value);
                 }
 	}
 }
 
 //$myOnlineHistiry = new OnlineHistory();
-//$myOnlineHistiry->add_users_activity();
-//$myOnlineHistiry->show_today_online_users();
+//$myOnlineHistiry->get_previous_dates(5, "4-12-15");
+//$myOnlineHistiry->show_previous_dates($_GET['d']);
 
-//
+//For adding date in table run as
+//php online_table.php add_data
+if (strcmp("{$argv[1]}", "add_data") == 0){
+    $myOnlineHistiry = new OnlineHistory();
+    $myOnlineHistiry->add_users_activity();
+} 
+
 ?>
-
-
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
-
-    <title>How much your friend online in vk</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="../../dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="dashboard.css" rel="stylesheet">
-
-    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
-    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-    <script src="../../assets/js/ie-emulation-modes-warning.js"></script>
-
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-  </head>
-
-  <body>
-
-    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="/">VKonline</a>
-        </div>
-       <nav id="bs-navbar" class="collapse navbar-collapse">
-      <ul class="nav navbar-nav">
-      
-      
-      
-        <li>
-          <a href="http://vk.pr.etersoft.ru/all/13.10.15.html">13.10.15</a>
-        </li>
-      </ul>
-    </nav>
-
-      </div>
-    </div>
-    <div class="container-fluid">
-      <div class="row">
-          <h2 class="sub-header">
-          <?php  date_default_timezone_set('UTC'); echo date("d.m.y"); ?>
-          
-          </h2>
-          <div class="table-responsive">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th>User</th>
-                  <th>Charts user online activity</th>
-                  <th>Time on vk</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-    
-<?php 
-$myOnlineHistiry = new OnlineHistory();
-$myOnlineHistiry->show_today_online_users($_GET['d']);
-?>
-
-</tr>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="../../dist/js/bootstrap.min.js"></script>
-    <script src="../../assets/js/docs.min.js"></script>
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
-  </body>
-</html>
