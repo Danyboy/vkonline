@@ -10,8 +10,7 @@ class OnlineHistoryCharts extends OnlineHistory{
                                 WHERE DATE(status) = '11-8-2015' GROUP BY hours ORDER BY hours;";
 		
 		return $this->query_to_json($count_query);
-	}
-	
+	}	
 
 	function get_activity_for_all_users_and_dates(){
 		//Long query - collect all data
@@ -36,7 +35,7 @@ class OnlineHistoryCharts extends OnlineHistory{
 
 	function get_user_activity_by_day($users, $my_date){
 	
-		$my_date = get_correct_date($my_date);		
+		$my_date = $this->get_correct_date($my_date);		
 		
 		$users_string = implode(",", $users);
 		$count_query = "SELECT user_id, EXTRACT(hour FROM status) AS hours, COUNT (EXTRACT(hour FROM status)) * 5 AS count 
@@ -60,13 +59,14 @@ class OnlineHistoryCharts extends OnlineHistory{
 
 var categories = new Array(24);
 var my_hours_count = new Array();
-var my_series = new Array();
 
 function generate_array_for_graphs(data,names){
+    var my_series = new Array();
     data = JSON.parse(data);
     names = JSON.parse(names);
-    my_series_count = 0;
-    prevCounter = 0;
+    my_series_count = 0; //Number of current user
+    prevCounter = 0; //Array number where starts new user
+
     for(var i = 1 ; i < data.length ; i++) {
 	currentId = data[i][0];
 	prevId = data[i-1][0];
@@ -86,22 +86,30 @@ function generate_array_for_graphs(data,names){
 	    //console.debug (my_hours_count);
 	}
     }
+    
+    return my_series;
 }
 
+var series_activity_by_user = new Array();
+var series_activity_user_by_day = new Array();
 
 function graph_by_ids(){
     <?php
 	$users = json_decode($_GET['users']);
+	$my_date = json_decode($_GET['d']);
         $myOnlineHistiry = new OnlineHistoryCharts();
-	$my_data = $myOnlineHistiry->get_activity_by_user($users);
+
 	$my_users = $myOnlineHistiry->get_current_users_name($users);
-	get_user_activity_by_day()
+	$activity_by_user = $myOnlineHistiry->get_activity_by_user($users);
+//	$activity_user_by_day = $myOnlineHistiry->get_user_activity_by_day($users, $my_date)
     ?>
 
     //TODO bug if one of id hasnt online minutes in hours
-    var data = <?php echo json_encode($my_data) ?>;
+    var data_by_day = <?php echo json_encode($activity_user_by_day ) ?>;
+    var data = <?php echo json_encode($activity_by_user) ?>;
     var names = <?php echo json_encode($my_users) ?>;
-    generate_array_for_graphs(data, names);
+//    series_activity_by_user = generate_array_for_graphs(data_by_day, names);
+    series_activity_by_user = generate_array_for_graphs(data, names);
 }
 
 graph_by_ids();
@@ -160,7 +168,7 @@ theme = 'default';
                 fillOpacity: 0.5
             }
         },
-        series: my_series
+        series: series_activity_by_user
     });
 });
 })(jQuery);
