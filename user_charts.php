@@ -70,6 +70,8 @@ function generate_array_for_graphs(data,names){
     names = JSON.parse(names);
     my_series_count = 0; //Number of current user
     prevCounter = 0; //Array number where starts new user
+    var prev_x = 0;
+    var cur_x = 0;
 
     for(var i = 1 ; i < data.length ; i++) {
 	currentId = data[i][0];
@@ -78,8 +80,19 @@ function generate_array_for_graphs(data,names){
 	if (currentId != prevId || i == (data.length - 1) ){
 	    my_hours_count = new Array(i - prevCounter);
 	    for (var j = 0; j < i - prevCounter; j++){
-	        categories[j] = parseInt(data[j + prevCounter][1], 10);
-		my_hours_count[j] = parseInt(data[j + prevCounter][2], 10);
+
+	        cur_x = parseInt(data[j + prevCounter][1], 10);
+	        if (j > 0){ //Add empty hours with 0 online minutes
+	    	    prev_x = parseInt(data[j + prevCounter - 1][1], 10);
+	        }
+	        var empty_hours = cur_x - prev_x
+	        if (empty_hours > 1){
+	    	    for (var z = 1; z < empty_hours; z++){
+			my_hours_count[j + z] = 0;
+			categories[j + z] = j + z;
+	    	    }
+	        }
+
 	    }
 	    prevCounter = i;
 	    my_series[my_series_count] = {
