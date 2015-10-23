@@ -63,6 +63,10 @@
     <div class="container-fluid">
       <div class="row">
           <h2 class="sub-header">
-          <?php  date_default_timezone_set('UTC'); echo date("d.m.y"); ?>
+            <?php  
+	    date_default_timezone_set('Europe/Moscow');
+	    $my_date = isset($_GET['d']) ? $_GET['d'] : date('d-m-y');
+	    echo $my_date;
+	     ?>
           
           </h2>

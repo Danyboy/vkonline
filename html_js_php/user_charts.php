@@ -1,5 +1,6 @@
 <?php 
-include '/home/danil/Projects/vkonline/html_js_php/online_table.php';
+//include '/home/danil/Projects/vkonline/html_js_php/online_table.php';
+include '/home/danil/Projects/vkonline/html_js_php/start.php';
 
 class OnlineHistoryCharts extends OnlineHistory{
 	
@@ -87,7 +88,7 @@ graph_by_ids();
 
 
 <?php
-include '/home/danil/Projects/vkonline/html_js_php/start.php';
+//include '/home/danil/Projects/vkonline/html_js_php/start.php';
 ?>
 
 <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
