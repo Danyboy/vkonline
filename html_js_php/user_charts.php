@@ -3,49 +3,13 @@
 
 
 <?php 
-//include './real_index.php';
+include './online_table.php';
 
-class OnlineHistoryCharts
-{
-	function connect(){	
-		$username = "root";
-		$password = "***REMOVED***";
-		$hostname = "localhost"; 
-		$my_db = "vk";
-
-		//connection to the database
-		$this->dbconn = pg_connect("dbname=vk user=root password=***REMOVED***")
-		  or die("Unable to connect to PostgreSQL");
-		//echo "Connected to PostgreSQL<br>";
-
-		//$selected = mysql_select_db($my_db,$this->dbhandle) 
-		  //or die("Could not select examples");
-	}
+class OnlineHistoryCharts extends OnlineHistory{
 	
-	function my_query($query){
-		$this->connect();
-		$this->result = pg_query($this->dbconn, "$query");
-		if (!$this->result) {
-		  echo "Произошла ошибка.\n";
-		  exit;
-		}
-		//echo "$this->result";
-		
-
-	}
+	//$myOnlineHistiry = new OnlineHistory();
+	//$myOnlineHistiry->add_users_activity();
 	
-	function query_to_json($query){
-		$this->my_query($query);
-		$myarray = array();
-		while ($row = pg_fetch_row($this->result)) {
-		    $myarray[] = $row;
-		}
-
-		$json = json_encode($myarray);
-//		echo "$json";
-		return $json;
-	}
-
 	function get_minutes_by_ids($users){
 		
 		$users_string = implode(",", $users);
