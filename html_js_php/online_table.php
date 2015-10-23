@@ -92,14 +92,19 @@ class OnlineHistory
 		return $this->query_to_json($user_online_minutes_by_hourse);;
 	}
 	
-	function get_users_online_hours($my_date){
-	
+	function get_correct_date($my_date){
 		if (DateTime::createFromFormat('d.m.y', $my_date) == FALSE){
 		    date_default_timezone_set('Europe/Moscow');
 		    $my_date = date("d.m.y");
 		}
 		
-		//TODO change DATE
+		return $my_date;	
+	}
+	
+	function get_users_online_hours($my_date){
+	
+		$my_date = $this->get_correct_date($my_date);
+		
 		$count_query_without_data = "SELECT user_id, COUNT (EXTRACT(hour FROM status)) * 5 AS count 
                                 FROM user_online 
                                 WHERE DATE(status) = '11-9-2015' GROUP BY user_id;";
@@ -150,12 +155,10 @@ class OnlineHistory
         }
 
 	function get_previous_dates($int, $my_date){
-	        date_default_timezone_set('Europe/Moscow');
-		
-		$date = isset($my_date) ? date_create_from_format('d.m.y', $my_date) : date_create_from_format('d.m.y' , date('d.m.y'));
+		$date = date_create_from_format('d.m.y', $this->get_correct_date($my_date));
 		date_sub($date, date_interval_create_from_date_string($int . ' days'));
+
 		return date_format($date, 'd.m.y');
-		//return $date;
 	}
 
 	function show_previous_dates($my_dates){
