@@ -3,24 +3,33 @@ include '/home/danil/Projects/vkonline/html_js_php/start.php';
 
 class OnlineHistoryCharts extends OnlineHistory{
 	
-	//$myOnlineHistiry = new OnlineHistory();
-	//$myOnlineHistiry->add_users_activity();
+	function get_all_users_activity_by_day($my_date){
+		
+		$count_query = "SELECT EXTRACT(hour FROM status) AS hours, COUNT (EXTRACT(hour FROM status)) * 5 AS count 
+                                FROM user_online 
+                                WHERE DATE(status) = '11-8-2015' GROUP BY hours ORDER BY hours;";
+		
+		return $this->query_to_json($count_query);
+	}
 	
+
+	function get_activity_for_all_users_and_dates(){
+		//Long query - collect all data
+		
+		$users_string = implode(",", $users);
+		$count_query = "SELECT EXTRACT(hour FROM status) AS hours, COUNT (EXTRACT(hour FROM status)) * 5 AS count 
+                                FROM user_online 
+                                GROUP BY hours ORDER BY hours;";
+		
+		return $this->query_to_json($count_query);
+	}
+
 	function get_activity_by_user($users){
 		
 		$users_string = implode(",", $users);
 		$count_query = "SELECT user_id, EXTRACT(hour FROM status) AS hours, COUNT (EXTRACT(hour FROM status)) / 12 AS count 
 				FROM user_online 
 				WHERE user_id IN ({$users_string}) GROUP BY hours, user_id ORDER BY user_id, hours";
-		
-		return $this->query_to_json($count_query);
-	}
-
-	function get_all_users_activity_by_day($my_date){
-		
-		$count_query = "SELECT EXTRACT(hour FROM status) AS hours, COUNT (EXTRACT(hour FROM status)) * 5 AS count 
-                                FROM user_online 
-                                WHERE DATE(status) = '11-8-2015' GROUP BY hours ORDER BY hours;";
 		
 		return $this->query_to_json($count_query);
 	}
@@ -36,25 +45,12 @@ class OnlineHistoryCharts extends OnlineHistory{
 		
 		return $this->query_to_json($count_query);
 	}
-
-	function get_activity_for_all_users_and_dates(){
-		//Long query - collect all data
-		
-		$users_string = implode(",", $users);
-		$count_query = "SELECT EXTRACT(hour FROM status) AS hours, COUNT (EXTRACT(hour FROM status)) * 5 AS count 
-                                FROM user_online 
-                                GROUP BY hours ORDER BY hours;";
-		
-		return $this->query_to_json($count_query);
-	}
-	
 	
 	function get_current_users_name($users){
 		$users_string = implode(",", $users);
 		$count_query = "SELECT name FROM users WHERE id IN ({$users_string}) ORDER BY id;";
 		return $this->query_to_json($count_query);
 	}
-
 }
 
 ?>
