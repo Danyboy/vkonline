@@ -38,7 +38,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">VKonline</a>
+          <a class="navbar-brand" href="/">VKonline</a>
         </div>
        <nav id="bs-navbar" class="collapse navbar-collapse">
       <ul class="nav navbar-nav">
