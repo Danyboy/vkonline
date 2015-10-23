@@ -12,10 +12,42 @@ class OnlineHistoryCharts extends OnlineHistory{
 		$users_string = implode(",", $users);
 		$count_query = "SELECT user_id, EXTRACT(hour FROM status) AS hours, COUNT (EXTRACT(hour FROM status)) / 12 AS count 
 				FROM user_online 
-				WHERE user_id IN ({$users_string}) GROUP BY hours, user_id ORDER BY user_id, hours ASC";
+				WHERE user_id IN ({$users_string}) GROUP BY hours, user_id ORDER BY user_id, hours";
 		
 		return $this->query_to_json($count_query);
 	}
+
+	function get_minutes_in_day($date){
+		
+		$users_string = implode(",", $users);
+		$count_query = "SELECT EXTRACT(hour FROM status) AS hours, COUNT (EXTRACT(hour FROM status)) * 5 AS count 
+                                FROM user_online 
+                                WHERE DATE(status) = '11-8-2015' GROUP BY hours ORDER BY hours;";
+		
+		return $this->query_to_json($count_query);
+	}
+
+	function get_minutes_by_ids_in_day($users, $date){
+		
+		$users_string = implode(",", $users);
+		$count_query = "SELECT user_id, EXTRACT(hour FROM status) AS hours, COUNT (EXTRACT(hour FROM status)) * 5 AS count 
+                                FROM user_online 
+                                WHERE user_id IN (749972) AND DATE(status) = '11-8-2015' GROUP BY hours, user_id ORDER BY user_id, hours";
+		
+		return $this->query_to_json($count_query);
+	}
+
+	function get_minutes_for_all(){
+		//Long query - collect all data
+		
+		$users_string = implode(",", $users);
+		$count_query = "SELECT EXTRACT(hour FROM status) AS hours, COUNT (EXTRACT(hour FROM status)) * 5 AS count 
+                                FROM user_online 
+                                GROUP BY hours ORDER BY hours;";
+		
+		return $this->query_to_json($count_query);
+	}
+	
 	
 	function get_current_users_name($users){
 		$users_string = implode(",", $users);
