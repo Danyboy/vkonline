@@ -7,7 +7,7 @@ include '/home/danil/Projects/vkonline/start.php';
     <div class="jumbotron">
       <div class="container">
         <p> Привет! Здесь можно узнать сколько времени вы провели онлайн вконтакет <?php echo $myOnlineHistiry->get_correct_date($_GET['d']); ?> или в любую другую дату.
-            Есть поминутная статистика и красивые <a href="u?users=[339229,749972,42606657]&d=">графики</a>. </p>
+            Есть поминутная статистика и <a href="u?users=[339229,749972,42606657]&d=">красочные графики</a>. </p>
       </div>
     </div>
     <div class="container-fluid">
