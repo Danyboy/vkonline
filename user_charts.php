@@ -66,70 +66,82 @@ var categories;
 
 function generate_array_for_graphs(data,names){
     var my_series = new Array();
+    categories = new Array(24);
+    my_hours_count = new Array(24);
     data = JSON.parse(data);
     names = JSON.parse(names);
     my_series_count = 0; //Number of current user
     prevCounter = 0; //Array number where starts new user
-    var prev_x = 0;
-    var cur_x = 0;
 
-    for(var i = 1 ; i < data.length ; i++) {
-	currentId = data[i][0];
-	prevId = data[i-1][0];
+    for(var i = 0; i < data.length - 1; i++) {
+        current_id = data[i][0];
+        next_id = data[i + 1][0];
 
-	if (currentId != prevId || i == (data.length - 1) ){
-	    var my_hours_count = new Array(24);
+
+        if (current_id == next_id){
+    	    categories[i - prevCounter] = parseInt(data[i][1], 10);
+	    my_hours_count[i - prevCounter] = parseInt(data[i][2], 10);
+
+	    categories[i + 1 - prevCounter] = parseInt(data[i + 1][1], 10);
+	    my_hours_count[i + 1 - prevCounter] = parseInt(data[i + 1][2], 10);
+        } else {
+    	    my_hours_count = remove_empty_hourse(categories,my_hours_count);
+        
+    	    my_series[my_series_count] = {
+	        name: names[my_series_count],
+	        data: my_hours_count
+    	    };
+
+            my_series_count++;
 	    categories = new Array(24);
+	    my_hours_count = new Array(24);
+	    prevCounter = i + 1;
+	    categories[i + 1 - prevCounter] = parseInt(data[i + 1][1], 10);
+	    my_hours_count[i + 1 - prevCounter] = parseInt(data[i + 1][2], 10);
+        }
 
-	    var all_empty_hours = 0;
-
-	    for (var j = 0; j <= i - prevCounter; j++){
-
-	        cur_x = parseInt(data[j + prevCounter][1], 10);
-	        
-	        if (j > 0){ //Add empty hours with 0 online minutes
-	    	    prev_x = parseInt(data[j + prevCounter - 1][1], 10);
-	        }
-	        
-	        if ( i < 23 && j == i){ //if empty last hours
-		    cur_x = 23;
-		    prev_x = j;	        
-	        }
-	        
-	        var empty_hours = cur_x - prev_x;
-	        if (empty_hours > 1){
-	    	    //for (var z = prev_x + 1; z < cur_x; z++)
-	    	    for (var z = j + all_empty_hours; z < cur_x; z++){
-			my_hours_count[z] = 0;
-			categories[z] = z + 1;
-
-			console.debug (categories[z]);
-	    	    }
-	    	    
-	    	    //j = j + empty_hours - 1;
-	        }
-	        if (all_empty_hours + empty_hours - 1 > 0){
-	    	    all_empty_hours = all_empty_hours + empty_hours - 1;
-	        }
-	        categories[j + all_empty_hours] = parseInt(data[j + prevCounter][1], 10);
-                my_hours_count[j + all_empty_hours] = parseInt(data[j + prevCounter][2], 10);
-
-                console.debug (categories[j] , j + all_empty_hours );
-	        console.debug (categories);
-	    }
-	    //console.debug (my_hours_count);
-	    console.debug (categories);
-
-	    prevCounter = i;
-	    my_series[my_series_count] = {
-			    name: names[my_series_count],
-			    data: my_hours_count
-	    	            };
-	    my_series_count++;
-	}
+        console.debug (my_hours_count);
+	console.debug (categories);
+	
     }
+
+    my_hours_count = remove_empty_hourse(categories,my_hours_count);
+    
+    my_series[my_series_count] = {
+	name: names[my_series_count],
+	data: my_hours_count
+    };
     
     return my_series;
+}
+
+
+function remove_empty_hourse(hours,data){
+    console.debug ("empty");    
+    console.debug (hours);
+    console.debug (data);
+
+    rhours = new Array(24);
+    rdata = new Array(24);
+    for (i = 0; i < 24; i++){
+	rhours[i] = i;
+	for (j = 0; j < hours.length; j++){
+	    if (hours[j] == i){
+		rdata[i] = data[j];
+		continue;
+	    } else if (typeof rdata[i] === 'undefined'){
+		rhours[i] = i;
+		rdata[i] = 0;
+	    }
+	}
+    }
+    categories = rhours;
+
+        console.debug (rdata);
+	console.debug (categories);
+
+    
+    return rdata;    
 }
 
 var series_activity_by_user = new Array();

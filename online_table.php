@@ -93,8 +93,8 @@ class OnlineHistory
 	}
 	
 	function get_correct_date($my_date){
+		date_default_timezone_set('Europe/Moscow');
 		if (DateTime::createFromFormat('d.m.y', $my_date) == FALSE){
-		    date_default_timezone_set('Europe/Moscow');
 		    $my_date = date("d.m.y");
 		}
 		
