@@ -3,7 +3,7 @@
               <thead>
                 <tr>
                   <th>User</th>
-                    <th>Charts user online activity</th>
+                    <th>Charts of user online activity</th>
                   <th>Hourse online on vk</th>
                 </tr>
               </thead>
