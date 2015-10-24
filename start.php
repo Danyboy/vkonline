@@ -38,9 +38,6 @@
         </div>
        <nav id="bs-navbar" class="collapse navbar-collapse">
       <ul class="nav navbar-nav">
-      
-      
-      
         <li>
 	    <?php
 	    include '/home/danil/Projects/vkonline/online_table.php';
@@ -49,20 +46,10 @@
 	    $myOnlineHistiry->show_previous_dates($_GET['d']);
 	    ?>
 
-          <!--<a href="http://vk.pr.etersoft.ru/all/13.10.15.html">13.10.15</a>-->
         </li>
       </ul>
-    </nav>
+        </nav>
+
 
       </div>
     </div>
-    <div class="container-fluid">
-      <div class="row">
-          <h2 class="sub-header">
-            <?php  
-	    date_default_timezone_set('Europe/Moscow');
-	    $my_date = isset($_GET['d']) ? $_GET['d'] : date('d-m-y');
-	    echo $my_date;
-	     ?>
-          
-          </h2>

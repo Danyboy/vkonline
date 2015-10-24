@@ -99,10 +99,6 @@ function generate_array_for_graphs(data,names){
 	    categories[i + 1 - prevCounter] = parseInt(data[i + 1][1], 10);
 	    my_hours_count[i + 1 - prevCounter] = parseInt(data[i + 1][2], 10);
         }
-
-        console.debug (my_hours_count);
-	console.debug (categories);
-	
     }
 
     my_hours_count = remove_empty_hourse(categories,my_hours_count);
@@ -117,10 +113,6 @@ function generate_array_for_graphs(data,names){
 
 
 function remove_empty_hourse(hours,data){
-    console.debug ("empty");    
-    console.debug (hours);
-    console.debug (data);
-
     rhours = new Array(24);
     rdata = new Array(24);
     for (i = 0; i < 24; i++){
@@ -136,10 +128,6 @@ function remove_empty_hourse(hours,data){
 	}
     }
     categories = rhours;
-
-        console.debug (rdata);
-	console.debug (categories);
-
     
     return rdata;    
 }
@@ -150,7 +138,7 @@ var series_activity_user_by_day = new Array();
 function graph_by_ids(){
     <?php
 	$users = json_decode($_GET['users']);
-	$my_date = json_decode($_GET['d']);
+	$my_date = $_GET['d'];
         $myOnlineHistiry = new OnlineHistoryCharts();
 
 	$my_users = $myOnlineHistiry->get_current_users_name($users);

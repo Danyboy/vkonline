@@ -92,15 +92,6 @@ class OnlineHistory
 		return $this->query_to_json($user_online_minutes_by_hourse);;
 	}
 	
-	function get_correct_date($my_date){
-		date_default_timezone_set('Europe/Moscow');
-		if (DateTime::createFromFormat('d.m.y', $my_date) == FALSE){
-		    $my_date = date("d.m.y");
-		}
-		
-		return $my_date;	
-	}
-	
 	function get_users_online_hours($my_date){
 	
 		$my_date = $this->get_correct_date($my_date);
@@ -123,7 +114,8 @@ class OnlineHistory
 			echo "<tr>
 			<td><a href='http://vk.com/id{$row[0]}'>
 			    <img src='{$row[1]}' alt='$row[2]'> {$row[2]}</a></td> 
-			<td><a href='./u?users=[{$row[0]},749972,42606657]&d={$my_date}'>{$row[2]} online activity charts</td>
+			<td><a href='./u?users=[{$row[0]},749972,42606657]&d={$my_date}'>
+			    <img src='Chart-icon.png' alt='$row[2]'></td>
 			<td>{$my_time} m</td>
 		      </tr>";
 	        }
@@ -154,6 +146,15 @@ class OnlineHistory
                 $this->my_query($insert_date_query);
         }
 
+	function get_correct_date($my_date){
+		date_default_timezone_set('Europe/Moscow');
+		if (DateTime::createFromFormat('d.m.y', $my_date) == FALSE){
+		    $my_date = date("d.m.y");
+		}
+		
+		return $my_date;	
+	}
+	
 	function get_previous_dates($int, $my_date){
 		$date = date_create_from_format('d.m.y', $this->get_correct_date($my_date));
 		date_sub($date, date_interval_create_from_date_string($int . ' days'));
