@@ -1,0 +1,21 @@
+#!/bin/bash
+
+create_html(){
+    index_file="$2"
+    cat index.html_start > $index_file
+    while read n uid online name family photo ; do
+        echo "<tr> <td><a href='http://vk.com/id$uid'><img src="$photo" alt="$name $family"> $name $family</a></td> <td>$(($n*5)) m</td></tr>" >> $index_file
+    done < $1
+    cat index.html_end >> $index_file
+
+}
+
+#create_html "$day_file" "index.html"
+
+find ./history/ -type f -iname "day_history" -print0 | while IFS= read -r -d $'\0' line; do
+    #basename $(dirname "$line")
+    create_html $line "./history/all/$(basename $(dirname "$line")).html"
+done
+
+
+#json-
