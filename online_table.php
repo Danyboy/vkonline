@@ -162,10 +162,12 @@ class OnlineHistory
 		return date_format($date, 'd.m.y');
 	}
 
-	function show_previous_dates($my_dates){
+	function show_previous_dates($my_date){
 		for ($i = 5; $i > 0; $i --){
-		    $current_date = $this->get_previous_dates($i, $my_dates);
-		    echo "<li><a href='/?d=" . $current_date . "'>" . $current_date . "</a></li>";
+		    $current_date = $this->get_previous_dates($i, $my_date);
+		    $current_url = preg_replace("/&d=.*/", '', $_SERVER['REQUEST_URI']);
+		    $my_link = preg_match("/\?/",$current_url) ? $current_url . "&d=" . $current_date : $current_url . "?&d=" . $current_date ;
+		    echo "<li><a href='{$my_link}'>" . $current_date . "</a></li>";
 		}
 	}
 	

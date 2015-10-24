@@ -2,9 +2,9 @@
             <table class="table table-striped">
               <thead>
                 <tr>
-                  <th>User</th>
-                    <th>Charts of user online activity</th>
-                  <th>Hourse online on vk</th>
+                  <th>Пользователь</th>
+            	    <th>Красочные графики</th>
+                  <th>Сколько часов онлайн сегодня</th>
                 </tr>
               </thead>
               <tbody>

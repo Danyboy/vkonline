@@ -160,9 +160,10 @@ graph_by_ids();
 
 <script src="http://code.highcharts.com/highcharts.js"></script>
 
+<div>
 <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 <div id="container_day" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-
+</div>
 <script type="text/javascript">
 jQuery.noConflict();
 
@@ -175,7 +176,7 @@ theme = 'default';
             type: 'areaspline'
         },
         title: {
-            text: 'Hours of day by popularity'
+            text: 'Когда и сколько вы были онлайн за этот год'
         },
         legend: {
             layout: 'vertical',
@@ -192,21 +193,20 @@ theme = 'default';
             categories,
             //[1,2],
             title: {
-                text: 'Hours'
+                text: 'Время дня'
             }
         },
         yAxis: {
             title: {
-                text: 'Online hours in this hour per year'
+                text: 'Часов онлайн'
             }
         },
         tooltip: {
             shared: true,
-            valueSuffix: ' hours'
+            valueSuffix: ' часов'
         },
         credits: {
             enabled: false,
-            valueSuffix: ' hour'
         },
         plotOptions: {
             areaspline: {
@@ -236,7 +236,7 @@ theme = 'default';
             type: 'areaspline'
         },
         title: {
-            text: 'Time of day by popularity'
+            text: 'Когда и сколько вы были онлайн за <?php echo $myOnlineHistiry->get_correct_date($_GET['d']); ?>'
         },
         legend: {
             layout: 'vertical',
@@ -253,21 +253,20 @@ theme = 'default';
             categories,
             //[1,2],
             title: {
-                text: 'Hours'
+                text: 'Время дня'
             }
         },
         yAxis: {
             title: {
-                text: 'Online minutes in this hour per day'
+                text: 'Минут онлайн'
             }
         },
         tooltip: {
             shared: true,
-            valueSuffix: ' minutes'
+            valueSuffix: ' минут'
         },
         credits: {
             enabled: false,
-            valueSuffix: ' hour'
         },
         plotOptions: {
             areaspline: {
