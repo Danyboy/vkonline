@@ -108,6 +108,10 @@ class OnlineHistory
 		return $this->query_to_json($count_query);
 	}
 	
+	function show_today_online_user($my_date){
+	    
+	}	
+	
 	function show_today_online_users($my_date){
 		foreach (json_decode($this->get_users_online_hours($my_date)) as $row) {
 		    $my_time = date('H:i', mktime(0,$row[3]));
