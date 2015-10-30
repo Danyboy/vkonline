@@ -23,6 +23,23 @@ class OnlineHistoryCharts extends OnlineHistory{
 		return $this->query_to_json($count_query);
 	}
 
+	function get_activity_days_by_users($users){
+		
+		$users_string = implode(",", $users);
+		$count_query = "Select user_id, Count(*)
+				From (
+				SELECT user_id, status::timestamp::date AS day
+                                FROM user_online 
+                                WHERE user_id IN ({$users_string}) 
+                                GROUP BY day, user_id 
+                                ORDER BY day, user_id) 
+                                AS mycount
+                                GROUP BY user_id
+				ORDER BY user_id;";
+		
+		return $this->query_to_json($count_query);
+	}
+
 	function get_activity_by_user($users){
 		
 		$users_string = implode(",", $users);
@@ -93,6 +110,7 @@ function generate_array_for_graphs(data,names){
     	    };
 
             my_series_count++;
+
 	    categories = new Array(24);
 	    my_hours_count = new Array(24);
 	    prevCounter = i + 1;
@@ -109,6 +127,23 @@ function generate_array_for_graphs(data,names){
     };
     
     return my_series;
+}
+
+function save_cleared_series(){
+//TODO remove copies in generate_array_for_graphs
+    my_hours_count = remove_empty_hourse(categories,my_hours_count);
+    
+    my_series[my_series_count] = {
+        name: names[my_series_count],
+        data: my_hours_count
+    };
+}
+
+function normilise_hours(data,days,id){
+    for(var i = 0; i < data.length - 1; i++) {
+	data[i][2] = days[id][1];
+    }
+    return data;
 }
 
 
@@ -132,6 +167,7 @@ function remove_empty_hourse(hours,data){
     return rdata;    
 }
 
+
 var series_activity_by_user = new Array();
 var series_activity_user_by_day = new Array();
 
@@ -143,13 +179,15 @@ function graph_by_ids(){
 
 	$my_users = $myOnlineHistiry->get_current_users_name($users);
 	$activity_by_user = $myOnlineHistiry->get_activity_by_user($users);
-	$activity_user_by_day = $myOnlineHistiry->get_user_activity_by_day($users, $my_date)
+	$activity_user_by_day = $myOnlineHistiry->get_user_activity_by_day($users, $my_date);
+	$activity_days_by_users = $myOnlineHistiry->get_activity_days_by_users($users);
     ?>
 
-    //TODO bug if one of id hasnt online minutes in hours
     var data_by_day = <?php echo json_encode($activity_user_by_day ) ?>;
     var data = <?php echo json_encode($activity_by_user) ?>;
+    //TODO bug if sorting id in data and names is different 
     var names = <?php echo json_encode($my_users) ?>;
+    var days = <?php echo json_encode($activity_days_by_users ) ?>;
     series_activity_by_user = generate_array_for_graphs(data, names);
     series_activity_user_by_day = generate_array_for_graphs(data_by_day, names);
 }
