@@ -79,17 +79,18 @@ class OnlineHistoryCharts extends OnlineHistory{
 <script type="text/javascript">
 
 var my_series = new Array();
-var my_series_count;
-var my_hours_count = new Array();
-var categories;
+var my_hours_count = new Array(24);
+var categories = new Array(24);
 var names = new Array();
+var my_series_count = 0;
+var days = new Array();
 
-function generate_array_for_graphs(data,names){
-    my_series = new Array();
-    categories = new Array(24);
+function generate_array_for_graphs(data,php_names){
     my_hours_count = new Array(24);
+    categories = new Array(24);
+    my_series = new Array();
     data = JSON.parse(data);
-    names = JSON.parse(names);
+    names = JSON.parse(php_names);
     my_series_count = 0; //Number of current user
     prevCounter = 0; //Array number where starts new user
 
@@ -104,8 +105,7 @@ function generate_array_for_graphs(data,names){
 	    categories[i + 1 - prevCounter] = parseInt(data[i + 1][1], 10);
 	    my_hours_count[i + 1 - prevCounter] = parseInt(data[i + 1][2], 10);
         } else {
-	    save_cleared_series();
-    	    
+	    save_cleared_series();    	    
             my_series_count++;
 
 	    categories = new Array(24);
@@ -116,12 +116,20 @@ function generate_array_for_graphs(data,names){
         }
     }
     save_cleared_series();
+    my_series[my_series_count] = {
+        name: names[my_series_count],
+        data: my_hours_count
+    };
 
     return my_series;
 }
 
 function save_cleared_series(){
     my_hours_count = remove_empty_hourse(categories,my_hours_count);
+    //my_hours_count = normalise_hours(remove_empty_hourse(categories,my_hours_count),days,my_series_count);
+    
+    console.log(names);
+    console.log(my_series_count);
     
     my_series[my_series_count] = {
         name: names[my_series_count],
@@ -131,7 +139,7 @@ function save_cleared_series(){
 
 function normalise_hours(data,days,id){
     for(var i = 0; i < data.length - 1; i++) {
-	data[i][2] = data[i][2] / days[id][1];
+	data[i] = data[i] / days[id][1];
     }
     return data;
 }
@@ -176,7 +184,7 @@ function graph_by_ids(){
     var data = <?php echo json_encode($activity_by_user) ?>;
     //TODO bug if sorting id in data and names is different 
     var names = <?php echo json_encode($my_users) ?>;
-    var days = <?php echo json_encode($activity_days_by_users ) ?>;
+    days = <?php echo json_encode($activity_days_by_users ) ?>;
     series_activity_by_user = generate_array_for_graphs(data, names);
     series_activity_user_by_day = generate_array_for_graphs(data_by_day, names);
 }
