@@ -82,7 +82,7 @@ var my_series = new Array();
 var my_series_count;
 var my_hours_count = new Array();
 var categories;
-var names;
+var names = new Array();
 
 function generate_array_for_graphs(data,names){
     my_series = new Array();
@@ -97,7 +97,6 @@ function generate_array_for_graphs(data,names){
         current_id = data[i][0];
         next_id = data[i + 1][0];
 
-
         if (current_id == next_id){
     	    categories[i - prevCounter] = parseInt(data[i][1], 10);
 	    my_hours_count[i - prevCounter] = parseInt(data[i][2], 10);
@@ -105,13 +104,8 @@ function generate_array_for_graphs(data,names){
 	    categories[i + 1 - prevCounter] = parseInt(data[i + 1][1], 10);
 	    my_hours_count[i + 1 - prevCounter] = parseInt(data[i + 1][2], 10);
         } else {
-    	    my_hours_count = remove_empty_hourse(categories,my_hours_count);
-        
-    	    my_series[my_series_count] = {
-	        name: names[my_series_count],
-	        data: my_hours_count
-    	    };
-
+	    save_cleared_series();
+    	    
             my_series_count++;
 
 	    categories = new Array(24);
@@ -121,19 +115,12 @@ function generate_array_for_graphs(data,names){
 	    my_hours_count[i + 1 - prevCounter] = parseInt(data[i + 1][2], 10);
         }
     }
+    save_cleared_series();
 
-    my_hours_count = remove_empty_hourse(categories,my_hours_count);
-    
-    my_series[my_series_count] = {
-	name: names[my_series_count],
-	data: my_hours_count
-    };
-    
     return my_series;
 }
 
 function save_cleared_series(){
-    //TODO remove copies in generate_array_for_graphs
     my_hours_count = remove_empty_hourse(categories,my_hours_count);
     
     my_series[my_series_count] = {
@@ -148,7 +135,6 @@ function normalise_hours(data,days,id){
     }
     return data;
 }
-
 
 function remove_empty_hourse(hours,data){
     rhours = new Array(24);
