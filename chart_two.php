@@ -10,7 +10,7 @@ theme = 'default';
             type: 'areaspline'
         },
         title: {
-            text: 'Когда и сколько вы были онлайн за <?php echo $myOnlineHistiry->get_correct_date($_GET['d']); ?>'
+            text: 'Сколько часов вы были онлайн с 12.12.14 по <?php echo $myOnlineHistiry->get_correct_date($_GET['d']); ?>'
         },
         legend: {
             layout: 'vertical',
@@ -27,17 +27,17 @@ theme = 'default';
             categories,
             //[1,2],
             title: {
-                text: 'Время дня'
+                text: 'День'
             }
         },
         yAxis: {
             title: {
-                text: 'Минут онлайн'
+                text: 'Часов онлайн'
             }
         },
         tooltip: {
             shared: true,
-            valueSuffix: ' минут'
+            valueSuffix: ' часов'
         },
         credits: {
             enabled: false,
