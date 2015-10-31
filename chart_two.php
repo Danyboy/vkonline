@@ -10,7 +10,7 @@ theme = 'default';
             type: 'areaspline'
         },
         title: {
-            text: 'Сколько часов вы были онлайн с 12.12.14 по <?php echo $myOnlineHistiry->get_correct_date($_GET['d']); ?>'
+            text: 'Сколько часов вы были онлайн с 12.12.14 по <?php echo $myOnlineHistiry->get_correct_date(json_decode($_GET['d'])[1]); ?>'
         },
         legend: {
             layout: 'vertical',
@@ -24,7 +24,7 @@ theme = 'default';
         },
         xAxis: {
             categories: 
-            categories,
+            categories[1],
             //[1,2],
             title: {
                 text: 'День'
