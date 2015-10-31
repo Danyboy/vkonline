@@ -67,13 +67,19 @@ class OnlineHistoryCharts extends OnlineHistory{
 	}
 	
 	function get_user_activity_by_days($users, $my_date){
+		echo "//!!!0 {$my_date}";
+
 		if (is_array($my_date)){
 		    $my_date_start = $this->get_correct_date($my_date[0]);
 		    $my_date_end = $this->get_correct_date($my_date[1]);
+		echo "!!! {$my_date_start}";
 		} else {
 		    $my_date_start = "2014-12-22";
 		    $my_date_end = $this->get_correct_date($my_date);
+		echo "!!! {$my_date_start}";
 		}
+		//echo is_array($my_date);
+		echo "!!!2 {$my_date} ;";
 
 		$users_string = implode(",", $users);
 		$count_query = "SELECT user_id, status::timestamp::date AS day, COUNT (EXTRACT(hour FROM status)) / 12 AS count 
@@ -119,10 +125,10 @@ function generate_array_for_graphs(data, php_names, length){
         next_id = data[i + 1][0];
 
         if (current_id == next_id){
-    	    categories[cat_counter][i - prevCounter] = parseInt(data[i][1], 10);
+    	    categories[cat_counter][i - prevCounter] = data[i][1];
 	    my_hours_count[i - prevCounter] = parseInt(data[i][2], 10);
 
-	    categories[cat_counter][i + 1 - prevCounter] = parseInt(data[i + 1][1], 10);
+	    categories[cat_counter][i + 1 - prevCounter] = data[i + 1][1];
 	    my_hours_count[i + 1 - prevCounter] = parseInt(data[i + 1][2], 10);
         } else {
 	    save_cleared_series(length);    	    
@@ -130,9 +136,9 @@ function generate_array_for_graphs(data, php_names, length){
 
 	    categories[cat_counter] = new Array(length);
 	    my_hours_count = new Array(length);
-	    prevCounter = i + 1;
-	    categories[cat_counter][i + 1 - prevCounter] = parseInt(data[i + 1][1], 10);
+	    categories[cat_counter][i + 1 - prevCounter] = data[i + 1][1];
 	    my_hours_count[i + 1 - prevCounter] = parseInt(data[i + 1][2], 10);
+	    prevCounter = i + 1;
         }
     }
     save_cleared_series(length);
@@ -143,7 +149,9 @@ function generate_array_for_graphs(data, php_names, length){
 
 function save_cleared_series(length){
     //Temporary run without checking date
-    //my_hours_count = remove_empty_hourse(categories,my_hours_count,length);
+    if (length == 24){
+	my_hours_count = remove_empty_hourse(categories[cat_counter],my_hours_count,length);
+    }
     //my_hours_count = normalise_hours(remove_empty_hourse(categories,my_hours_count),days,my_series_count);
     
     my_series[my_series_count] = {
@@ -151,7 +159,7 @@ function save_cleared_series(length){
         data: my_hours_count
     };
     
-    console.log(names[my_series_count]);
+    console.log(categories[cat_counter]);
     console.log(my_series[my_series_count]);
 }
 
@@ -184,18 +192,21 @@ function remove_empty_hourse(hours,data, length){
 
 var series_activity_by_user = new Array();
 var series_activity_user_by_day = new Array();
+var series_activity_user_by_days = new Array();
 
 function graph_by_ids(){
     <?php
 	$users = json_decode($_GET['users']);
 	$my_date = $_GET['d'];
+	$date_arr = json_decode($_GET['d'])[1];
+	echo "<!-- {$my_date} {$date_arr} {$users} -->";
         $myOnlineHistiry = new OnlineHistoryCharts();
 
 	$my_users = $myOnlineHistiry->get_current_users_name($users);
 	$activity_by_user = $myOnlineHistiry->get_activity_by_user($users);
 	$activity_user_by_day = $myOnlineHistiry->get_user_activity_by_day($users, $my_date);
 	//$activity_days_by_users = $myOnlineHistiry->get_activity_days_by_users($users);
-	$activity_user_by_days = $myOnlineHistiry->get_user_activity_by_days($users, $my_date);
+	$activity_user_by_days = $myOnlineHistiry->get_user_activity_by_days($users, json_decode($my_date));
     ?>
 
     var data_by_day = <?php echo json_encode($activity_user_by_day ) ?>;
@@ -205,9 +216,11 @@ function graph_by_ids(){
     //TODO bug if sorting id in data and names is different 
     var names = <?php echo json_encode($my_users) ?>;
     days = <?php echo json_encode($activity_days_by_users ) ?>;
+
     series_activity_by_user = generate_array_for_graphs(data, names, 24);
     //series_activity_user_by_day = generate_array_for_graphs(data_by_day, names, 24);
-    series_activity_user_by_days = generate_array_for_graphs(data_by_days, names, 24);
+
+    series_activity_user_by_days = generate_array_for_graphs(data_by_days, names, 315);
 }
 graph_by_ids();
 </script>
