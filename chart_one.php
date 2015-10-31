@@ -24,7 +24,7 @@ theme = 'default';
         },
         xAxis: {
             categories: 
-            categories,
+            categories[cat_counter],
             //[1,2],
             title: {
                 text: 'Время дня'
