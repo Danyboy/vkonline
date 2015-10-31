@@ -78,11 +78,14 @@ class OnlineHistoryCharts extends OnlineHistory{
 <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 <script type="text/javascript">
 
-//var my_hours_count = new Array();
+var my_series = new Array();
+var my_series_count;
+var my_hours_count = new Array();
 var categories;
+var names;
 
 function generate_array_for_graphs(data,names){
-    var my_series = new Array();
+    my_series = new Array();
     categories = new Array(24);
     my_hours_count = new Array(24);
     data = JSON.parse(data);
@@ -130,7 +133,7 @@ function generate_array_for_graphs(data,names){
 }
 
 function save_cleared_series(){
-//TODO remove copies in generate_array_for_graphs
+    //TODO remove copies in generate_array_for_graphs
     my_hours_count = remove_empty_hourse(categories,my_hours_count);
     
     my_series[my_series_count] = {
@@ -139,9 +142,9 @@ function save_cleared_series(){
     };
 }
 
-function normilise_hours(data,days,id){
+function normalise_hours(data,days,id){
     for(var i = 0; i < data.length - 1; i++) {
-	data[i][2] = days[id][1];
+	data[i][2] = data[i][2] / days[id][1];
     }
     return data;
 }
