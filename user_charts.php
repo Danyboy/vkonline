@@ -67,19 +67,13 @@ class OnlineHistoryCharts extends OnlineHistory{
 	}
 	
 	function get_user_activity_by_days($users, $my_date){
-		echo "//!!!0 {$my_date}";
-
 		if (is_array($my_date)){
 		    $my_date_start = $this->get_correct_date($my_date[0]);
 		    $my_date_end = $this->get_correct_date($my_date[1]);
-		echo "!!! {$my_date_start}";
 		} else {
 		    $my_date_start = "2014-12-22";
 		    $my_date_end = $this->get_correct_date($my_date);
-		echo "!!! {$my_date_start}";
 		}
-		//echo is_array($my_date);
-		echo "!!!2 {$my_date} ;";
 
 		$users_string = implode(",", $users);
 		$count_query = "SELECT user_id, status::timestamp::date AS day, COUNT (EXTRACT(hour FROM status)) / 12 AS count 
@@ -148,7 +142,7 @@ function generate_array_for_graphs(data, php_names, length){
 }
 
 function save_cleared_series(length){
-    //Temporary run without checking date
+    //If not hours run without checking data
     if (length == 24){
 	my_hours_count = remove_empty_hourse(categories[cat_counter],my_hours_count,length);
     }
@@ -158,9 +152,6 @@ function save_cleared_series(length){
         name: names[my_series_count],
         data: my_hours_count
     };
-    
-    console.log(categories[cat_counter]);
-    console.log(my_series[my_series_count]);
 }
 
 function normalise_hours(data,days,id){
@@ -198,8 +189,6 @@ function graph_by_ids(){
     <?php
 	$users = json_decode($_GET['users']);
 	$my_date = $_GET['d'];
-	$date_arr = json_decode($_GET['d'])[1];
-	echo "<!-- {$my_date} {$date_arr} {$users} -->";
         $myOnlineHistiry = new OnlineHistoryCharts();
 
 	$my_users = $myOnlineHistiry->get_current_users_name($users);
@@ -213,13 +202,12 @@ function graph_by_ids(){
     var data_by_days = <?php echo json_encode($activity_user_by_days ) ?>;
     var data = <?php echo json_encode($activity_by_user) ?>;
 
-    //TODO bug if sorting id in data and names is different 
+    //TODO bug with uncorrect user names if sorting id in data and names is different 
     var names = <?php echo json_encode($my_users) ?>;
     days = <?php echo json_encode($activity_days_by_users ) ?>;
 
     series_activity_by_user = generate_array_for_graphs(data, names, 24);
     //series_activity_user_by_day = generate_array_for_graphs(data_by_day, names, 24);
-
     series_activity_user_by_days = generate_array_for_graphs(data_by_days, names, 315);
 }
 graph_by_ids();
