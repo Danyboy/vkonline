@@ -115,9 +115,8 @@ class OnlineHistory
 	function show_today_online_users($my_date){
 		foreach (json_decode($this->get_users_online_hours($my_date)) as $row) {
 		    $my_time = date('H \ч i \м', mktime(0,$row[3]));
-		    //<input type="checkbox" name="option2" value="a2">
 			echo "<tr>
-			<td></td>
+			<td><input type='checkbox' name='mycheckbox' value='{$row[0]}'></td>
 			<td><a href='http://vk.com/id{$row[0]}'>
 			    <img src='{$row[1]}' alt='$row[2]'></a>
 			    <a href='./u?users=[{$row[0]},749972,42606657]&d={$my_date}'>
