@@ -95,6 +95,7 @@ class OnlineHistoryCharts extends OnlineHistory{
 ?>
 
 <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
 <script type="text/javascript">
 
 var my_series = new Array();
@@ -217,12 +218,45 @@ graph_by_ids();
 <div>
 <div id="chart_day" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 <div id="chart_year" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-<div id="chart_interval" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 </div>
 
-<?php 
+
+<?php
 include '/home/danil/Projects/vkonline/chart_day.php';
 include '/home/danil/Projects/vkonline/chart_year.php';
+?>
+<div class="jumbotron">
+    <div class="container" id="interval">
+    <div class="input-daterange input-group" id="datepicker">
+    <span class="input-group-addon">Сколько часов вы были онлайн с </span>
+    <input type="text" class="input-sm form-control" name="start" data-date-format="dd.mm.yy" size="5"/>
+    <span class="input-group-addon">по</span>
+    <input type="text" class="input-sm form-control" name="end" data-date-format="dd.mm.yy" size="5"/>
+    <span class="input-group-addon">
+        <a href="u?users=[339229,749972,42606657]" onclick="my_date=$('.datepicker').data('date'); location.href=this.href+'&d='+my_date;return false;">
+        Узнать</a>
+    </span>
+    </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
+<script language="javascript">
+//jQuery.noConflict(true);
+
+$('#interval .input-daterange').datepicker({
+    format: "dd.mm.yy",
+    startDate: "12/11/14",
+    endDate: new Date(),
+    autoclose: true,
+    todayHighlight: true
+});
+
+</script>
+
+<div id="chart_interval" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
+<?php 
 include '/home/danil/Projects/vkonline/chart_interval.php';
 include '/home/danil/Projects/vkonline/end.php';
 ?>
