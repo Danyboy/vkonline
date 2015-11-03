@@ -43,6 +43,7 @@ function authInfo(response) {
         add_logged_user(response.session.mid);
         document.getElementById('login_button').style.display = 'none';
         change_info_for_logged(response.session.mid);
+	$(".datepicker").datepicker("setDate", new Date());
     } else {
 	//alert('not auth');
   }
