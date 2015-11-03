@@ -1,5 +1,5 @@
 <div class="table-responsive">
-            <table class="table table-striped">
+            <table class="table table-striped" id="users_statistics">
               <thead>
                 <tr>
                   <th>Пользователь</th>
@@ -8,4 +8,3 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
