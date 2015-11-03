@@ -1,5 +1,5 @@
 <script type="text/javascript">
-jQuery.noConflict();
+//jQuery.noConflict();
 
 var example = 'areaspline', 
 theme = 'default';
