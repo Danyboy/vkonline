@@ -24,7 +24,7 @@ theme = 'default';
         },
         xAxis: {
             categories: 
-            categories[1],
+            categories[2],
             //[1,2],
             title: {
                 text: 'День'
