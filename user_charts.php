@@ -207,7 +207,7 @@ function graph_by_ids(){
     days = <?php echo json_encode($activity_days_by_users ) ?>;
 
     series_activity_by_user = generate_array_for_graphs(data, names, 24);
-    //series_activity_user_by_day = generate_array_for_graphs(data_by_day, names, 24);
+    series_activity_user_by_day = generate_array_for_graphs(data_by_day, names, 24);
     series_activity_user_by_days = generate_array_for_graphs(data_by_days, names, 315);
 }
 graph_by_ids();
@@ -215,12 +215,14 @@ graph_by_ids();
 
 <script src="http://code.highcharts.com/highcharts.js"></script>
 <div>
-<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-<div id="container_day" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+<div id="chart_day" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+<div id="chart_year" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+<div id="chart_interval" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 </div>
 
 <?php 
-include '/home/danil/Projects/vkonline/chart_one.php';
-include '/home/danil/Projects/vkonline/chart_two.php';
+include '/home/danil/Projects/vkonline/chart_day.php';
+include '/home/danil/Projects/vkonline/chart_year.php';
+include '/home/danil/Projects/vkonline/chart_interval.php';
 include '/home/danil/Projects/vkonline/end.php';
 ?>

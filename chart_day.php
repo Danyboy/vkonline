@@ -5,12 +5,12 @@ var example = 'areaspline',
 theme = 'default';
 (function($){ // encapsulate jQuery
     $(function () {
-    $('#container_day').highcharts({
+    $('#chart_day').highcharts({
         chart: {
             type: 'areaspline'
         },
         title: {
-            text: 'Сколько часов вы были онлайн с <?php echo $myOnlineHistiry->get_correct_date(json_decode($_GET['d'])[0]); ?> по <?php echo $myOnlineHistiry->get_correct_date(json_decode($_GET['d'])[1]); ?>'
+            text: 'Когда и сколько вы были онлайн за <?php echo $myOnlineHistiry->get_correct_date($_GET['d']); ?>'
         },
         legend: {
             layout: 'vertical',
@@ -24,20 +24,20 @@ theme = 'default';
         },
         xAxis: {
             categories: 
-            categories[1],
+            categories[0],
             //[1,2],
             title: {
-                text: 'День'
+                text: 'Время дня'
             }
         },
         yAxis: {
             title: {
-                text: 'Часов онлайн'
+                text: 'Минут онлайн'
             }
         },
         tooltip: {
             shared: true,
-            valueSuffix: ' часов'
+            valueSuffix: ' минут'
         },
         credits: {
             enabled: false,
@@ -47,7 +47,7 @@ theme = 'default';
                 fillOpacity: 0.5
             }
         },
-        series: series_activity_user_by_days
+        series: series_activity_user_by_day
     });
 });
 })(jQuery);

@@ -5,7 +5,7 @@ var example = 'areaspline',
 theme = 'default';
 (function($){ // encapsulate jQuery
     $(function () {
-    $('#container').highcharts({
+    $('#chart_year').highcharts({
         chart: {
             type: 'areaspline'
         },
