@@ -63,7 +63,6 @@ function authInfo(response) {
         add_logged_user(response.session.mid);
         document.getElementById('login_button').style.display = 'none';
         change_info_for_logged(response.session.mid);
-	//$(".datepicker").datepicker("setDate", new Date());
     } else {
 	//alert('not auth');
   }
@@ -89,8 +88,13 @@ function add_logged_user(id) {
 VK.UI.button('login_button');
 VK.Auth.getLoginStatus(authInfo);
 
-//$('.datepicker').datepicker({	endDate: '+0d',      autoclose: true });
-$(".datepicker").datepicker("setDate", new Date());
+$(".datepicker").datepicker({
+    format: "dd.mm.yy",
+    startDate: "22/12/14",
+    endDate: new Date(),
+    autoclose: true,
+    todayHighlight: true
+});
 </script>
 
  </div>
