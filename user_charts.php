@@ -71,7 +71,7 @@ class OnlineHistoryCharts extends OnlineHistory{
 		    $my_date_start = $this->get_correct_date($my_date[0]);
 		    $my_date_end = $this->get_correct_date($my_date[1]);
 		} else {
-		    $my_date_start = "2014-12-22";
+		    $my_date_start = "2015-09-11";
 		    $my_date_end = $this->get_correct_date($my_date);
 		}
 
@@ -229,24 +229,31 @@ include '/home/danil/Projects/vkonline/chart_year.php';
     <div class="container" id="interval">
     <div class="input-daterange input-group" id="datepicker">
     <span class="input-group-addon">Сколько часов вы были онлайн с </span>
-    <input type="text" class="input-sm form-control" name="start" data-date-format="dd.mm.yy" size="5"/>
+    <input type="text" class="input-sm form-control" name="start" data-date-format="dd.mm.yy" size="5" value="01.10.15"/>
     <span class="input-group-addon">по</span>
-    <input type="text" class="input-sm form-control" name="end" data-date-format="dd.mm.yy" size="5"/>
+    <input type="text" class="input-sm form-control" name="end" data-date-format="dd.mm.yy" size="5" value="<?php echo $myOnlineHistiry->get_correct_date($_GET['d']); ?>"/>
     <span class="input-group-addon">
-        <a href="u?users=[339229,749972,42606657]" onclick="my_date=$('.datepicker').data('date'); location.href=this.href+'&d='+my_date;return false;">
+        <a href="" onclick=
+	"my_date=get_range(); location.href=window.location.href+'&d=['+'%22'+my_date[0]+'%22'+','+'%22'+my_date[1]+'%22'+']';return false;">
         Узнать</a>
     </span>
     </div>
     </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
 <script language="javascript">
 //jQuery.noConflict(true);
 
+function get_range(){
+    var fdate = new Array(2);
+    fdate[0] = document.getElementsByName('start')[0].value;
+    fdate[1] = document.getElementsByName('end')[0].value;
+return fdate;
+}
+
 $('#interval .input-daterange').datepicker({
     format: "dd.mm.yy",
-    startDate: "12/11/14",
+    startDate: "22/12/14",
     endDate: new Date(),
     autoclose: true,
     todayHighlight: true
