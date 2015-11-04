@@ -4,7 +4,8 @@ include '/home/danil/Projects/vkonline/start.php';
 <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
       <div id="main_info" class="container">
-        <p> Привет! Здесь можно узнать сколько времени вы провели онлайн вконтакте <input class="datepicker" data-date-format="dd.mm.yy" size="5"> 
+        <p> Привет! Здесь можно узнать сколько времени вы провели онлайн вконтакте <input class="datepicker" data-date-format="dd.mm.yy" size="5"
+	     value=<?php echo $myOnlineHistiry->get_correct_date($_GET['d']); ?>> 
     	    или в <a href="u?users=[339229,749972,42606657]" onclick="my_date=$('.datepicker').val(); location.href=this.href+'&d='+my_date;return false;">
     	    любую другую дату</a>.
             Есть поминутная статистика и <a href="u?users=[339229,749972,42606657]&d=">красочные графики</a>. 
@@ -53,11 +54,6 @@ $myOnlineHistiry->show_today_online_users($_GET['d']);
 ?>
 
 <script language="javascript">
-//$('.datepicker').datepicker({	endDate: '+0d',      autoclose: true });
-$(".datepicker").datepicker("setDate", new Date());
-</script>
-
-<script language="javascript">
 VK.init({
         apiId: 5121918
 });
@@ -67,7 +63,7 @@ function authInfo(response) {
         add_logged_user(response.session.mid);
         document.getElementById('login_button').style.display = 'none';
         change_info_for_logged(response.session.mid);
-	$(".datepicker").datepicker("setDate", new Date());
+	//$(".datepicker").datepicker("setDate", new Date());
     } else {
 	//alert('not auth');
   }
@@ -92,6 +88,9 @@ function add_logged_user(id) {
 
 VK.UI.button('login_button');
 VK.Auth.getLoginStatus(authInfo);
+
+//$('.datepicker').datepicker({	endDate: '+0d',      autoclose: true });
+$(".datepicker").datepicker("setDate", new Date());
 </script>
 
  </div>
