@@ -8,6 +8,7 @@ theme = 'default';
     $('#chart_year').highcharts({
         chart: {
             type: 'areaspline'
+            //type: 'spline'
         },
         title: {
             text: 'Когда и сколько вы были онлайн за этот год'
