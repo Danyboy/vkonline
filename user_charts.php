@@ -12,7 +12,7 @@ class OnlineHistoryCharts extends OnlineHistory{
                 $most_popular_hour = "SELECT EXTRACT(hour FROM status) AS hours, COUNT (user_id)
                                 FROM user_online 
                                 GROUP BY hours 
-                                ORDER BY hours;"
+                                ORDER BY hours;";
 		
 		return $this->query_to_json($count_query);
 	}	

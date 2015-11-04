@@ -8,6 +8,7 @@ theme = 'default';
     $('#chart_day').highcharts({
         chart: {
             type: 'areaspline'
+            //type: 'spline'
         },
         title: {
             text: 'Когда и сколько вы были онлайн за <?php echo $myOnlineHistiry->get_correct_date($_GET['d']); ?>'
