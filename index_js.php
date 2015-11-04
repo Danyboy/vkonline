@@ -26,8 +26,6 @@ include '/home/danil/Projects/vkonline/middle.php';
 $myOnlineHistiry->show_today_online_users($_GET['d']);
 ?>
 
-<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
 <script language="javascript">
 //$('.datepicker').datepicker({	endDate: '+0d',      autoclose: true });
 $(".datepicker").datepicker("setDate", new Date());
@@ -73,12 +71,6 @@ VK.Auth.getLoginStatus(authInfo);
  </div>
 </div>
 
-<?php
-
-include '/home/danil/Projects/vkonline/end.php';
-?>
-
-</tr>
                 </tr>
               </tbody>
             </table>

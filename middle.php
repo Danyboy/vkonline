@@ -1,6 +1,4 @@
-
 <script language="javascript">
-
 function get_checked_users(input){
     var users = new Array(input.length);
     for (i = 0; i < input.length; i++){
