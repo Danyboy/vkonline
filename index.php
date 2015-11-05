@@ -21,18 +21,6 @@ include '/home/danil/Projects/vkonline/start.php';
 
 <div>
   <div style="display: table; margin: 0 auto;">
-
-<script language="javascript">
-function get_checked_users(input){
-    var users = new Array(input.length);
-    for (i = 0; i < input.length; i++){
-        users[i] = input[i].value;
-    }
-
-    return users;
-}
-</script>
-
 <div class="table-responsive">
             <table class="table table-striped" id="users_statistics">
               <thead>
@@ -95,6 +83,15 @@ $(".datepicker").datepicker({
     autoclose: true,
     todayHighlight: true
 });
+
+function get_checked_users(input){
+    var users = new Array(input.length);
+    for (i = 0; i < input.length; i++){
+        users[i] = input[i].value;
+    }
+
+    return users;
+}
 </script>
 
  </div>
