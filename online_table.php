@@ -26,10 +26,10 @@ class OnlineHistory
 	}
 
 	function get_online() { 
-	     $url="https://api.vk.com/method/users.get?user_ids=" . $this->get_friends() . "," . $this->id . ",\&fields=online,photo_50,\&lang=en";
+	     $url="https://api.vk.com/method/users.get?user_ids=" . implode(",",json_decode($this->get_friends())->response) . "," . $this->id . ",\&fields=online,photo_50,\&lang=en";
 	     return $this->send_req($url);
 	}
-
+	
 	function connect() {	
 		$username = "root";
 		$password = "***REMOVED***";
