@@ -105,14 +105,15 @@ $myOnlineHistiry = new OnlineHistoryCharts();
 <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
 <script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="includes/charts_model.js"></script>
 
 <script type="text/javascript">
 var data_by_day = <?php echo json_encode($myOnlineHistiry->get_user_activity_by_day($users, $my_date)) ?>;
 var data_by_days = <?php echo json_encode($myOnlineHistiry->get_user_activity_by_days($users, json_decode($my_date))) ?>;
 var data = <?php echo json_encode($myOnlineHistiry->get_activity_by_user($users)) ?>;
-//var days = <?php echo json_encode($myOnlineHistiry->get_activity_days_by_users($users)) ?>;
 var php_names = <?php echo json_encode($myOnlineHistiry->get_current_users_name($users)) ?>;
 //TODO bug with uncorrect user names if sorting id in data and names is different 
+//TODO check php query before json encode
 
 $('#interval .input-daterange').datepicker({
     format: "dd.mm.yy",
@@ -121,13 +122,9 @@ $('#interval .input-daterange').datepicker({
     autoclose: true,
     todayHighlight: true
 });
-</script>
 
-<script src="includes/charts_model.js"></script>
-<script type="text/javascript">
 my_init();
 </script>
-
 
 <div>
 <div id="chart_day" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
