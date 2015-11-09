@@ -1,5 +1,5 @@
 <?php 
-include '/home/danil/Projects/vkonline/start.php';
+include 'includes/start.php';
 
 class OnlineHistoryCharts extends OnlineHistory{
 	
@@ -127,8 +127,8 @@ my_init();
 </div>
 
 <?php
-include '/home/danil/Projects/vkonline/chart_day.php';
-include '/home/danil/Projects/vkonline/chart_year.php';
+include 'includes/chart_day.php';
+include 'includes/chart_year.php';
 ?>
 
 <div class="jumbotron">
@@ -150,6 +150,6 @@ include '/home/danil/Projects/vkonline/chart_year.php';
 <div id="chart_interval" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 
 <?php 
-include '/home/danil/Projects/vkonline/chart_interval.php';
-include '/home/danil/Projects/vkonline/end.php';
+include 'includes/chart_interval.php';
+include 'includes/end.php';
 ?>

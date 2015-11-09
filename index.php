@@ -1,5 +1,5 @@
 <?php
-include '/home/danil/Projects/vkonline/start.php';
+include 'includes/start.php';
 ?>
 <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
@@ -106,5 +106,5 @@ function get_checked_users(input){
     </div>
 
 <?php
-include '/home/danil/Projects/vkonline/end.php';
+include 'includes/end.php';
 ?>
