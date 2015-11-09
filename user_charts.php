@@ -97,139 +97,48 @@ class OnlineHistoryCharts extends OnlineHistory{
 	}
 }
 
+$users = json_decode($_GET['users']);
+$my_date = $_GET['d'];
+$myOnlineHistiry = new OnlineHistoryCharts();
 ?>
 
 <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
+<script src="http://code.highcharts.com/highcharts.js"></script>
+
 <script type="text/javascript">
+var data_by_day = <?php echo json_encode($myOnlineHistiry->get_user_activity_by_day($users, $my_date)) ?>;
+var data_by_days = <?php echo json_encode($myOnlineHistiry->get_user_activity_by_days($users, json_decode($my_date))) ?>;
+var data = <?php echo json_encode($myOnlineHistiry->get_activity_by_user($users)) ?>;
+//var days = <?php echo json_encode($myOnlineHistiry->get_activity_days_by_users($users)) ?>;
+var php_names = <?php echo json_encode($myOnlineHistiry->get_current_users_name($users)) ?>;
+//TODO bug with uncorrect user names if sorting id in data and names is different 
 
-var my_series = new Array();
-var my_hours_count = new Array();
-var categories = new Array();
-var names = new Array();
-var my_series_count = 0;
-var days = new Array();
-var cat_counter = 0; 
-
-function generate_array_for_graphs(data, php_names, length){
-    my_hours_count = new Array(length);
-    categories[cat_counter] = new Array(length);
-    my_series = new Array();
-    data = JSON.parse(data);
-    names = JSON.parse(php_names);
-    my_series_count = 0; //Number of current user
-    prevCounter = 0; //Array number where starts new user
-
-    for(var i = 0; i < data.length - 1; i++) {
-        current_id = data[i][0];
-        next_id = data[i + 1][0];
-
-        if (current_id == next_id){
-    	    categories[cat_counter][i - prevCounter] = data[i][1];
-	    my_hours_count[i - prevCounter] = parseInt(data[i][2], 10);
-
-	    categories[cat_counter][i + 1 - prevCounter] = data[i + 1][1];
-	    my_hours_count[i + 1 - prevCounter] = parseInt(data[i + 1][2], 10);
-        } else {
-	    save_cleared_series(length);    	    
-            my_series_count++;
-
-	    categories[cat_counter] = new Array(length);
-	    my_hours_count = new Array(length);
-	    categories[cat_counter][i + 1 - prevCounter] = data[i + 1][1];
-	    my_hours_count[i + 1 - prevCounter] = parseInt(data[i + 1][2], 10);
-	    prevCounter = i + 1;
-        }
-    }
-    save_cleared_series(length);
-    cat_counter++;
-
-    return my_series;
-}
-
-function save_cleared_series(length){
-    //If not hours run without checking data
-    if (length == 24){
-	my_hours_count = remove_empty_hourse(categories[cat_counter],my_hours_count,length);
-    }
-    //my_hours_count = normalise_hours(remove_empty_hourse(categories,my_hours_count),days,my_series_count);
-    
-    my_series[my_series_count] = {
-        name: names[my_series_count],
-        data: my_hours_count
-    };
-}
-
-function normalise_hours(data,days,id){
-    for(var i = 0; i < data.length - 1; i++) {
-	data[i] = data[i] / days[id][1];
-    }
-    return data;
-}
-
-function remove_empty_hourse(hours,data, length){
-    rhours = new Array(length);
-    rdata = new Array(length);
-    for (i = 0; i < rhours.length; i++){
-	rhours[i] = i;
-	for (j = 0; j < hours.length; j++){
-	    if (hours[j] == i){
-		rdata[i] = data[j];
-		continue;
-	    } else if (typeof rdata[i] === 'undefined'){
-		rhours[i] = i;
-		rdata[i] = 0;
-	    }
-	}
-    }
-    categories[cat_counter] = rhours;
-    
-    return rdata;    
-}
-
-var series_activity_by_user = new Array();
-var series_activity_user_by_day = new Array();
-var series_activity_user_by_days = new Array();
-
-function graph_by_ids(){
-    <?php
-	$users = json_decode($_GET['users']);
-	$my_date = $_GET['d'];
-        $myOnlineHistiry = new OnlineHistoryCharts();
-
-	$my_users = $myOnlineHistiry->get_current_users_name($users);
-	$activity_by_user = $myOnlineHistiry->get_activity_by_user($users);
-	$activity_user_by_day = $myOnlineHistiry->get_user_activity_by_day($users, $my_date);
-	//$activity_days_by_users = $myOnlineHistiry->get_activity_days_by_users($users);
-	$activity_user_by_days = $myOnlineHistiry->get_user_activity_by_days($users, json_decode($my_date));
-    ?>
-
-    var data_by_day = <?php echo json_encode($activity_user_by_day ) ?>;
-    var data_by_days = <?php echo json_encode($activity_user_by_days ) ?>;
-    var data = <?php echo json_encode($activity_by_user) ?>;
-
-    //TODO bug with uncorrect user names if sorting id in data and names is different 
-    var names = <?php echo json_encode($my_users) ?>;
-    days = <?php echo json_encode($activity_days_by_users ) ?>;
-
-    series_activity_by_user = generate_array_for_graphs(data, names, 24);
-    series_activity_user_by_day = generate_array_for_graphs(data_by_day, names, 24);
-    series_activity_user_by_days = generate_array_for_graphs(data_by_days, names, 315);
-}
-graph_by_ids();
+$('#interval .input-daterange').datepicker({
+    format: "dd.mm.yy",
+    startDate: "22/12/14",
+    endDate: new Date(),
+    autoclose: true,
+    todayHighlight: true
+});
 </script>
 
-<script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="includes/charts_model.js"></script>
+<script type="text/javascript">
+my_init();
+</script>
+
+
 <div>
 <div id="chart_day" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 <div id="chart_year" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 </div>
 
-
 <?php
 include '/home/danil/Projects/vkonline/chart_day.php';
 include '/home/danil/Projects/vkonline/chart_year.php';
 ?>
+
 <div class="jumbotron">
     <div class="container" id="interval">
     <div class="input-daterange input-group" id="datepicker">
@@ -245,26 +154,6 @@ include '/home/danil/Projects/vkonline/chart_year.php';
     </div>
     </div>
 </div>
-
-<script language="javascript">
-//jQuery.noConflict(true);
-
-function get_range(){
-    var fdate = new Array(2);
-    fdate[0] = document.getElementsByName('start')[0].value;
-    fdate[1] = document.getElementsByName('end')[0].value;
-return fdate;
-}
-
-$('#interval .input-daterange').datepicker({
-    format: "dd.mm.yy",
-    startDate: "22/12/14",
-    endDate: new Date(),
-    autoclose: true,
-    todayHighlight: true
-});
-
-</script>
 
 <div id="chart_interval" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 
