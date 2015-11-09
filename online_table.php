@@ -139,13 +139,9 @@ class OnlineHistory
 	        $insert_user_query = "INSERT INTO users (id, name, link) VALUES ({$value->uid}, '{$my_name}', '{$value->photo_50}');";
 	        $insert_date_query = "INSERT INTO user_online (user_id, status) VALUES ({$value->uid}, CURRENT_TIMESTAMP(0));";
 
-                //echo ($insert_date_query . "\n");
                 $is_user_exists = (strcmp($this->query_to_json($check_user_query), '[["0"]]') == 0);
-            
                 if ($is_user_exists){
-            	    //echo ($insert_user_query . "\n");
                     $myqr = $this->my_query($insert_user_query);
-		    //echo "{$myqr}";
                 }
 
                 $this->my_query($insert_date_query);
@@ -167,7 +163,7 @@ class OnlineHistory
                 if (is_array($my_date)){
                     $my_date_start = $this->get_correct_date($my_date[0]);
                     $my_date_end = $this->get_correct_date($my_date[1]);
-                } else if ($my_date !== ''){
+                } else if ($my_date !== '' && $this->get_correct_date($my_date) !== $this->get_correct_date()){
                     $my_date_start = $this->get_correct_date($my_date);
                     $my_date_end = $this->get_correct_date();
                 } else {
