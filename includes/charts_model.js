@@ -110,5 +110,3 @@ var names = new Array();
 var my_series_count = 0;
 var days = new Array();
 var cat_counter = 0;
-
-//my_init();
