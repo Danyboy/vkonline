@@ -159,6 +159,24 @@ class OnlineHistory
 		
 		return $my_date;	
 	}
+
+        function get_correct_date_interval($my_date){
+		if (json_decode($my_date)){
+		    $my_date = json_decode($my_date);
+		}
+                if (is_array($my_date)){
+                    $my_date_start = $this->get_correct_date($my_date[0]);
+                    $my_date_end = $this->get_correct_date($my_date[1]);
+                } else if ($my_date !== ''){
+                    $my_date_start = $this->get_correct_date($my_date);
+                    $my_date_end = $this->get_correct_date();
+                } else {
+                    $my_date_start = "01.09.15";
+                    $my_date_end = $this->get_correct_date($my_date);
+                }
+
+                return array($my_date_start,$my_date_end);
+        }
 	
 	function get_previous_dates($int, $my_date){
 		$date = date_create_from_format('d.m.y', $this->get_correct_date($my_date));

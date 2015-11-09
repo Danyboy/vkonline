@@ -72,14 +72,9 @@ class OnlineHistoryCharts extends OnlineHistory{
 	}
 	
 	function get_user_activity_by_days($users, $my_date){
-		if (is_array($my_date)){
-		    $my_date_start = $this->get_correct_date($my_date[0]);
-		    $my_date_end = $this->get_correct_date($my_date[1]);
-		} else {
-		    $my_date_start = "2015-09-11";
-		    $my_date_end = $this->get_correct_date($my_date);
-		}
-
+		$my_date_start = $this->get_correct_date_interval($my_date)[0];
+	        $my_date_end = $this->get_correct_date_interval($my_date)[1];
+		
 		$users_string = implode(",", $users);
 		$count_query = "SELECT user_id, status::timestamp::date AS day, COUNT (EXTRACT(hour FROM status)) / 12 AS count 
                                 FROM user_online
@@ -89,7 +84,7 @@ class OnlineHistoryCharts extends OnlineHistory{
 		
 		return $this->query_to_json($count_query);
 	}
-	
+
 	function get_current_users_name($users){
 		$users_string = implode(",", $users);
 		$count_query = "SELECT name FROM users WHERE id IN ({$users_string}) ORDER BY id;";
@@ -109,7 +104,7 @@ $myOnlineHistiry = new OnlineHistoryCharts();
 
 <script type="text/javascript">
 var data_by_day = <?php echo json_encode($myOnlineHistiry->get_user_activity_by_day($users, $my_date)) ?>;
-var data_by_days = <?php echo json_encode($myOnlineHistiry->get_user_activity_by_days($users, json_decode($my_date))) ?>;
+var data_by_days = <?php echo json_encode($myOnlineHistiry->get_user_activity_by_days($users, $my_date)) ?>;
 var data = <?php echo json_encode($myOnlineHistiry->get_activity_by_user($users)) ?>;
 var php_names = <?php echo json_encode($myOnlineHistiry->get_current_users_name($users)) ?>;
 //TODO bug with uncorrect user names if sorting id in data and names is different 
