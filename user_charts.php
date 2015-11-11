@@ -13,6 +13,27 @@ class OnlineHistoryCharts extends OnlineHistory{
                                 FROM user_online 
                                 GROUP BY hours 
                                 ORDER BY hours;";
+
+                $insomnia_detector = "SELECT user_id, (night::float / (day + 1)) AS stat, night, day
+FROM (
+    SELECT user_id, 
+	SUM (CASE 
+	WHEN EXTRACT(hour FROM status) BETWEEN '2' AND '10'
+	    THEN 1
+	    ELSE 0
+	END ) AS night,
+	SUM (CASE WHEN EXTRACT(hour FROM status) BETWEEN '11' AND '23'
+	    THEN 1
+	    WHEN EXTRACT(hour FROM status) BETWEEN '0' AND '2'
+	    THEN 1
+	    ELSE 0
+	END ) AS day
+    FROM user_online 
+    GROUP BY user_id
+    ) AS dayNight
+--WHERE (night::float / (day + 1)) > 0.36
+ORDER BY stat DESC;
+";
 		
 		return $this->query_to_json($count_query);
 	}	
