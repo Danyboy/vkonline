@@ -12,7 +12,8 @@ include 'includes/start.php';
 	    <a href="u?users=[339229,749972,42606657]" id="date_link"
 	     onclick="my_date=$('.datepicker').val(); location.href=this.href+'&d='+my_date;return false;">
     	    любую другую дату</a>.
-            Есть поминутная статистика и <a href="u?users=[339229,749972,42606657]&d=">красочные графики</a>. 
+            Есть поминутная статистика, <a href="u?users=[339229,749972,42606657]&d=">красочные графики</a> и
+	    <a href="insomnia">детектор бессоницы</a>. 
         </p>
 	<div style="width: 10%; margin: 0 auto;">
 	    <div id="login_button" onclick="VK.Auth.login(authInfo);"></div>
@@ -36,7 +37,7 @@ include 'includes/start.php';
                     Сравнить</a>
                   </th>
                   <th>Графики пользователя</th>
-                  <th>Онлайн сегодня</th>
+                  <th>Часов онлайн</th>
                 </tr>
               </thead>
               <tbody>
