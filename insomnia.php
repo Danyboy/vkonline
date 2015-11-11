@@ -4,15 +4,8 @@ include 'includes/start.php';
 <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
       <div id="main_info" class="container">
-        <p> Привет! Здесь можно узнать сколько времени вы провели онлайн вконтакте 
-	    <input class="datepicker" data-date-format="dd.mm.yy" size="5"
-	     onkeydown="if (event.keyCode == 13) document.getElementById('date_link').click()"
-	     value=<?php echo $myOnlineHistiry->get_correct_date($_GET['d']); ?>> 
-    	    или в 
-	    <a href="u?users=[339229,749972,42606657]" id="date_link"
-	     onclick="my_date=$('.datepicker').val(); location.href=this.href+'&d='+my_date;return false;">
-    	    любую другую дату</a>.
-            Есть поминутная статистика и <a href="u?users=[339229,749972,42606657]&d=">красочные графики</a>. 
+        <p> Здесь можно узнать свой коэффициент бессоницы - отношение времени онлайн ночью к времени онлайн днём
+	    и сколько часов в какое время дня вы провели онлайн за год.
         </p>
 	<div style="width: 10%; margin: 0 auto;">
 	    <div id="login_button" onclick="VK.Auth.login(authInfo);"></div>
@@ -29,10 +22,16 @@ include 'includes/start.php';
             <table class="table table-striped" id="users_statistics">
               <thead>
                 <tr>
-                  <th>Графики пользователя</th>
-                  <th>Коэфф бессоницы</th>
-                  <th>Онлайн ночью</th>
-                  <th>Онлайн днём</th>
+		<th>
+                    <a href="u?"
+                    onclick="my_users=get_checked_users(document.querySelectorAll('input[name=mycheckbox]:checked'));
+                    location.href=this.href+'users=['+my_users+']';return false;">
+                    Сравнить</a>
+                  </th>
+                  <th> Пользователи</th>
+                  <th> Коэф. бессоницы</th>
+                  <th> Онлайн ночью</th>
+                  <th> Онлайн днём</th>
                 </tr>
               </thead>
               <tbody>

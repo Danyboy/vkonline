@@ -130,13 +130,11 @@ class OnlineHistory
 FROM (
 SELECT user_id, 
 SUM (CASE 
-WHEN EXTRACT(hour FROM status) BETWEEN '2' AND '6'
+WHEN EXTRACT(hour FROM status) BETWEEN '0' AND '8'
 THEN 1
 ELSE 0
 END ) AS night,
-SUM (CASE WHEN EXTRACT(hour FROM status) BETWEEN '7' AND '23'
-THEN 1
-WHEN EXTRACT(hour FROM status) BETWEEN '0' AND '1'
+SUM (CASE WHEN EXTRACT(hour FROM status) BETWEEN '9' AND '23'
 THEN 1
 ELSE 0
 END ) AS day
@@ -152,11 +150,14 @@ ORDER BY stat DESC;
 
 	function show_insomnia_users(){
 		foreach (json_decode($this->get_insomnia_users()) as $row) {
-			echo "<tr>
+		    $num = number_format($row[3], 2, '.', '');
+		    echo "<tr>
+			<td><input type='checkbox' name='mycheckbox' value='{$row[0]}'></td>
 			<td><a href='http://vk.com/id{$row[0]}'>
-			    <img src='{$row[1]}' alt='$row[2]'>
-			    {$row[2]}</a></td>
-			<td>{$row[3]}</td>
+			    <img src='{$row[1]}' alt='$row[2]'></a>
+			    <a href='./u?users=[{$row[0]},749972,42606657]&d={$my_date}'>
+			    {$row[2]}	<img src='Chart-icon.png' alt='$row[2]' align='right'></a></td>
+			<td>{$num}</td>
 			<td>{$row[4]} ч</td>
 			<td>{$row[5]} ч</td>
 		      </tr>";

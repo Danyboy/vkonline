@@ -52,7 +52,7 @@
 	    include '/home/danil/Projects/vkonline/online_table.php';
 
 	    $myOnlineHistiry = new OnlineHistory();
-	    $myOnlineHistiry->show_previous_dates($myOnlineHistiry->get_correct_date_interval($_GET['d'])[0]);
+	    $myOnlineHistiry->show_previous_dates($myOnlineHistiry->get_correct_date($_GET['d']));
 	    ?>
 <!--
 <li>
