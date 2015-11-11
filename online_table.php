@@ -107,11 +107,7 @@ class OnlineHistory
 		
 		return $this->query_to_json($count_query);
 	}
-	
-	function show_today_online_user($my_date){
-	    
-	}	
-	
+
 	function show_today_online_users($my_date){
 		foreach (json_decode($this->get_users_online_hours($my_date)) as $row) {
 		    $my_time = date('H \ч i \м', mktime(0,$row[3]));
@@ -122,6 +118,47 @@ class OnlineHistory
 			    <a href='./u?users=[{$row[0]},749972,42606657]&d={$my_date}'>
 			    {$row[2]}	<img src='Chart-icon.png' alt='$row[2]' align='right'></a></td>
 			<td>{$my_time}</td>
+		      </tr>";
+	        }
+	}
+
+	function get_insomnia_users(){
+	
+		$my_date = $this->get_correct_date($my_date);
+		
+                $count_query = "SELECT user_id, link, name, (night::float / (day + 1)) AS stat, night, day
+FROM (
+SELECT user_id, 
+SUM (CASE 
+WHEN EXTRACT(hour FROM status) BETWEEN '2' AND '6'
+THEN 1
+ELSE 0
+END ) AS night,
+SUM (CASE WHEN EXTRACT(hour FROM status) BETWEEN '7' AND '23'
+THEN 1
+WHEN EXTRACT(hour FROM status) BETWEEN '0' AND '1'
+THEN 1
+ELSE 0
+END ) AS day
+FROM user_online 
+GROUP BY user_id
+) AS dayNight JOIN users ON (dayNight.user_id = users.id)
+--WHERE (night::float / (day + 1)) > 0.36
+ORDER BY stat DESC;
+";
+
+		return $this->query_to_json($count_query);
+	}
+
+	function show_insomnia_users(){
+		foreach (json_decode($this->get_insomnia_users()) as $row) {
+			echo "<tr>
+			<td><a href='http://vk.com/id{$row[0]}'>
+			    <img src='{$row[1]}' alt='$row[2]'>
+			    {$row[2]}</a></td>
+			<td>{$row[3]}</td>
+			<td>{$row[4]} ч</td>
+			<td>{$row[5]} ч</td>
 		      </tr>";
 	        }
 	}
