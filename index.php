@@ -4,11 +4,11 @@ include 'includes/start.php';
 <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
       <div id="main_info" class="container">
-        <p> Привет! Здесь можно узнать сколько времени вы провели онлайн вконтакте 
-	    <input class="datepicker" data-date-format="dd.mm.yy" size="5"
-	     onkeydown="if (event.keyCode == 13) document.getElementById('date_link').click()"
-	     value=<?php echo $myOnlineHistiry->get_correct_date($_GET['d']); ?>> 
-    	    или в 
+	<p> Привет! Здесь можно узнать сколько времени вы провели онлайн вконтакте 
+           <input class="datepicker" data-date-format="dd.mm.yy" size="5"
+            onkeydown="if (event.keyCode == 13) document.getElementById('date_link').click()"
+            value=<?php echo $myOnlineHistiry->get_correct_date($_GET['d']); ?>> 
+           или в 
 	    <a href="u?users=[339229,749972,42606657]" id="date_link"
 	     onclick="my_date=$('.datepicker').val(); location.href=this.href+'&d='+my_date;return false;">
     	    любую другую дату</a>.
