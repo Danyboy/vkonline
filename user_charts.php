@@ -110,14 +110,6 @@ var php_names = <?php echo json_encode($myOnlineHistiry->get_current_users_name(
 //TODO bug with uncorrect user names if sorting id in data and names is different 
 //TODO check php query before json encode
 
-$('#interval .input-daterange').datepicker({
-    format: "dd.mm.yy",
-    startDate: "22/12/14",
-    endDate: new Date(),
-    autoclose: true,
-    todayHighlight: true
-});
-
 my_init();
 </script>
 
@@ -148,6 +140,17 @@ include 'includes/chart_year.php';
 </div>
 
 <div id="chart_interval" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
+<script>
+$('#interval .input-daterange').datepicker({
+    format: "dd.mm.yy",
+    startDate: "22/12/14",
+    endDate: new Date(),
+    autoclose: true,
+    todayHighlight: true
+});
+</script>
+
 
 <?php 
 include 'includes/chart_interval.php';
