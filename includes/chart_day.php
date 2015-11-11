@@ -11,7 +11,7 @@ theme = 'default';
             //type: 'spline'
         },
         title: {
-            text: 'Когда и сколько вы были онлайн за <?php echo $myOnlineHistiry->get_correct_date($_GET['d']); ?>'
+            text: 'Когда и сколько вы были онлайн за <?php echo $myOnlineHistiry->get_correct_date_interval($_GET['d'])[0]; ?>'
         },
         legend: {
             layout: 'vertical',

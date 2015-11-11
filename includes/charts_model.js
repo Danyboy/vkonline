@@ -3,10 +3,7 @@ function generate_array_for_graphs(data, php_names, length){
     categories[cat_counter] = new Array(length);
     my_series = new Array();
     data = JSON.parse(data);
-    console.log(php_names);
     names = JSON.parse(php_names);
-//    names = php_names;
-//    console.log(names);
     my_series_count = 0; //Number of current user
     prevCounter = 0; //Array number where starts new user
 
