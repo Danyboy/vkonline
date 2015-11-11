@@ -52,8 +52,15 @@
 	    include '/home/danil/Projects/vkonline/online_table.php';
 
 	    $myOnlineHistiry = new OnlineHistory();
-	    $myOnlineHistiry->show_previous_dates($_GET['d']);
+	    $myOnlineHistiry->show_previous_dates($myOnlineHistiry->get_correct_date_interval($_GET['d'])[0]);
 	    ?>
+<!--
+<li>
+	    <input class="datepicker" data-date-format="dd.mm.yy" size="5"
+             onkeydown="if (event.keyCode == 13) document.getElementById('date_link').click()"
+             value=<?php echo $myOnlineHistiry->get_correct_date($_GET['d']); ?> >
+</li>
+-->
 
         </li>
       </ul>
