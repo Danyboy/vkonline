@@ -16,22 +16,25 @@ include 'includes/start.php';
     <div class="container-fluid">
       <div class="row">
 
+<script src="ftp://updates.etersoft.ru/pub/people/danil/files/js/sorttable.js"></script>
 <div>
   <div style="display: table; margin: 0 auto;">
 <div class="table-responsive">
-            <table class="table table-striped" id="users_statistics">
+            <table class="table table-striped sortable" id="users_statistics">
               <thead>
                 <tr>
-		<th>
+		<th class="sorttable_nosort">
                     <a href="u?"
                     onclick="my_users=get_checked_users(document.querySelectorAll('input[name=mycheckbox]:checked'));
                     location.href=this.href+'users=['+my_users+']';return false;">
                     Сравнить</a>
                   </th>
-                  <th> Пользователи</th>
-                  <th> Коэф. бессоницы</th>
-                  <th> Онлайн ночью</th>
-                  <th> Онлайн днём</th>
+                  <th class="sorttable_nosort"> Пользователи</th>
+                  <th class="sorttable_numeric"> Коэф. бессоницы</th>
+                  <th class="sorttable_numeric"> Онлайн ночью</th>
+                  <th class="sorttable_numeric"> Онлайн днём</th>
+                  <th class="sorttable_numeric"> Всего</th>
+                  <th class="sorttable_numeric"> Взвешенный К</th>
                 </tr>
               </thead>
               <tbody>
