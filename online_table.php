@@ -123,31 +123,65 @@ class OnlineHistory
 	}
 
 	function get_insomnia_users(){
-	
-		$my_date = $this->get_correct_date($my_date);
-		
-                $count_query = "SELECT user_id, link, name, (night::float / (day + 1)) AS stat, night, day
-FROM (
-SELECT user_id, 
-SUM (CASE 
-WHEN EXTRACT(hour FROM status) BETWEEN '0' AND '8'
-THEN 1
-ELSE 0
-END ) AS night,
-SUM (CASE WHEN EXTRACT(hour FROM status) BETWEEN '9' AND '23'
-THEN 1
-ELSE 0
-END ) AS day
-FROM user_online 
-GROUP BY user_id
-) AS dayNight JOIN users ON (dayNight.user_id = users.id)
---WHERE (night::float / (day + 1)) > 0.36
-ORDER BY night DESC;
-";
+                $count_query = "
+			        SELECT user_id, link, name, (night::float / (day + 1)) AS stat, night, day
+			        FROM (
+			            SELECT user_id, 
+			                SUM (CASE 
+			                WHEN EXTRACT(hour FROM status) BETWEEN '0' AND '8'
+			                    THEN 1
+			                    ELSE 0
+			                END ) AS night,
+			                SUM (CASE WHEN EXTRACT(hour FROM status) BETWEEN '9' AND '23'
+			                    THEN 1
+			                    ELSE 0
+			                END ) AS day
+			            FROM user_online 
+			            GROUP BY user_id
+			            ) AS dayNight JOIN users ON (dayNight.user_id = users.id)
+			        ORDER BY night DESC;";
 
 		return $this->query_to_json($count_query);
 	}
 
+	function get_users_compatability(){
+	
+                $count_query = "
+				SELECT user_online.user_id, my_user.user_id, COUNT (*) AS count, COUNT(*)::float / user_coef.norm AS coef
+				FROM user_online LEFT JOIN user_online AS my_user 
+				    ON my_user.status = user_online.status
+				    INNER JOIN (SELECT user_id, COUNT(*) AS norm 
+					FROM user_online 
+					GROUP BY user_id) AS user_coef
+					    ON user_coef.user_id = my_user.user_id
+				WHERE user_online.user_id = 749972 AND my_user.user_id = 42606657
+				GROUP BY user_online.user_id, my_user.user_id, user_coef.norm
+				ORDER BY coef DESC;
+				";
+
+		return $this->query_to_json($count_query);
+	}
+
+	function show_insomnia_users(){
+		foreach (json_decode($this->get_insomnia_users()) as $row) {
+		    $num = number_format($row[3], 2, '.', '');
+		    $summ = $row[4] + $row[5];
+		    $weight = $num * $summ;
+		    echo "<tr>
+			<td><input type='checkbox' name='mycheckbox' value='{$row[0]}'></td>
+			<td><a href='http://vk.com/id{$row[0]}'>
+			    <img src='{$row[1]}' alt='$row[2]'></a>
+			    <a href='./u?users=[{$row[0]},749972,42606657]&d={$my_date}'>
+			    {$row[2]}	<img src='Chart-icon.png' alt='$row[2]' align='right'></a></td>
+			<td>{$num}</td>
+			<td>{$row[4]} ч</td>
+			<td>{$row[5]} ч</td>
+			<td>{$summ} ч</td>
+			<td>{$weight}</td>
+		      </tr>";
+	        }
+	}
+	
 	function show_insomnia_users(){
 		foreach (json_decode($this->get_insomnia_users()) as $row) {
 		    $num = number_format($row[3], 2, '.', '');
