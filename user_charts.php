@@ -103,13 +103,21 @@ $myOnlineHistiry = new OnlineHistoryCharts();
 <div id="chart_year" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 </div>
 
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<?php
+include 'includes/chart_day.php';
+include 'includes/chart_year.php';
+?>
+
 <div class="jumbotron">
     <div class="container" id="interval">
     <div class="input-daterange input-group" id="datepicker">
     <span class="input-group-addon">Сколько часов вы были онлайн с </span>
-    <input type="text" class="input-sm form-control" name="start" data-date-format="dd.mm.yy" size="5" value="01.09.15"/>
+    <input type="text" class="input-sm form-control" name="start" data-date-format="dd.mm.yy" size="5" 
+	value="<?php echo $myOnlineHistiry->get_correct_date_interval($_GET['d'])[0]; ?>"/>
     <span class="input-group-addon">по</span>
-    <input type="text" class="input-sm form-control" name="end" data-date-format="dd.mm.yy" size="5" value="<?php echo $myOnlineHistiry->get_correct_date($_GET['d']); ?>"/>
+    <input type="text" class="input-sm form-control" name="end" data-date-format="dd.mm.yy" size="5" 
+	value="<?php echo $myOnlineHistiry->get_correct_date_interval($_GET['d'])[1]; ?>"/>
     <span class="input-group-addon">
         <a href="" onclick=
 	"my_date=get_range(); location.href=window.location.href+'&d=['+'%22'+my_date[0]+'%22'+','+'%22'+my_date[1]+'%22'+']';return false;">
@@ -121,8 +129,6 @@ $myOnlineHistiry = new OnlineHistoryCharts();
 
 <div id="chart_interval" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 
-<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-<script src="http://code.highcharts.com/highcharts.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
 <script src="includes/charts_model.js"></script>
 
@@ -149,11 +155,6 @@ $('#interval .input-daterange').datepicker({
     todayHighlight: true
 });
 </script>
-
-<?php
-include 'includes/chart_day.php';
-include 'includes/chart_year.php';
-?>
 
 <?php 
 include 'includes/chart_interval.php';
