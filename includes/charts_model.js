@@ -51,14 +51,7 @@ function save_cleared_series(length){
     if (length == 24){
 	my_hours_count = remove_empty_hourse(categories[cat_counter],my_hours_count,length);
     } else {
-	//console.log(my_hours_count);
-	//console.log(categories[cat_counter]);
-
 	my_hours_count = remove_empty_dates(categories[cat_counter],my_hours_count,length);
-
-	//console.log("corect categories false");
-	//console.log(categories[cat_counter]);
-	//console.log(my_hours_count);
     }
     //my_hours_count = normalise_hours(remove_empty_hourse(categories,my_hours_count),days,current_user_number);
     
@@ -84,10 +77,6 @@ function remove_empty_dates(raw_dates, data, length){
 
 function data_corrector(correct_categories, raw_categories, data){
     var corrected_data = new Array(correct_categories.length);
-    console.log("correct_categories");
-    console.log(correct_categories);
-    console.log("raw_categories");
-    console.log(raw_categories);
 
     for (i = 0; i < correct_categories.length; i++){
 	for (j = 0; j < raw_categories.length; j++){
@@ -100,9 +89,6 @@ function data_corrector(correct_categories, raw_categories, data){
 	    }
 	}
     }
-    categories[cat_counter] = correct_categories;
-    console.log("categories");
-    console.log(categories);
 
     return corrected_data;    
 }
@@ -119,10 +105,6 @@ function get_curren_interval(){
 
 function get_all_days(s, e){
     var a = [];
-    //console.log("s");
-    //console.log(s);
-    //console.log("e");
-    //console.log(e);
     
     while(s <= e){
         a.push(s);
@@ -130,17 +112,12 @@ function get_all_days(s, e){
             s.getDate() + 1
         ))
     }
-    //console.log("a");
-    //console.log(a);
 
     //Convert date format to like 2015-11-04
     for (i = 0; i < a.length; i++){
 	a[i] = a[i].toISOString().slice(0,10);
-        //console.log(a[i]);
     }
 
-    //console.log("a");
-    //console.log(a);
     return a;
 };
 

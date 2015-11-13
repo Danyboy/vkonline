@@ -97,37 +97,17 @@ $my_date = $_GET['d'];
 $myOnlineHistiry = new OnlineHistoryCharts();
 ?>
 
-<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
-<script src="http://code.highcharts.com/highcharts.js"></script>
-<script src="includes/charts_model.js"></script>
-
-<script type="text/javascript">
-var data_by_day = <?php echo json_encode($myOnlineHistiry->get_user_activity_by_day($users, $my_date)) ?>;
-var data_by_days = <?php echo json_encode($myOnlineHistiry->get_user_activity_by_days($users, $my_date)) ?>;
-var data = <?php echo json_encode($myOnlineHistiry->get_activity_by_user($users)) ?>;
-var php_names = <?php echo json_encode($myOnlineHistiry->get_current_users_name($users)) ?>;
-//TODO bug with uncorrect user names if sorting id in data and names is different 
-//TODO check php query before json encode
-
-my_init();
-</script>
 
 <div>
 <div id="chart_day" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 <div id="chart_year" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 </div>
 
-<?php
-include 'includes/chart_day.php';
-include 'includes/chart_year.php';
-?>
-
 <div class="jumbotron">
     <div class="container" id="interval">
     <div class="input-daterange input-group" id="datepicker">
     <span class="input-group-addon">Сколько часов вы были онлайн с </span>
-    <input type="text" class="input-sm form-control" name="start" data-date-format="dd.mm.yy" size="5" value="01.10.15"/>
+    <input type="text" class="input-sm form-control" name="start" data-date-format="dd.mm.yy" size="5" value="01.09.15"/>
     <span class="input-group-addon">по</span>
     <input type="text" class="input-sm form-control" name="end" data-date-format="dd.mm.yy" size="5" value="<?php echo $myOnlineHistiry->get_correct_date($_GET['d']); ?>"/>
     <span class="input-group-addon">
@@ -141,6 +121,25 @@ include 'includes/chart_year.php';
 
 <div id="chart_interval" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 
+<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
+<script src="includes/charts_model.js"></script>
+
+<script type="text/javascript">
+var data_by_day = <?php echo json_encode($myOnlineHistiry->get_user_activity_by_day($users, $my_date)) ?>;
+var data_by_days = <?php echo json_encode($myOnlineHistiry->get_user_activity_by_days($users, $my_date)) ?>;
+var data = <?php echo json_encode($myOnlineHistiry->get_activity_by_user($users)) ?>;
+var php_names = <?php echo json_encode($myOnlineHistiry->get_current_users_name($users)) ?>;
+//TODO bug with incorrect user names if sorting id in data and names is different 
+//TODO check php query before json encode
+
+series_activity_by_user = generate_array_for_graphs(data, php_names, 24);
+series_activity_user_by_day = generate_array_for_graphs(data_by_day, php_names, 24);
+series_activity_user_by_days = generate_array_for_graphs(data_by_days, php_names, 315);
+</script>
+
+
 <script>
 $('#interval .input-daterange').datepicker({
     format: "dd.mm.yy",
@@ -151,6 +150,10 @@ $('#interval .input-daterange').datepicker({
 });
 </script>
 
+<?php
+include 'includes/chart_day.php';
+include 'includes/chart_year.php';
+?>
 
 <?php 
 include 'includes/chart_interval.php';
