@@ -84,11 +84,11 @@ function data_corrector(correct_categories, raw_categories, data){
 		corrected_data[i] = data[j];
 		continue;
 	    } else if (typeof corrected_data[i] === 'undefined'){
-		correct_categories[i] = correct_categories[i];
 		corrected_data[i] = 0;
 	    }
 	}
     }
+    categories[cat_counter] = correct_categories;
 
     return corrected_data;    
 }
