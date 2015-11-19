@@ -20,20 +20,31 @@ class OnlineHistory
 	     curl_close($ch);
 	     return $data;
 	}
+
+	function get_followers(){
+		$count_query = "SELECT id FROM followers";
+		return $this->query_to_json($count_query);
+	}
 	
 	function get_friends() {
 	     $url="https://api.vk.com/method/friends.get?user_id={$this->id}"; //https://api.vk.com/method/friends.get?user_id=$id\&access_token=$vkapi_token
 	     return $this->send_req($url);
 	}
 
-	function get_online(){
+	function get_online_for_all_followers(){
+	     foreach (json_decode($this->get_followers()) as $current_user) {	
+		    $this->get_online($current_user);
+	     }
+	}
+
+	function get_online($current_user){
 	     $chunked = array_chunk(json_decode($this->get_friends())->response, 400);
 	     $result = array();
 	     $owner = true;
 
 	     foreach ($chunked as $users){
 		if($owner){
-		    array_push($users, $this->id);
+		    array_push($users, $current_user);
 		    $owner = false;
 		}
 		$json = json_decode($this->get_online_part(implode(",",$users)))->response;
@@ -87,7 +98,6 @@ class OnlineHistory
 	}
 
 	function get_minutes_by_ids($users){
-		$this->connect();
 		
 		$users_string = implode(",", $users);
 		$count_query = "SELECT user_id, EXTRACT(hour FROM status) AS hours, COUNT (EXTRACT(hour FROM status)) / 12 AS count 
@@ -210,15 +220,11 @@ class OnlineHistory
 	}
 	
         function add_users_activity(){
-                foreach($this->get_online() as $value){
+                foreach($this->get_online($this->id) as $value){
 		    $this->save_online_users($value);
                 }
 	}
 }
-
-//$myOnlineHistiry = new OnlineHistory();
-//$myOnlineHistiry->get_previous_dates(5, "4-12-15");
-//$myOnlineHistiry->show_previous_dates($_GET['d']);
 
 //For adding date in table run as
 //php online_table.php add_data
