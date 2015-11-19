@@ -37,7 +37,9 @@ include 'includes/start.php';
               <tbody>
 
 <?php
-$myOnlineHistiry->show_users_compatibility($_GET['u']);
+include 'includes/get_compatibility.php';
+$myOnlineCompatibility = new OnlineHistoryCompatibility();
+$myOnlineCompatibility->show_users_compatibility($_GET['u']);
 ?>
 
 <script language="javascript">
@@ -56,7 +58,7 @@ function authInfo(response) {
 }
 
 function change_info_for_logged(id){
-    document.getElementById("main_info").innerHTML = document.getElementById("main_info").innerHTML.replace(/749972/g, id);
+    document.getElementById("main_info").innerHTML = document.getElementById("main_info").innerHTML.replace(/385525/g, id);
 }
 
 function add_logged_user(id) {
