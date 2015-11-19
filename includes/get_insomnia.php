@@ -1,4 +1,5 @@
 <?php 
+include '../online_table.php';
 
 class OnlineHistoryInsomnia extends OnlineHistory{
 

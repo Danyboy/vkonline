@@ -8,6 +8,9 @@
 --create table user_online (user_id int, status timestamp, foreign key (user_id) references users (id));
 --create table followers (id int primary key);
 
+--3)
+--GRANT ALL ON followers TO root;
+
 --insert into users (id, name, link) values ($my_id, '${my_name}', '${my_link}');
 --insert into user_online (user_id, status) value ($my_id, to_timestamp($my_date));
 
