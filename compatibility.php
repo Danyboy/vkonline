@@ -31,6 +31,7 @@ include 'includes/start.php';
                   <th class="sorttable_nosort"> Пользователи</th>
                   <th class="sorttable_numeric"> Коэф. совместимости</th>
                   <th class="sorttable_numeric"> Часов онлайн вместе</th>
+                  <th class="sorttable_numeric"> Процент онлайн вместе</th>
                 </tr>
               </thead>
               <tbody>
