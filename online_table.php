@@ -26,8 +26,8 @@ class OnlineHistory
 		return $this->query_to_json($count_query);
 	}
 	
-	function get_friends() {
-	     $url="https://api.vk.com/method/friends.get?user_id={$this->id}"; //https://api.vk.com/method/friends.get?user_id=$id\&access_token=$vkapi_token
+	function get_friends($current_user) {
+	     $url="https://api.vk.com/method/friends.get?user_id={$current_user}"; //https://api.vk.com/method/friends.get?user_id=$id\&access_token=$vkapi_token
 	     return $this->send_req($url);
 	}
 
@@ -38,13 +38,14 @@ class OnlineHistory
 	}
 
 	function get_online($current_user){
-	     $chunked = array_chunk(json_decode($this->get_friends())->response, 400);
+	     //echo $current_user;
+	     $chunked = array_chunk(json_decode($this->get_friends($current_user))->response, 400);
 	     $result = array();
 	     $owner = true;
 
 	     foreach ($chunked as $users){
 		if($owner){
-		    array_push($users, $current_user);
+		    //array_push($users, $current_user); //BUG not need add owner, if people has each over in friends TEMPORARY
 		    $owner = false;
 		}
 		$json = json_decode($this->get_online_part(implode(",",$users)))->response;
@@ -158,6 +159,14 @@ class OnlineHistory
 		}
 	}
 
+        function save_to_user_table($value, $current_user){
+		//TODO check priviligies
+		//$create_table = "CREATE TABLE user_online{$current_user} user_id INT, status TIMESTAMP, FOREIGN KEY (user_id) REFERENCES users (id));
+	        $insert_date_query = "INSERT INTO user_online{$current_user} (user_id, status) VALUES ({$value->uid}, CURRENT_TIMESTAMP(0));";
+		$this->my_query($insert_date_query);
+		$this->my_query($create_table);
+	}
+
         function save_to_db($value){
                 $my_name = $value->first_name . " " . $value->last_name;
 		
@@ -219,10 +228,16 @@ class OnlineHistory
 		}
 	}
 	
-        function add_users_activity(){
-                foreach($this->get_online($this->id) as $value){
+        function add_user_activity($current_user){
+                foreach($this->get_online($current_user) as $value){
 		    $this->save_online_users($value);
-                }
+                }	
+	}
+
+        function add_users_activity(){
+		foreach (json_decode($this->get_followers()) as $current_user) {
+		    $this->add_user_activity($current_user[0]); //why multy array
+	        }
 	}
 }
 
