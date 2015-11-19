@@ -2,6 +2,7 @@
 
 class OnlineHistory
 {
+	//public $id="385525";
 	public $id="749972";
 	public $json;
 	public $dbconn; 	//Why working if remove this?
@@ -19,14 +20,44 @@ class OnlineHistory
 	     curl_close($ch);
 	     return $data;
 	}
+
+	function get_followers(){
+		$count_query = "SELECT id FROM followers";
+		return $this->query_to_json($count_query);
+	}
 	
-	function get_friends() { 
-	     $url="https://api.vk.com/method/friends.get?user_id={$this->id}"; //https://api.vk.com/method/friends.get?user_id=$id\&access_token=$vkapi_token
+	function get_friends($current_user) {
+	     $url="https://api.vk.com/method/friends.get?user_id={$current_user}"; //https://api.vk.com/method/friends.get?user_id=$id\&access_token=$vkapi_token
 	     return $this->send_req($url);
 	}
 
-	function get_online() { 
-	     $url="https://api.vk.com/method/users.get?user_ids=" . implode(",",json_decode($this->get_friends())->response) . "," . $this->id . ",\&fields=online,photo_50,\&lang=en";
+	function get_online_for_all_followers(){
+	     foreach (json_decode($this->get_followers()) as $current_user) {	
+		    $this->get_online($current_user);
+	     }
+	}
+
+	function get_online($current_user){
+	     //echo $current_user;
+	     $chunked = array_chunk(json_decode($this->get_friends($current_user))->response, 400);
+	     $result = array();
+	     $owner = true;
+
+	     foreach ($chunked as $users){
+		if($owner){
+		    //array_push($users, $current_user); //BUG not need add owner, if people has each over in friends TEMPORARY
+		    $owner = false;
+		}
+		$json = json_decode($this->get_online_part(implode(",",$users)))->response;
+		$result = array_merge($result,$json); 
+	     }
+
+	     return $result;
+
+	}
+
+	function get_online_part($str) { 
+	     $url="https://api.vk.com/method/users.get?user_ids=" . $str . ",\&fields=online,photo_50,\&lang=en";
 	     return $this->send_req($url);
 	}
 	
@@ -37,7 +68,7 @@ class OnlineHistory
 		$my_db = "vk";
 
 		//connection to the database
-		$this->dbconn = pg_connect("dbname=vk user=root password=***REMOVED***")
+		$this->dbconn = pg_connect("dbname={$my_db} user={$username} password={$password}")
 		  or die("Unable to connect to PostgreSQL");
 		//echo "Connected to PostgreSQL<br>";
 	}
@@ -68,7 +99,6 @@ class OnlineHistory
 	}
 
 	function get_minutes_by_ids($users){
-		$this->connect();
 		
 		$users_string = implode(",", $users);
 		$count_query = "SELECT user_id, EXTRACT(hour FROM status) AS hours, COUNT (EXTRACT(hour FROM status)) / 12 AS count 
@@ -84,11 +114,11 @@ class OnlineHistory
 		//Temporary not used request
 		$user_online_minutes_by_hourse = "SELECT user_id, EXTRACT(hour FROM status) AS hours, COUNT (EXTRACT(hour FROM status)) * 5 AS count 
                                 FROM user_online 
-                                WHERE user_id IN (749972) AND DATE(status) = '11-9-2015' GROUP BY hours, user_id ORDER BY user_id, hours ASC;";
+                                WHERE user_id IN (385525) AND DATE(status) = '11-9-2015' GROUP BY hours, user_id ORDER BY user_id, hours ASC;";
                                 
 		$user_online_minutes = "SELECT user_id, COUNT (EXTRACT(hour FROM status)) * 5 AS count 
                                 FROM user_online 
-                                WHERE user_id IN (749972) AND DATE(status) = '11-9-2015' GROUP BY user_id;";
+                                WHERE user_id IN (385525) AND DATE(status) = '11-9-2015' GROUP BY user_id;";
 		return $this->query_to_json($user_online_minutes_by_hourse);;
 	}
 	
@@ -115,7 +145,7 @@ class OnlineHistory
 			<td><input type='checkbox' name='mycheckbox' value='{$row[0]}'></td>
 			<td><a href='http://vk.com/id{$row[0]}'>
 			    <img src='{$row[1]}' alt='$row[2]'></a>
-			    <a href='./u?users=[{$row[0]},749972,42606657]&d={$my_date}'>
+			    <a href='./u?users=[{$row[0]},385525,690765]&d={$my_date}'>
 			    {$row[2]}	<img src='Chart-icon.png' alt='$row[2]' align='right'></a></td>
 			<td><a href='c?u={$row[0]}'>
 			    {$my_time} <img src='includes/heart_25.png' alt='$row[2]' alight='right'></a></td>
@@ -123,93 +153,18 @@ class OnlineHistory
 	        }
 	}
 
-	function get_insomnia_users(){
-                $count_query = "
-			        SELECT user_id, link, name, (night::float / (day + 1)) AS stat, night, day
-			        FROM (
-			            SELECT user_id, 
-			                SUM (CASE 
-			                WHEN EXTRACT(hour FROM status) BETWEEN '0' AND '8'
-			                    THEN 1
-			                    ELSE 0
-			                END ) AS night,
-			                SUM (CASE WHEN EXTRACT(hour FROM status) BETWEEN '9' AND '23'
-			                    THEN 1
-			                    ELSE 0
-			                END ) AS day
-			            FROM user_online 
-			            GROUP BY user_id
-			            ) AS dayNight JOIN users ON (dayNight.user_id = users.id)
-			        ORDER BY night DESC;";
-
-		return $this->query_to_json($count_query);
-	}
-
-	function get_users_compatibility($user){
-	
-                $count_query = "
-			SELECT id, link, name, count, coef, online_hours
-			FROM (
-			    SELECT my_users.user_id, COUNT (*) AS count, COUNT(*)::float / user_coef.all_hours AS coef, user_coef.all_hours AS online_hours
-			    FROM user_online LEFT JOIN user_online AS my_users
-			        ON my_users.status = user_online.status
-			        INNER JOIN (SELECT user_id, COUNT(*) AS all_hours
-				FROM user_online
-				GROUP BY user_id) AS user_coef
-				    ON user_coef.user_id = my_users.user_id
-			    WHERE user_online.user_id = {$user}
-			    GROUP BY user_online.user_id, my_users.user_id, user_coef.all_hours
-			    ORDER BY count DESC
-			) AS my_comp
-			JOIN users 
-			ON (my_comp.user_id = id);
-				";
-
-		return $this->query_to_json($count_query);
-	}
-
-	function show_users_compatibility($user){
-		foreach (json_decode($this->get_users_compatibility($user)) as $row) {
-		    $num = number_format($row[4], 2, '.', '');
-		    $time_together = number_format($row[3] / 12, 0, '.', '');
-		    $percent_together = number_format($row[3] * 100 / $row[5], 0, '.', '');
-		    echo "<tr>
-			<td><input type='checkbox' name='mycheckbox' value='{$row[0]}'></td>
-			<td><a href='http://vk.com/id{$row[0]}'>
-			    <img src='{$row[1]}' alt='$row[2]'></a>
-			    <a href='./u?users=[{$row[0]},749972,42606657]&d={$my_date}'>
-			    {$row[2]}	<img src='Chart-icon.png' alt='$row[2]' align='right'></a></td>
-			<td>{$num}</td>
-			<td>{$time_together} ч</td>
-			<td>{$percent_together} %</td>
-		      </tr>";
-	        }
-	}
-	
-	function show_insomnia_users(){
-		foreach (json_decode($this->get_insomnia_users()) as $row) {
-		    $num = number_format($row[3], 2, '.', '');
-		    $summ = $row[4] + $row[5];
-		    $weight = $num * $summ;
-		    echo "<tr>
-			<td><input type='checkbox' name='mycheckbox' value='{$row[0]}'></td>
-			<td><a href='http://vk.com/id{$row[0]}'>
-			    <img src='{$row[1]}' alt='$row[2]'></a>
-			    <a href='./u?users=[{$row[0]},749972,42606657]&d={$my_date}'>
-			    {$row[2]}	<img src='Chart-icon.png' alt='$row[2]' align='right'></a></td>
-			<td>{$num}</td>
-			<td>{$row[4]} ч</td>
-			<td>{$row[5]} ч</td>
-			<td>{$summ} ч</td>
-			<td>{$weight}</td>
-		      </tr>";
-	        }
-	}
-	
 	function save_online_users($value){
 		if (strcmp("{$value->online}", "0") !== 0){
             	    $this->save_to_db($value);
 		}
+	}
+
+        function save_to_user_table($value, $current_user){
+		//TODO check priviligies
+		//$create_table = "CREATE TABLE user_online{$current_user} user_id INT, status TIMESTAMP, FOREIGN KEY (user_id) REFERENCES users (id));
+	        $insert_date_query = "INSERT INTO user_online{$current_user} (user_id, status) VALUES ({$value->uid}, CURRENT_TIMESTAMP(0));";
+		$this->my_query($insert_date_query);
+		$this->my_query($create_table);
 	}
 
         function save_to_db($value){
@@ -219,13 +174,16 @@ class OnlineHistory
 	        $insert_user_query = "INSERT INTO users (id, name, link) VALUES ({$value->uid}, '{$my_name}', '{$value->photo_50}');";
 	        $insert_date_query = "INSERT INTO user_online (user_id, status) VALUES ({$value->uid}, CURRENT_TIMESTAMP(0));";
 
-                $is_user_exists = (strcmp($this->query_to_json($check_user_query), '[["0"]]') == 0);
-                if ($is_user_exists){
+                if ($this->user_non_exists($check_user_query)){
                     $myqr = $this->my_query($insert_user_query);
                 }
 
                 $this->my_query($insert_date_query);
         }
+	
+	function user_non_exists($query){
+                return (strcmp($this->query_to_json($query), '[["0"]]') == 0);
+	}
 
 	function get_correct_date($my_date){
 		date_default_timezone_set('Europe/Moscow');
@@ -270,24 +228,25 @@ class OnlineHistory
 		}
 	}
 	
-        function add_users_activity(){
-		$json = $this->get_online();
-                $obj = json_decode($json);
-                foreach( $obj->response as $value){
+        function add_user_activity($current_user){
+                foreach($this->get_online($current_user) as $value){
 		    $this->save_online_users($value);
-                }
+                }	
+	}
+
+        function add_users_activity(){
+		foreach (json_decode($this->get_followers()) as $current_user) {
+		    $this->add_user_activity($current_user[0]); //why multy array
+	        }
 	}
 }
-
-//$myOnlineHistiry = new OnlineHistory();
-//$myOnlineHistiry->get_previous_dates(5, "4-12-15");
-//$myOnlineHistiry->show_previous_dates($_GET['d']);
 
 //For adding date in table run as
 //php online_table.php add_data
 if (strcmp("{$argv[1]}", "add_data") == 0){
     $myOnlineHistiry = new OnlineHistory();
-    $myOnlineHistiry->add_users_activity();
+    $myOnlineHistiry->add_user_activity($myOnlineHistiry->id);
+    //$myOnlineHistiry->add_users_activity();
 } 
 
 ?>
