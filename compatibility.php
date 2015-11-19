@@ -36,7 +36,9 @@ include 'includes/start.php';
               <tbody>
 
 <?php
-$myOnlineHistiry->show_users_compatibility($_GET['u']);
+include 'includes/get_compatibility.php';
+$myOnlineCompatibility = new OnlineHistoryCompatibility();
+$myOnlineCompatibility->show_users_compatibility($_GET['u']);
 ?>
 
 <script language="javascript">
