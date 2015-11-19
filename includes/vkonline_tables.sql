@@ -1,14 +1,20 @@
 
+--1)
 --postgres-# create database vk;
 --CREATE DATABASE
 
+--2)
 --create table users (id int primary key, name varchar, link varchar);
 --create table user_online (user_id int, status timestamp, foreign key (user_id) references users (id));
+--create table followers (id int primary key);
 
 --insert into users (id, name, link) values ($my_id, '${my_name}', '${my_link}');
 --insert into user_online (user_id, status) value ($my_id, to_timestamp($my_date));
 
 --UPDATE user_online SET (status = status - INTERVAL(1 HOUR)) WHERE status between '2015-10-25 00:00:00' and '2015-10-26 17:00:00';
+
+
+
 
 UPDATE user_online SET status = status - INTERVAL '1 HOUR' WHERE status between '2015-10-26 17:00:00' and '2015-10-26 19:00:00';
 
