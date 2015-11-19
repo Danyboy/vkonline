@@ -40,7 +40,9 @@ include 'includes/start.php';
               <tbody>
 
 <?php
-$myOnlineHistiry->show_insomnia_users();
+include 'includes/get_insomnia.php';
+$myOnlineInsomnia = new OnlineHistoryInsomnia();
+$myOnlineInsomnia->show_insomnia_users();
 ?>
 
 <script language="javascript">
