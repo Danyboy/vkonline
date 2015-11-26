@@ -45,6 +45,7 @@ class OnlineHistory
 
 	     foreach ($chunked as $users){
 		if($owner){
+		    //TWO BUGS with intersects people
 		    array_push($users, $current_user); //BUG not need add owner, if people has each over in friends TEMPORARY
 		    $owner = false;
 		}
@@ -114,11 +115,11 @@ class OnlineHistory
 		//Temporary not used request
 		$user_online_minutes_by_hourse = "SELECT user_id, EXTRACT(hour FROM status) AS hours, COUNT (EXTRACT(hour FROM status)) * 5 AS count 
                                 FROM user_online 
-                                WHERE user_id IN (385525) AND DATE(status) = '11-9-2015' GROUP BY hours, user_id ORDER BY user_id, hours ASC;";
+                                WHERE user_id IN ($this->id) AND DATE(status) = '11-9-2015' GROUP BY hours, user_id ORDER BY user_id, hours ASC;";
                                 
 		$user_online_minutes = "SELECT user_id, COUNT (EXTRACT(hour FROM status)) * 5 AS count 
                                 FROM user_online 
-                                WHERE user_id IN (385525) AND DATE(status) = '11-9-2015' GROUP BY user_id;";
+                                WHERE user_id IN ($this->id) AND DATE(status) = '11-9-2015' GROUP BY user_id;";
 		return $this->query_to_json($user_online_minutes_by_hourse);;
 	}
 	
