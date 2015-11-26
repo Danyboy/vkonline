@@ -45,7 +45,7 @@ class OnlineHistory
 
 	     foreach ($chunked as $users){
 		if($owner){
-		    //array_push($users, $current_user); //BUG not need add owner, if people has each over in friends TEMPORARY
+		    array_push($users, $current_user); //BUG not need add owner, if people has each over in friends TEMPORARY
 		    $owner = false;
 		}
 		$json = json_decode($this->get_online_part(implode(",",$users)))->response;
@@ -145,7 +145,7 @@ class OnlineHistory
 			<td><input type='checkbox' name='mycheckbox' value='{$row[0]}'></td>
 			<td><a href='http://vk.com/id{$row[0]}'>
 			    <img src='{$row[1]}' alt='$row[2]'></a>
-			    <a href='./u?users=[{$row[0]},385525,690765]&d={$my_date}'>
+			    <a href='./u?users=[{$row[0]},385525,749972]&d={$my_date}'>
 			    {$row[2]}	<img src='Chart-icon.png' alt='$row[2]' align='right'></a></td>
 			<td><a href='c?u={$row[0]}'>
 			    {$my_time} <img src='includes/heart_25.png' alt='$row[2]' alight='right'></a></td>
