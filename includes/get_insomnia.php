@@ -34,7 +34,7 @@ class OnlineHistoryInsomnia extends OnlineHistory{
 			<td><input type='checkbox' name='mycheckbox' value='{$row[0]}'></td>
 			<td><a href='http://vk.com/id{$row[0]}'>
 			    <img src='{$row[1]}' alt='$row[2]'></a>
-			    <a href='./u?users=[{$row[0]},385525,690765]'>
+			    <a href='./u?users=[{$row[0]},$this->id,690765]'>
 			    {$row[2]}	<img src='Chart-icon.png' alt='$row[2]' align='right'></a></td>
 			<td>{$num}</td>
 			<td>{$row[4]} ч</td>
