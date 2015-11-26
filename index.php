@@ -9,10 +9,10 @@ include 'includes/start.php';
             onkeydown="if (event.keyCode == 13) document.getElementById('date_link').click()"
             value=<?php echo $myOnlineHistiry->get_correct_date($_GET['d']); ?>> 
            или в 
-	    <a href="u?users=[339229,385525,690765]" id="date_link"
+	    <a href="u?users=[339229,385525,749972]" id="date_link"
 	     onclick="my_date=$('.datepicker').val(); location.href=this.href+'&d='+my_date;return false;">
     	    любую другую дату</a>.
-            Есть поминутная статистика, <a href="u?users=[339229,385525,690765]&d=">красочные графики</a>,
+            Есть поминутная статистика, <a href="u?users=[339229,385525,749972]&d=">красочные графики</a>,
 	    детектор 
 	    <a href="insomnia">бессоницы</a> и 
 	    <a href="c?u=385525">совместимости <img src='includes/heart_25.png' alt='$row[2]'></a>
