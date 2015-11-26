@@ -45,7 +45,8 @@ class OnlineHistory
 
 	     foreach ($chunked as $users){
 		if($owner){
-		    //array_push($users, $current_user); //BUG not need add owner, if people has each over in friends TEMPORARY
+		    //TWO BUGS with intersects people
+		    array_push($users, $current_user); //BUG not need add owner, if people has each over in friends TEMPORARY
 		    $owner = false;
 		}
 		$json = json_decode($this->get_online_part(implode(",",$users)))->response;

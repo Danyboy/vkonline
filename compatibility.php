@@ -29,8 +29,10 @@ include 'includes/start.php';
                     Сравнить</a>
                   </th>
                   <th class="sorttable_nosort"> Пользователи</th>
-                  <th class="sorttable_numeric"> Коэф. совместимости</th>
                   <th class="sorttable_numeric"> Часов онлайн вместе</th>
+                  <th class="sorttable_numeric"> Твой процент онлайн вместе</th>
+                  <th class="sorttable_numeric"> Их процент онлайн вместе</th>
+                  <th class="sorttable_numeric"> Коэф. совместимости</th>
                 </tr>
               </thead>
               <tbody>
