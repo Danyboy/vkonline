@@ -4,6 +4,7 @@ class OnlineHistory
 {
 	//public $id="385525";
 	public $id="749972";
+	public $current_id="749972";
 	public $json;
 	public $dbconn; 	//Why working if remove this?
 	private $vkapi_token='cd7781010610415dd8d3a039d5cbaedc0309b19ff19c58d3e8ab67294fa7ab85ed5d29837bedd1a05758a';
@@ -139,6 +140,22 @@ class OnlineHistory
 		return $this->query_to_json($count_query);
 	}
 
+	function get_users_online_hours_2($my_date){
+	
+		$my_date = $this->get_correct_date($my_date);
+		
+		$count_query_without_data = "SELECT user_id, COUNT (EXTRACT(hour FROM status)) * 5 AS count 
+                                FROM online{$this->current_id}
+                                WHERE DATE(status) = '11-9-2015' GROUP BY user_id;";
+                                
+                $count_query = "SELECT user_id, link, name, COUNT (EXTRACT(hour FROM status)) * 5 AS minutes 
+                                FROM user_online JOIN users{$current_id} ON (online{$this->current_id}.user_id = users{$current_id}.id)
+				WHERE DATE(status) = '{$my_date}'
+				GROUP BY user_id, link, name ORDER BY minutes DESC;";
+		
+		return $this->query_to_json($count_query);
+	}
+
 	function show_today_online_users($my_date){
 		foreach (json_decode($this->get_users_online_hours($my_date)) as $row) {
 		    $my_time = date('H \ч i \м', mktime(0,$row[3]));
@@ -162,18 +179,34 @@ class OnlineHistory
 
         function save_to_user_table($value, $current_user){
 		//TODO check priviligies
-		//$create_table = "CREATE TABLE user_online{$current_user} user_id INT, status TIMESTAMP, FOREIGN KEY (user_id) REFERENCES users (id));
+		//$create_table = "CREATE TABLE online{$current_user} user_id INT, status TIMESTAMP, FOREIGN KEY (user_id) REFERENCES users (id));
+
+	        //$insert_date_query = "INSERT INTO online{$current_user} (user_id, status) VALUES ({$value->uid}, CURRENT_TIMESTAMP(0));";
 	        $insert_date_query = "INSERT INTO user_online{$current_user} (user_id, status) VALUES ({$value->uid}, CURRENT_TIMESTAMP(0));";
 		$this->my_query($insert_date_query);
 		$this->my_query($create_table);
 	}
 
-        function save_to_db($value){
+        function save_to_db($value, $current_user){
                 $my_name = $value->first_name . " " . $value->last_name;
 		
 	        $check_user_query = "SELECT COUNT(id) FROM users WHERE id={$value->uid};";
 	        $insert_user_query = "INSERT INTO users (id, name, link) VALUES ({$value->uid}, '{$my_name}', '{$value->photo_50}');";
 	        $insert_date_query = "INSERT INTO user_online (user_id, status) VALUES ({$value->uid}, CURRENT_TIMESTAMP(0));";
+
+                if ($this->user_non_exists($check_user_query)){
+                    $myqr = $this->my_query($insert_user_query);
+                }
+
+                $this->my_query($insert_date_query);
+        }
+
+        function save_to_db_2($value, $current_user){
+                $my_name = $value->first_name . " " . $value->last_name;
+		
+	        $check_user_query = "SELECT COUNT(id) FROM users{$current_user} WHERE id={$value->uid};";
+	        $insert_user_query = "INSERT INTO users{$current_user} (id, name, link) VALUES ({$value->uid}, '{$my_name}', '{$value->photo_50}');";
+	        $insert_date_query = "INSERT INTO online{$current_user} (user_id, status) VALUES ({$value->uid}, CURRENT_TIMESTAMP(0));";
 
                 if ($this->user_non_exists($check_user_query)){
                     $myqr = $this->my_query($insert_user_query);
@@ -231,7 +264,8 @@ class OnlineHistory
 	
         function add_user_activity($current_user){
                 foreach($this->get_online($current_user) as $value){
-		    $this->save_online_users($value);
+		    $this->$current_id = $current_user;
+		    $this->save_online_users($value, $current_user);
                 }	
 	}
 
