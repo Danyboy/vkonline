@@ -173,7 +173,7 @@ class OnlineHistory
 
 	function save_online_users($value){
 		if (strcmp("{$value->online}", "0") !== 0){
-            	    $this->save_to_db($value);
+            	    $this->save_to_db($value, $this->current_id);
 		}
 	}
 
@@ -264,7 +264,8 @@ class OnlineHistory
 	
         function add_user_activity($current_user){
                 foreach($this->get_online($current_user) as $value){
-		    $this->$current_id = $current_user;
+            	    global $current_id;
+		    $current_id = $current_user;
 		    $this->save_online_users($value, $current_user);
                 }	
 	}
