@@ -123,22 +123,6 @@ class OnlineHistory
                                 WHERE user_id IN ($this->id) AND DATE(status) = '11-9-2015' GROUP BY user_id;";
 		return $this->query_to_json($user_online_minutes_by_hourse);;
 	}
-	
-	function get_users_online_hours_old($my_date){
-	
-		$my_date = $this->get_correct_date($my_date);
-		
-		$count_query_without_data = "SELECT user_id, COUNT (EXTRACT(hour FROM status)) * 5 AS count 
-                                FROM user_online 
-                                WHERE DATE(status) = '11-9-2015' GROUP BY user_id;";
-                                
-                $count_query = "SELECT user_id, link, name, COUNT (EXTRACT(hour FROM status)) * 5 AS minutes 
-                                FROM user_online JOIN users ON (user_online.user_id = users.id)
-				WHERE DATE(status) = '{$my_date}' 
-				GROUP BY user_id, link, name ORDER BY minutes DESC;";
-		
-		return $this->query_to_json($count_query);
-	}
 
 	function get_users_online_hours($my_date, $current_user){
 	
