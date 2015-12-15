@@ -171,9 +171,9 @@ class OnlineHistory
 	        }
 	}
 
-	function save_online_users($value){
+	function save_online_users($value, $id){
 		if (strcmp("{$value->online}", "0") !== 0){
-            	    $this->save_to_db($value, $this->current_id);
+            	    $this->save_to_db($value, $id);
 		}
 	}
 
@@ -187,7 +187,7 @@ class OnlineHistory
 		$this->my_query($create_table);
 	}
 
-        function save_to_db($value, $current_user){
+        function save_to_db_old($value, $current_user){
                 $my_name = $value->first_name . " " . $value->last_name;
 		
 	        $check_user_query = "SELECT COUNT(id) FROM users WHERE id={$value->uid};";
@@ -201,21 +201,21 @@ class OnlineHistory
                 $this->my_query($insert_date_query);
         }
 
-        function save_to_db_2($value, $current_user){
+        function save_to_db($value, $current_user){
                 $my_name = $value->first_name . " " . $value->last_name;
 		
 	        $check_user_query = "SELECT COUNT(id) FROM users{$current_user} WHERE id={$value->uid};";
 	        $insert_user_query = "INSERT INTO users{$current_user} (id, name, link) VALUES ({$value->uid}, '{$my_name}', '{$value->photo_50}');";
 	        $insert_date_query = "INSERT INTO online{$current_user} (user_id, status) VALUES ({$value->uid}, CURRENT_TIMESTAMP(0));";
 
-                if ($this->user_non_exists($check_user_query)){
+                if ($this->user_non_exists($check_user_query, $current_user)){
                     $myqr = $this->my_query($insert_user_query);
                 }
 
                 $this->my_query($insert_date_query);
         }
 	
-	function user_non_exists($query){
+	function user_non_exists($query, $current_user){
                 return (strcmp($this->query_to_json($query), '[["0"]]') == 0);
 	}
 
@@ -281,8 +281,8 @@ class OnlineHistory
 //php online_table.php add_data
 if (strcmp("{$argv[1]}", "add_data") == 0){
     $myOnlineHistiry = new OnlineHistory();
-    $myOnlineHistiry->add_user_activity($myOnlineHistiry->id);
-    //$myOnlineHistiry->add_users_activity();
+    //$myOnlineHistiry->add_user_activity($myOnlineHistiry->id);
+    $myOnlineHistiry->add_users_activity();
 } 
 
 ?>
