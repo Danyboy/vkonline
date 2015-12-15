@@ -48,7 +48,9 @@ include 'includes/start.php';
 $myOnlineHistiry->show_today_online_users($_GET['d'],$_GET['u']);
 ?>
 
+<script src="includes/charts_model.js"></script>
 <script language="javascript">
+
 VK.init({
         apiId: 5121918
 });
@@ -57,7 +59,14 @@ function authInfo(response) {
     if (response.session) {
         add_logged_user(response.session.mid);
         document.getElementById('login_button').style.display = 'none';
+	//add_follower(response.session.mid);
         change_info_for_logged(response.session.mid);
+	//location.replace("/?u=response.session.mid");
+
+	url = location.search;
+	if (! url.indexOf(response.session.mid) > -1){
+	    //document.location.replace("/?u=" + response.session.mid);
+	}
     } else {
 	//alert('not auth');
   }
@@ -66,6 +75,11 @@ function authInfo(response) {
 function change_info_for_logged(id){
     document.getElementById("main_info").innerHTML = document.getElementById("main_info").innerHTML.replace(/385525/g, id);
 }
+
+function add_follower(id) {
+    post("includes/add_follower.php", "user=id", "post");
+}
+
 
 function add_logged_user(id) {
     var table = document.getElementById('users_statistics');
