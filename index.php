@@ -45,7 +45,7 @@ include 'includes/start.php';
               <tbody>
 
 <?php
-$myOnlineHistiry->show_today_online_users($_GET['d']);
+$myOnlineHistiry->show_today_online_users($_GET['d'],$_GET['u']);
 ?>
 
 <script language="javascript">

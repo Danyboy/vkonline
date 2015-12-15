@@ -124,7 +124,7 @@ class OnlineHistory
 		return $this->query_to_json($user_online_minutes_by_hourse);;
 	}
 	
-	function get_users_online_hours($my_date){
+	function get_users_online_hours_old($my_date){
 	
 		$my_date = $this->get_correct_date($my_date);
 		
@@ -140,24 +140,24 @@ class OnlineHistory
 		return $this->query_to_json($count_query);
 	}
 
-	function get_users_online_hours_2($my_date){
+	function get_users_online_hours($my_date, $current_user){
 	
 		$my_date = $this->get_correct_date($my_date);
 		
 		$count_query_without_data = "SELECT user_id, COUNT (EXTRACT(hour FROM status)) * 5 AS count 
-                                FROM online{$this->current_id}
+                                FROM online{$current_user}
                                 WHERE DATE(status) = '11-9-2015' GROUP BY user_id;";
                                 
                 $count_query = "SELECT user_id, link, name, COUNT (EXTRACT(hour FROM status)) * 5 AS minutes 
-                                FROM user_online JOIN users{$current_id} ON (online{$this->current_id}.user_id = users{$current_id}.id)
+                                FROM online{$current_user} JOIN users{$current_id} ON (online{$current_user}.user_id = users{$current_id}.id)
 				WHERE DATE(status) = '{$my_date}'
 				GROUP BY user_id, link, name ORDER BY minutes DESC;";
 		
 		return $this->query_to_json($count_query);
 	}
 
-	function show_today_online_users($my_date){
-		foreach (json_decode($this->get_users_online_hours($my_date)) as $row) {
+	function show_today_online_users($my_date, $current_user){
+		foreach (json_decode($this->get_users_online_hours($my_date, $current_user)) as $row) {
 		    $my_time = date('H \ч i \м', mktime(0,$row[3]));
 			echo "<tr>
 			<td><input type='checkbox' name='mycheckbox' value='{$row[0]}'></td>
@@ -171,9 +171,9 @@ class OnlineHistory
 	        }
 	}
 
-	function save_online_users($value, $id){
+	function save_online_users($value, $current_user){
 		if (strcmp("{$value->online}", "0") !== 0){
-            	    $this->save_to_db($value, $id);
+            	    $this->save_to_db($value, $current_user);
 		}
 	}
 
@@ -186,20 +186,6 @@ class OnlineHistory
 		$this->my_query($insert_date_query);
 		$this->my_query($create_table);
 	}
-
-        function save_to_db_old($value, $current_user){
-                $my_name = $value->first_name . " " . $value->last_name;
-		
-	        $check_user_query = "SELECT COUNT(id) FROM users WHERE id={$value->uid};";
-	        $insert_user_query = "INSERT INTO users (id, name, link) VALUES ({$value->uid}, '{$my_name}', '{$value->photo_50}');";
-	        $insert_date_query = "INSERT INTO user_online (user_id, status) VALUES ({$value->uid}, CURRENT_TIMESTAMP(0));";
-
-                if ($this->user_non_exists($check_user_query)){
-                    $myqr = $this->my_query($insert_user_query);
-                }
-
-                $this->my_query($insert_date_query);
-        }
 
         function save_to_db($value, $current_user){
                 $my_name = $value->first_name . " " . $value->last_name;
@@ -281,7 +267,6 @@ class OnlineHistory
 //php online_table.php add_data
 if (strcmp("{$argv[1]}", "add_data") == 0){
     $myOnlineHistiry = new OnlineHistory();
-    //$myOnlineHistiry->add_user_activity($myOnlineHistiry->id);
     $myOnlineHistiry->add_users_activity();
 } 
 
