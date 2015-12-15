@@ -50,7 +50,7 @@
         <li>
 	    <?php
 	    include '/var/www/html/online_table.php';
-
+	    //include '../online_table.php';
 	    $myOnlineHistiry = new OnlineHistory();
 	    $myOnlineHistiry->show_previous_dates($myOnlineHistiry->get_correct_date($_GET['d']));
 	    ?>
