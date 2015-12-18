@@ -64,7 +64,7 @@ function authInfo(response) {
 	//location.replace("/?u=response.session.mid");
 
 	url = location.search;
-	if (! url.indexOf(response.session.mid) > -1){
+	if ( !(url.indexOf(response.session.mid) > -1)){
 	    //document.location.replace("/?u=" + response.session.mid);
 	}
     } else {
