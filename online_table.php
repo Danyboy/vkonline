@@ -133,7 +133,7 @@ class OnlineHistory
                                 WHERE DATE(status) = '11-9-2015' GROUP BY user_id;";
                                 
                 $count_query = "SELECT user_id, link, name, COUNT (EXTRACT(hour FROM status)) * 5 AS minutes 
-                                FROM online{$current_user} JOIN users{$current_id} ON (online{$current_user}.user_id = users{$current_id}.id)
+                                FROM online{$current_user} JOIN users{$current_user} ON (online{$current_user}.user_id = users{$current_user}.id)
 				WHERE DATE(status) = '{$my_date}'
 				GROUP BY user_id, link, name ORDER BY minutes DESC;";
 		
