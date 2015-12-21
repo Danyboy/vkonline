@@ -141,16 +141,16 @@ class OnlineHistory
 	}
 
 	function show_today_online_users($my_date, $current_user){
-		foreach (json_decode($this->get_users_online_hours($my_date, $current_user)) as $row) {
+		foreach (json_decode($this->get_users_online_hours($my_date, $this->get_current_id($current_user))) as $row) {
 		    $my_time = date('H \ч i \м', mktime(0,$row[3]));
 			echo "<tr>
 			<td><input type='checkbox' name='mycheckbox' value='{$row[0]}'></td>
 			<td><a href='http://vk.com/id{$row[0]}'>
 			    <img src='{$row[1]}' alt='$row[2]'></a>
 			    <a href='./u?users=[{$row[0]},$this->id,749972]&d={$my_date}'>
-			    {$row[2]}	<img src='Chart-icon.png' alt='$row[2]' align='right'></a></td>
+			    {$row[2]}	<img src='img/chart.png' alt='$row[2]' align='right'></a></td>
 			<td><a href='c?u={$row[0]}'>
-			    {$my_time} <img src='includes/heart_25.png' alt='$row[2]' alight='right'></a></td>
+			    {$my_time} <img src='img/heart.png' alt='$row[2]' alight='right'></a></td>
 		      </tr>";
 	        }
 	}
@@ -189,10 +189,12 @@ class OnlineHistory
                 return (strcmp($this->query_to_json($query), '[["0"]]') == 0);
 	}
 
-	function get_correct_date($my_date){
+	function get_correct_date($my_date = ''){
 		date_default_timezone_set('Europe/Moscow');
-		if (DateTime::createFromFormat('d.m.y', $my_date) == FALSE){
-		    $my_date = date("d.m.y");
+		if (empty($my_date)){
+			    $my_date = date("d.m.y");
+		} else if (DateTime::createFromFormat('d.m.y', $my_date) == FALSE){
+			    $my_date = date("d.m.y");
 		}
 		
 		return $my_date;	
@@ -234,7 +236,7 @@ class OnlineHistory
 	
         function add_user_activity($current_user){
                 foreach($this->get_online($current_user) as $value){
-            	    global $current_id;
+            	    global $current_id; //, $current_user;
 		    $current_id = $current_user;
 		    $this->save_online_users($value, $current_user);
                 }	
@@ -245,6 +247,14 @@ class OnlineHistory
 		    $this->add_user_activity($current_user[0]); //why multy array
 	        }
 	}
+
+	function get_current_id($id){
+                if (!empty($id)){
+		    return $id;
+                }
+
+                return $this->current_id;
+        }
 }
 
 //For adding date in table run as

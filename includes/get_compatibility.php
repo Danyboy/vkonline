@@ -45,7 +45,7 @@ class OnlineHistoryCompatibility extends OnlineHistory{
 			    </a>
 
 			    <a href='./u?users=[{$row[0]},$this->id,$user]&d={$my_date}'>
-			    <img src='Chart-icon.png' alt='$row[2]' align='right'></a></td>
+			    <img src='img/chart.png' alt='$row[2]' align='right'></a></td>
 			<td>{$time_together} ч</td>
 			<td>{$my_coef_percent}</td>
 			<td>{$their_coef_percent}</td>
