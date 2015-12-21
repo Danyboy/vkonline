@@ -3,7 +3,7 @@
 class OnlineHistory
 {
 	//public $id="385525";
-	public $id="749972";
+	//public $id="749972";
 	public $current_id="749972";
 	public $json;
 	public $dbconn; 	//Why working if remove this?
@@ -114,6 +114,7 @@ class OnlineHistory
 	
 	function get_user_online_minutes_by_hourse(){
 		//Temporary not used request
+		//REMOVE $this->id
 		$user_online_minutes_by_hourse = "SELECT user_id, EXTRACT(hour FROM status) AS hours, COUNT (EXTRACT(hour FROM status)) * 5 AS count 
                                 FROM user_online 
                                 WHERE user_id IN ($this->id) AND DATE(status) = '11-9-2015' GROUP BY hours, user_id ORDER BY user_id, hours ASC;";
@@ -147,7 +148,7 @@ class OnlineHistory
 			<td><input type='checkbox' name='mycheckbox' value='{$row[0]}'></td>
 			<td><a href='http://vk.com/id{$row[0]}'>
 			    <img src='{$row[1]}' alt='$row[2]'></a>
-			    <a href='./u?users=[{$row[0]},$this->id,749972]&d={$my_date}'>
+			    <a href='./u?users=[{$row[0]},$current_user,749972]&u={$current_user}&d={$my_date}'>
 			    {$row[2]}	<img src='img/chart.png' alt='$row[2]' align='right'></a></td>
 			<td><a href='c?u={$row[0]}'>
 			    {$my_time} <img src='img/heart.png' alt='$row[2]' alight='right'></a></td>

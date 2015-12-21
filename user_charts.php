@@ -62,7 +62,6 @@ class OnlineHistoryCharts extends OnlineHistory{
 		$my_date = $this->get_correct_date($my_date);		
 		
 		$users_string = implode(",", $users);
-		//echo "online{$current_user}";
 		$count_query = "SELECT user_id, EXTRACT(hour FROM status) AS hours, COUNT (EXTRACT(hour FROM status)) * 5 AS count 
                                 FROM online{$current_user}
                                 WHERE user_id IN ({$users_string}) AND DATE(status) = '{$my_date}' 
@@ -86,9 +85,9 @@ class OnlineHistoryCharts extends OnlineHistory{
 		return $this->query_to_json($count_query);
 	}
 
-	function get_current_users_name($users){
+	function get_current_users_name($users, $current_user){
 		$users_string = implode(",", $users);
-		$count_query = "SELECT name FROM users WHERE id IN ({$users_string}) ORDER BY id;";
+		$count_query = "SELECT name FROM users{$current_user} WHERE id IN ({$users_string}) ORDER BY id;";
 		return $this->query_to_json($count_query);
 	}
 }
@@ -138,7 +137,7 @@ include 'includes/chart_year.php';
 var data_by_day = <?php echo json_encode($myOnlineHistiry->get_user_activity_by_day($users, $my_date, $myOnlineHistiry->get_current_id($current_user))) ?>;
 var data_by_days = <?php echo json_encode($myOnlineHistiry->get_user_activity_by_days($users, $my_date, $myOnlineHistiry->get_current_id($current_user))) ?>;
 var data = <?php echo json_encode($myOnlineHistiry->get_activity_by_user($users, $myOnlineHistiry->get_current_id($current_user))) ?>;
-var php_names = <?php echo json_encode($myOnlineHistiry->get_current_users_name($users)) ?>;
+var php_names = <?php echo json_encode($myOnlineHistiry->get_current_users_name($users, $myOnlineHistiry->get_current_id($current_user))) ?>;
 //TODO bug with incorrect user names if sorting id in data and names is different 
 //TODO check php query before json encode
 
