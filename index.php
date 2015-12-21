@@ -15,7 +15,7 @@ include 'includes/start.php';
             Есть поминутная статистика, <a href="u?users=[339229,385525,749972]&d=">красочные графики</a>,
 	    детектор 
 	    <a href="insomnia">бессоницы</a> и 
-	    <a href="c?u=385525">совместимости <img src='includes/heart_25.png' alt='$row[2]'></a>
+	    <a href="c?u=385525">совместимости <img src='img/heart.png' alt='$row[2]'></a>
         </p>
 	<div style="width: 10%; margin: 0 auto;">
 	    <div id="login_button" onclick="VK.Auth.login(authInfo);"></div>
