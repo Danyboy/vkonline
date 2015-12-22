@@ -29,6 +29,7 @@ class OnlineHistoryCompatibility extends OnlineHistory{
 	function show_users_compatibility($user, $current_user){
 		$current_user = $this->get_current_id($current_user);
 		$users_compatibility_table = json_decode($this->get_users_compatibility($user, $current_user));
+		$my_date = $this->get_correct_date();
 		foreach ($users_compatibility_table as $row) {
 		    $my_coef = number_format($row[4], 2, '.', '');
 		    $my_coef_percent = number_format(100 * $my_coef, 0, '.', '');
