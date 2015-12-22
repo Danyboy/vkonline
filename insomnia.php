@@ -4,8 +4,8 @@ include 'includes/start.php';
 <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
       <div id="main_info" class="container">
-        <p> Здесь можно узнать свой коэффициент бессоницы - отношение времени онлайн ночью к времени онлайн днём
-	    и сколько часов в какое время дня вы провели онлайн за год.
+        <p> Здесь можно узнать свой коэффициент бессоницы - отношение времени онлайн ночью к времени онлайн днём. <br>
+	    И сколько часов в какое время дня вы провели онлайн за год. Ночью считается время с 0 до 8 утра.
         </p>
 	<div style="width: 10%; margin: 0 auto;">
 	    <div id="login_button" onclick="VK.Auth.login(authInfo);"></div>
