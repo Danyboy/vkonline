@@ -41,7 +41,7 @@ include 'includes/start.php';
 <?php
 include 'includes/get_compatibility.php';
 $myOnlineCompatibility = new OnlineHistoryCompatibility();
-$myOnlineCompatibility->show_users_compatibility($_GET['u']);
+$myOnlineCompatibility->show_users_compatibility($_GET['u'], $_GET['cu']);
 ?>
 
 <script language="javascript">
