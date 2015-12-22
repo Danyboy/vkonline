@@ -39,7 +39,6 @@ class OnlineHistory
 	}
 
 	function get_online($current_user){
-	     //echo $current_user;
 	     $chunked = array_chunk(json_decode($this->get_friends($current_user))->response, 400);
 	     $result = array();
 	     $owner = true;
@@ -114,14 +113,13 @@ class OnlineHistory
 	
 	function get_user_online_minutes_by_hourse(){
 		//Temporary not used request
-		//REMOVE $this->id
 		$user_online_minutes_by_hourse = "SELECT user_id, EXTRACT(hour FROM status) AS hours, COUNT (EXTRACT(hour FROM status)) * 5 AS count 
                                 FROM user_online 
-                                WHERE user_id IN ($this->id) AND DATE(status) = '11-9-2015' GROUP BY hours, user_id ORDER BY user_id, hours ASC;";
+                                WHERE user_id IN ($this->current_id) AND DATE(status) = '11-9-2015' GROUP BY hours, user_id ORDER BY user_id, hours ASC;";
                                 
 		$user_online_minutes = "SELECT user_id, COUNT (EXTRACT(hour FROM status)) * 5 AS count 
                                 FROM user_online 
-                                WHERE user_id IN ($this->id) AND DATE(status) = '11-9-2015' GROUP BY user_id;";
+                                WHERE user_id IN ($this->current_id) AND DATE(status) = '11-9-2015' GROUP BY user_id;";
 		return $this->query_to_json($user_online_minutes_by_hourse);;
 	}
 
@@ -148,9 +146,9 @@ class OnlineHistory
 			<td><input type='checkbox' name='mycheckbox' value='{$row[0]}'></td>
 			<td><a href='http://vk.com/id{$row[0]}'>
 			    <img src='{$row[1]}' alt='$row[2]'></a>
-			    <a href='./u?users=[{$row[0]},$current_user,749972]&u={$current_user}&d={$my_date}'>
+			    <a href='./u?u={$current_user}&users=[{$row[0]},$current_user,749972]&d={$my_date}'>
 			    {$row[2]}	<img src='img/chart.png' alt='$row[2]' align='right'></a></td>
-			<td><a href='c?u={$row[0]}'>
+			<td><a href='c?cu={$current_user}&u={$row[0]}'>
 			    {$my_time} <img src='img/heart.png' alt='$row[2]' alight='right'></a></td>
 		      </tr>";
 	        }
@@ -160,16 +158,6 @@ class OnlineHistory
 		if (strcmp("{$value->online}", "0") !== 0){
             	    $this->save_to_db($value, $current_user);
 		}
-	}
-
-        function save_to_user_table($value, $current_user){
-		//TODO check priviligies
-		//$create_table = "CREATE TABLE online{$current_user} user_id INT, status TIMESTAMP, FOREIGN KEY (user_id) REFERENCES users (id));
-
-	        //$insert_date_query = "INSERT INTO online{$current_user} (user_id, status) VALUES ({$value->uid}, CURRENT_TIMESTAMP(0));";
-	        $insert_date_query = "INSERT INTO user_online{$current_user} (user_id, status) VALUES ({$value->uid}, CURRENT_TIMESTAMP(0));";
-		$this->my_query($insert_date_query);
-		$this->my_query($create_table);
 	}
 
         function save_to_db($value, $current_user){

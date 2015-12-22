@@ -3,31 +3,32 @@ include '../online_table.php';
 
 class OnlineHistoryCompatibility extends OnlineHistory{
 
-	function get_users_compatibility($user){
+	function get_users_compatibility($user, $current_user){
 	
                 $count_query = "
 			SELECT id, link, name, hours_together, coef
 			FROM (
 			    SELECT my_users.user_id, COUNT (*)::float / 12 AS hours_together, COUNT(*)::float / user_coef.their_hours AS coef
-			    FROM user_online LEFT JOIN user_online AS my_users
-			        ON my_users.status = user_online.status
+			    FROM online{$current_user} LEFT JOIN online{$current_user} AS my_users
+			        ON my_users.status = online{$current_user}.status
 			        INNER JOIN (SELECT user_id, COUNT(*) AS their_hours
-				FROM user_online
+				FROM online{$current_user}
 				GROUP BY user_id) AS user_coef
 				    ON user_coef.user_id = my_users.user_id
-			    WHERE user_online.user_id = {$user}
-			    GROUP BY user_online.user_id, my_users.user_id, user_coef.their_hours
+			    WHERE online{$current_user}.user_id = {$user}
+			    GROUP BY online{$current_user}.user_id, my_users.user_id, user_coef.their_hours
 			    ORDER BY hours_together DESC
 			) AS my_comp
-			JOIN users 
+			JOIN users{$current_user} 
 			ON (my_comp.user_id = id);
 				";
 
 		return $this->query_to_json($count_query);
 	}
 
-	function show_users_compatibility($user){
-		$users_compatibility_table = json_decode($this->get_users_compatibility($user));
+	function show_users_compatibility($user, $current_user){
+		$current_user = $this->get_current_id($current_user);
+		$users_compatibility_table = json_decode($this->get_users_compatibility($user, $current_user));
 		foreach ($users_compatibility_table as $row) {
 		    $my_coef = number_format($row[4], 2, '.', '');
 		    $my_coef_percent = number_format(100 * $my_coef, 0, '.', '');
@@ -41,10 +42,10 @@ class OnlineHistoryCompatibility extends OnlineHistory{
 			<td><a href='http://vk.com/id{$row[0]}'>
 			    <img src='{$row[1]}' alt='$row[2]'></a>
 
-			    <a href='./c?u={$row[0]}'> {$row[2]}	
+			    <a href='./c?cu={$current_user}&u={$row[0]}'> {$row[2]}	
 			    </a>
 
-			    <a href='./u?users=[{$row[0]},$this->id,$user]&d={$my_date}'>
+			    <a href='./u?u={$current_user}&users=[{$row[0]},$this->current_id,$user]&d={$my_date}'>
 			    <img src='img/chart.png' alt='$row[2]' align='right'></a></td>
 			<td>{$time_together} ч</td>
 			<td>{$my_coef_percent}</td>

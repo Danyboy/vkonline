@@ -9,13 +9,15 @@ include 'includes/start.php';
             onkeydown="if (event.keyCode == 13) document.getElementById('date_link').click()"
             value=<?php echo $myOnlineHistiry->get_correct_date($_GET['d']); ?>> 
            или в 
-	    <a href="u?users=[339229,<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>,<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>]" id="date_link"
+	    <a href="u?u=<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>&users=[339229,<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>,<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>]" id="date_link"
 	     onclick="my_date=$('.datepicker').val(); location.href=this.href+'&d='+my_date;return false;">
     	    любую другую дату</a>.
-            Есть поминутная статистика, <a href="u?users=[339229,<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>,<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>]&d=">красочные графики</a>,
+            Есть поминутная статистика, 
+	    <a href="u?u=<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>&users=[339229,<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>,<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>]&d=">
+	    красочные графики</a>,
 	    детектор 
-	    <a href="insomnia">бессоницы</a> и 
-	    <a href="c?u=<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>">совместимости <img src='img/heart.png' alt='$row[2]'></a>
+	    <a href="insomnia?u=<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>">бессоницы</a> и 
+	    <a href="c?cu=<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>&u=<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>">совместимости <img src='img/heart.png' alt='$row[2]'></a>
         </p>
 	<div style="width: 10%; margin: 0 auto;">
 	    <div id="login_button" onclick="VK.Auth.login(authInfo);"></div>

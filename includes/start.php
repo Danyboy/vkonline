@@ -33,6 +33,11 @@
   <link rel="stylesheet" href="/dist/css/bootstrap-datepicker3.min.css" />  
  </head>
   <body>
+	    <?php
+	    include '/var/www/html/online_table.php';
+	    //include '../online_table.php';
+	    $myOnlineHistiry = new OnlineHistory();
+	    ?>
 
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container-fluid">
@@ -43,15 +48,12 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/">VKonline</a>
+          <a class="navbar-brand" href="/?u=<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>">VKonline</a>
         </div>
        <nav id="bs-navbar" class="collapse navbar-collapse">
       <ul class="nav navbar-nav">
         <li>
 	    <?php
-	    include '/var/www/html/online_table.php';
-	    //include '../online_table.php';
-	    $myOnlineHistiry = new OnlineHistory();
 	    $myOnlineHistiry->show_previous_dates($myOnlineHistiry->get_correct_date($_GET['d']));
 	    ?>
 <!--

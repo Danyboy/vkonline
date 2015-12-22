@@ -42,7 +42,7 @@ include 'includes/start.php';
 <?php
 include 'includes/get_insomnia.php';
 $myOnlineInsomnia = new OnlineHistoryInsomnia();
-$myOnlineInsomnia->show_insomnia_users();
+$myOnlineInsomnia->show_insomnia_users($_GET['u']);
 ?>
 
 <script language="javascript">

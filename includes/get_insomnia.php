@@ -3,7 +3,7 @@ include '../online_table.php';
 
 class OnlineHistoryInsomnia extends OnlineHistory{
 
-	function get_insomnia_users(){
+	function get_insomnia_users($current_user){
                 $count_query = "
 			        SELECT user_id, link, name, (night::float / (day + 1)) AS stat, night, day
 			        FROM (
@@ -17,16 +17,17 @@ class OnlineHistoryInsomnia extends OnlineHistory{
 			                    THEN 1
 			                    ELSE 0
 			                END ) AS day
-			            FROM user_online 
+			            FROM online{$current_user}
 			            GROUP BY user_id
-			            ) AS dayNight JOIN users ON (dayNight.user_id = users.id)
+			            ) AS dayNight JOIN users{$current_user} ON (dayNight.user_id = users{$current_user}.id)
 			        ORDER BY night DESC;";
 
 		return $this->query_to_json($count_query);
 	}
 
-	function show_insomnia_users(){
-		foreach (json_decode($this->get_insomnia_users()) as $row) {
+	function show_insomnia_users($current_user){
+		$current_user = $this->get_current_id($current_user);
+		foreach (json_decode($this->get_insomnia_users($current_user)) as $row) {
 		    $num = number_format($row[3], 2, '.', '');
 		    $summ = $row[4] + $row[5];
 		    $weight = $num * $summ;
@@ -34,7 +35,7 @@ class OnlineHistoryInsomnia extends OnlineHistory{
 			<td><input type='checkbox' name='mycheckbox' value='{$row[0]}'></td>
 			<td><a href='http://vk.com/id{$row[0]}'>
 			    <img src='{$row[1]}' alt='$row[2]'></a>
-			    <a href='./u?users=[{$row[0]},$this->id,690765]'>
+			    <a href='./u?users=[{$row[0]},$this->current_id,690765]'>
 			    {$row[2]}	<img src='img/chart.png' alt='$row[2]' align='right'></a></td>
 			<td>{$num}</td>
 			<td>{$row[4]} ч</td>
