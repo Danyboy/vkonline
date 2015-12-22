@@ -13,14 +13,18 @@ include 'includes/start.php';
 	     onclick="my_date=$('.datepicker').val(); location.href=this.href+'&d='+my_date;return false;">
     	    любую другую дату</a>.
             Есть поминутная статистика, 
-	    <a href="u?u=<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>&users=[339229,<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>,<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>]&d=">
+	    <a 
+	    title="Отображающие вашу дневную онлайн активность по часам"
+	    href="u?u=<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>&users=[339229,<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>,<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>]&d=">
 	    красочные графики</a>,
 	    детектор 
-	    <a href="insomnia?u=<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>">бессоницы</a> и 
+	    <a href="insomnia?u=<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>" 
+	    title="Тоесть отношение времени онлайн ночью к времени онлайн днём и сколько времени вы были онлайн днём и ночью">бессоницы</a> и 
 	    <a href="c?cu=<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>&u=<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>">совместимости <img src='img/heart.png' alt='$row[2]'></a>
         </p>
 	<div style="width: 10%; margin: 0 auto;">
-	    <div id="login_button" onclick="VK.Auth.login(authInfo);"></div>
+	    <div id="login_button" onclick="VK.Auth.login(authInfo);" 
+	    title="Войти через вк для отображения вашей статистики и сохранения онлайн истории ваших друзей"></div>
 	</div>
       </div>
     </div>

@@ -139,6 +139,16 @@ class OnlineHistory
 		return $this->query_to_json($count_query);
 	}
 
+	function show_chart($my_date, $current_user, $chart_uid, $user_name){
+		echo "
+			    <a href='./u?u={$current_user}&users=[{$chart_uid},{$current_user},749972]&d={$my_date}'>
+				    {$user_name}
+				    <img src='img/chart.png' alt='{$user_name}' align='right' 
+					title='Сравнить график активности с {$user_name}'>
+			    </a>
+		";
+	}
+
 	function show_today_online_users($my_date, $current_user){
 		foreach (json_decode($this->get_users_online_hours($my_date, $this->get_current_id($current_user))) as $row) {
 		    $my_time = date('H \ч i \м', mktime(0,$row[3]));
@@ -146,10 +156,16 @@ class OnlineHistory
 			<td><input type='checkbox' name='mycheckbox' value='{$row[0]}'></td>
 			<td><a href='http://vk.com/id{$row[0]}'>
 			    <img src='{$row[1]}' alt='$row[2]'></a>
-			    <a href='./u?u={$current_user}&users=[{$row[0]},$current_user,749972]&d={$my_date}'>
-			    {$row[2]}	<img src='img/chart.png' alt='$row[2]' align='right'></a></td>
+			    <a href='./u?u={$current_user}&users=[{$row[0]},{$current_user},749972]&d={$my_date}'>
+				    {$row[2]}
+				    <img src='img/chart.png' alt='$row[2]' align='right' 
+					title='Сравнить график активности с $row[2]'>
+			    </a>
+			    </td>
 			<td><a href='c?cu={$current_user}&u={$row[0]}'>
-			    {$my_time} <img src='img/heart.png' alt='$row[2]' alight='right'></a></td>
+			    {$my_time} <img src='img/heart.png' alt='$row[2]' alight='right'
+				title='Показать совместимость $row[2] c другими пользователями'>
+			    </a></td>
 		      </tr>";
 	        }
 	}
