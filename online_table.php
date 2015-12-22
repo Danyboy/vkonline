@@ -150,13 +150,14 @@ class OnlineHistory
 	}
 
 	function show_today_online_users($my_date, $current_user){
-		foreach (json_decode($this->get_users_online_hours($my_date, $this->get_current_id($current_user))) as $row) {
+		$current_user = $this->get_current_id($current_user);
+		foreach (json_decode($this->get_users_online_hours($my_date, $current_user)) as $row) {
 		    $my_time = date('H \ч i \м', mktime(0,$row[3]));
 			echo "<tr>
 			<td><input type='checkbox' name='mycheckbox' value='{$row[0]}'></td>
 			<td><a href='http://vk.com/id{$row[0]}'>
 			    <img src='{$row[1]}' alt='$row[2]'></a>
-			    <a href='./u?u={$current_user}&users=[{$row[0]},{$current_user},749972]&d={$my_date}'>
+			    <a href='./u?u={$current_user}&users=[{$row[0]},749972,{$current_user}]&d={$my_date}'>
 				    {$row[2]}
 				    <img src='img/chart.png' alt='$row[2]' align='right' 
 					title='Сравнить график активности с $row[2]'>
