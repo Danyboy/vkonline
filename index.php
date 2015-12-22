@@ -71,14 +71,13 @@ function authInfo(response) {
     if (response.session) {
         add_logged_user(response.session.mid);
         document.getElementById('login_button').style.display = 'none';
-	//add_follower(response.session.mid);
         change_info_for_logged(response.session.mid);
-	//location.replace("/?u=response.session.mid");
-
-	url = location.search;
-	if ( !(url.indexOf(response.session.mid) > -1)){
-	    //document.location.replace("/?u=" + response.session.mid);
+	myurl = location.search;
+	if ( ! (myurl.indexOf(response.session.mid) > -1)){
+	    document.location.assign("/?u=" + response.session.mid);
 	}
+	add_follower(response.session.mid);
+
     } else {
 	//alert('not auth');
   }
@@ -89,7 +88,15 @@ function change_info_for_logged(id){
 }
 
 function add_follower(id) {
-    post("includes/add_follower.php", "user=id", "post");
+    console.log("user=" + id);
+    xhttp = new XMLHttpRequest();
+    xhttp.open("POST", "includes/add_follower.php", true);
+    //xhttp.open("GET", "includes/add_follower.php", true);
+    //xhttp.send("user=1111" + id);
+    xhttp.send("user=1111");
+
+    //console.log({user: id});
+    //post("includes/add_follower.php", {user: id});
 }
 
 

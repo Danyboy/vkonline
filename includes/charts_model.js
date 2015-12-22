@@ -94,6 +94,7 @@ function data_corrector(correct_categories, raw_categories, data){
 }
 
 function post(path, params, method) {
+    console.log(params);
     method = method || "post"; // Set method to post by default if not specified.
 
     // The rest of this code assumes you are not using a library.
