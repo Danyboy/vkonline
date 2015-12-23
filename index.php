@@ -4,16 +4,19 @@ include 'includes/start.php';
 <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
       <div id="main_info" class="container">
-	<p> Привет! Здесь можно узнать сколько времени вы провели онлайн вконтакте 
+	<p> Привет! Здесь можно узнать сколько времени вы провели онлайн ВКонтакте 
            <input class="datepicker" data-date-format="dd.mm.yy" size="5"
             onkeydown="if (event.keyCode == 13) document.getElementById('date_link').click()"
             value=<?php echo $myOnlineHistiry->get_correct_date($_GET['d']); ?>> 
            или в 
 	    <a 
-	    title="Выберите дату и нажмите на ссылку"
-	    href="u?u=<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>&users=[339229,<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>,<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>]" id="date_link"
-	     onclick="my_date=$('.datepicker').val(); location.href=this.href+'&d='+my_date;return false;">
-    	    любую другую дату</a>.
+		title="Выберите дату и нажмите на ссылку"
+    		href="u?u=<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>&users=[339229,<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>,<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>]" id="date_link"
+		onclick="
+		location.href=this.href+get_date_and_users();return false;
+		">
+    		любую другую дату
+	    </a>.
             Есть поминутная статистика, 
 	    <a 
 	    title="Отображающие вашу дневную онлайн активность по часам"
@@ -28,7 +31,7 @@ include 'includes/start.php';
         </p>
 	<div style="width: 10%; margin: 0 auto;">
 	    <div id="login_button" onclick="VK.Auth.login(authInfo);" 
-	    title="Войти через вк для отображения вашей статистики и сохранения онлайн истории ваших друзей"></div>
+	    title="Войти через ВКонтакте для отображения вашей статистики и сохранения онлайн-истории ваших друзей"></div>
 	</div>
       </div>
     </div>
@@ -46,8 +49,14 @@ include 'includes/start.php';
                     <a 
                     title="Графики отмеченных пользователей"
                     href="u?u=<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>"
-                    onclick="my_users=get_checked_users(document.querySelectorAll('input[name=mycheckbox]:checked'));
-                    location.href=this.href+'&users=['+my_users+']';return false;">
+                    onclick="
+		    //my_users=get_checked_users(document.querySelectorAll('input[name=mycheckbox]:checked'));
+                    //my_date=$('.datepicker').val();
+                    //location.href=this.href+'&users=['+my_users+']'+'&d='+my_date;return false;
+                    location.href=this.href+get_date_and_users();return false;
+
+                    //location.href=this.href+'&users=['+my_users+']'+'&d='+my_date;return false;
+		    ">
                     Сравнить</a>
                   </th>
                   <th>Графики пользователя</th>
@@ -96,6 +105,13 @@ function add_follower(id) {
     xhttp.send(req);
 }
 
+function get_date_and_users(){
+    var result;
+    my_users=get_checked_users(document.querySelectorAll('input[name=mycheckbox]:checked'));
+    my_date=$('.datepicker').val();
+    result = '&users=['+my_users+']'+'&d='+my_date;
+    return result;
+}
 
 function add_logged_user(id) {
     var table = document.getElementById('users_statistics');

@@ -57,8 +57,8 @@ class OnlineHistory
 
 	}
 
-	function get_online_part($str) { 
-	     $url="https://api.vk.com/method/users.get?user_ids=" . $str . ",\&fields=online,photo_50,\&lang=en";
+	function get_online_part($str) {
+	     $url="https://api.vk.com/method/users.get?user_ids=" . $str . ",\&fields=online,photo_50,\&lang=ru";
 	     return $this->send_req($url);
 	}
 	
@@ -182,12 +182,13 @@ class OnlineHistory
 		
 	        $check_user_query = "SELECT COUNT(id) FROM users{$current_user} WHERE id={$value->uid};";
 	        $insert_user_query = "INSERT INTO users{$current_user} (id, name, link) VALUES ({$value->uid}, '{$my_name}', '{$value->photo_50}');";
+	        $update_user_query = "UPDATE users{$current_user} SET name = '{$my_name}', link = '{$value->photo_50}' WHERE id = {$value->uid};";
 	        $insert_date_query = "INSERT INTO online{$current_user} (user_id, status) VALUES ({$value->uid}, CURRENT_TIMESTAMP(0));";
 
-                if ($this->user_non_exists($check_user_query, $current_user)){
-                    $myqr = $this->my_query($insert_user_query);
-                }
-
+                //if ($this->user_non_exists($check_user_query, $current_user)){
+                //    $myqr = $this->my_query($insert_user_query);
+                //}
+                $this->my_query($update_user_query);
                 $this->my_query($insert_date_query);
         }
 	
