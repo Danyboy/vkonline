@@ -185,10 +185,11 @@ class OnlineHistory
 	        $update_user_query = "UPDATE users{$current_user} SET name = '{$my_name}', link = '{$value->photo_50}' WHERE id = {$value->uid};";
 	        $insert_date_query = "INSERT INTO online{$current_user} (user_id, status) VALUES ({$value->uid}, CURRENT_TIMESTAMP(0));";
 
-                //if ($this->user_non_exists($check_user_query, $current_user)){
-                //    $myqr = $this->my_query($insert_user_query);
-                //}
-                $this->my_query($update_user_query);
+                if ($this->user_non_exists($check_user_query, $current_user)){
+                    $myqr = $this->my_query($insert_user_query);
+                } else {
+            	    $this->my_query($update_user_query);
+		}
                 $this->my_query($insert_date_query);
         }
 	

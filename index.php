@@ -109,7 +109,11 @@ function get_date_and_users(){
     var result;
     my_users=get_checked_users(document.querySelectorAll('input[name=mycheckbox]:checked'));
     my_date=$('.datepicker').val();
-    result = '&users=['+my_users+']'+'&d='+my_date;
+    if (users != '') {
+	result = '&users=['+my_users+']'+'&d='+my_date;
+    } else {
+	result = '&d='+my_date;
+    }
     return result;
 }
 
