@@ -88,24 +88,12 @@ function change_info_for_logged(id){
 }
 
 function add_follower(id) {
-    //var req = {user: id};
-    //var req = 'user=' + id;
     
     var req = 'user=' + encodeURIComponent(id);
-    console.log(req);
     xhttp = new XMLHttpRequest();
     xhttp.open("POST", "includes/add_follower.php", true);
     xhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhttp.send(req);
-
-    //var req1 = encodeURIComponent(req);
-    //console.log(req1);
-    //xhttp.send(req1);
-    //req.setCharacterEncoding("UTF-8");
-    //xhttp.open("GET", "includes/add_follower.php", true);
-    //xhttp.send("user=1111");
-    //console.log({user: id});
-    //post("includes/add_follower.php", {user: id});
 }
 
 
