@@ -104,7 +104,7 @@ $myOnlineHistiry = new OnlineHistoryCharts();
 <div id="chart_year" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 </div>
 
-<script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
 <?php
 include 'includes/chart_day.php';
 include 'includes/chart_year.php';
