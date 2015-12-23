@@ -5,7 +5,7 @@ include 'includes/start.php';
     <div class="jumbotron">
       <div id="main_info" class="container">
         <p> Здесь можно узнать свой коэффициент совместимости с разными пользователями - сколько часов вы провели онлайн вместе. 
-	    Для сортировки по определённому столбцу, нужно нажать на его заголовок.
+	    Для сортировки по определённому столбцу нужно нажать на его заголовок.
         </p>
 	<div style="width: 10%; margin: 0 auto;">
 	    <div id="login_button" onclick="VK.Auth.login(authInfo);"></div>
