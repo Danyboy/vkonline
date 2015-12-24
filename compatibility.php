@@ -16,7 +16,6 @@ include 'includes/start.php';
     <div class="container-fluid">
       <div class="row">
 
-<script src="ftp://updates.etersoft.ru/pub/people/danil/files/js/sorttable.js"></script>
 <div>
   <div style="display: table; margin: 0 auto;">
 <div class="table-responsive">

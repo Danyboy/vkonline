@@ -23,7 +23,8 @@ Custom styles for this template -->
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     <script src="//vk.com/js/api/openapi.js" type="text/javascript"></script>
-    <script src="includes/charts_model.js"></script>    
+    <script src="includes/charts_model.js"></script>
+    <script src="https://f.efnez.ru/js/sorttable.js"></script>
     <!-- ... -->
   <script type="text/javascript" src="/bower_components/jquery/jquery.min.js"></script>
   <script type="text/javascript" src="/bower_components/moment/min/moment.min.js"></script>

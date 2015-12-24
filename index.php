@@ -87,10 +87,10 @@ function set_user_url(id){
 function authInfo(response) {
     if (response.session) {
         add_logged_user(response.session.mid);
+	add_follower(response.session.mid);
         document.getElementById('login_button').style.display = 'none';
         change_info_for_logged(response.session.mid);
 	set_user_url(response.session.mid);
-	add_follower(response.session.mid);
     } else {
 	//alert('not auth');
   }
