@@ -4,7 +4,8 @@ class OnlineHistory
 {
 	//public $id="385525";
 	//public $id="749972";
-	public $current_id="749972";
+	//public $current_id="749972";
+	public $current_id="1";
 	public $json;
 	public $dbconn; 	//Why working if remove this?
 	private $vkapi_token='cd7781010610415dd8d3a039d5cbaedc0309b19ff19c58d3e8ab67294fa7ab85ed5d29837bedd1a05758a';
