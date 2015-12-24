@@ -139,13 +139,30 @@ class OnlineHistory
 		return $this->query_to_json($count_query);
 	}
 
-	function show_chart($my_date, $current_user, $chart_uid, $user_name){
+	function show_chart($my_date, $current_user, $chart_uid, $user_name, $img){
+		$user_name = str_replace ( " ", "<br>", "{$user_name}");
+		//$user_name = str_replace ( " ", " ", "{$user_name}");
 		echo "
-			    <a href='./u?u={$current_user}&users=[{$chart_uid},{$current_user},749972]&d={$my_date}'>
+			<td>
+			<div class='layout'>
+			<div class='col1'>
+			    <a href='http://vk.com/id{$chart_uid}'>
+			    <img src='{$img}' title='$user_name'></a>
+			</div>
+			<div class='col2'>
+			    <a href='./u?u={$current_user}&users=[{$chart_uid},{$current_user}]&d={$my_date}'>
 				    {$user_name}
-				    <img src='img/chart.png' alt='{$user_name}' align='right' 
+			    </a>
+			</div>
+			<div class='col3'>
+			    <a href='./u?u={$current_user}&users=[{$chart_uid},{$current_user}]&d={$my_date}'>
+			    <img src='img/chart.png' align='right' 
 					title='Сравнить график активности с {$user_name}'>
 			    </a>
+			</div>
+			</div>
+			</td>
+
 		";
 	}
 
@@ -153,18 +170,17 @@ class OnlineHistory
 		$current_user = $this->get_current_id($current_user);
 		foreach (json_decode($this->get_users_online_hours($my_date, $current_user)) as $row) {
 		    $my_time = date('H \ч i \м', mktime(0,$row[3]));
-			echo "<tr>
-			<td><input type='checkbox' name='mycheckbox' value='{$row[0]}'></td>
-			<td><a href='http://vk.com/id{$row[0]}'>
-			    <img src='{$row[1]}' alt='$row[2]'></a>
-			    <a href='./u?u={$current_user}&users=[{$row[0]},749972,{$current_user}]&d={$my_date}'>
-				    {$row[2]}
-				    <img src='img/chart.png' alt='$row[2]' align='right' 
-					title='Сравнить график активности с $row[2]'>
-			    </a>
-			    </td>
+			echo "
+			<tr hight>
+			<td>
+			<input type='checkbox' name='mycheckbox' value='{$row[0]}'>
+			</td>";
+
+			$this->show_chart($my_date, $current_user, $row[0], $row[2], $row[1]);
+			
+			echo "
 			<td><a href='c?cu={$current_user}&u={$row[0]}'>
-			    {$my_time} <img src='img/heart.png' alt='$row[2]' alight='right'
+			    {$my_time} <br> <img src='img/heart.png' alt='$row[2]' alight='right'
 				title='Показать совместимость $row[2] c другими пользователями'>
 			    </a></td>
 		      </tr>";

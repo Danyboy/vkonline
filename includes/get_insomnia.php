@@ -32,11 +32,10 @@ class OnlineHistoryInsomnia extends OnlineHistory{
 		    $summ = $row[4] + $row[5];
 		    $weight = $num * $summ;
 		    echo "<tr>
-			<td><input type='checkbox' name='mycheckbox' value='{$row[0]}'></td>
-			<td><a href='http://vk.com/id{$row[0]}'>
-			    <img src='{$row[1]}' alt='$row[2]'></a>
-			    <a href='./u?users=[{$row[0]},$this->current_id,690765]'>
-			    {$row[2]}	<img src='img/chart.png' alt='$row[2]' align='right'></a></td>
+			<td><input type='checkbox' name='mycheckbox' value='{$row[0]}'></td>";
+
+		    $this->show_chart($my_date, $current_user, $row[0], $row[2], $row[1]);
+		    echo "		    
 			<td>{$num}</td>
 			<td>{$row[4]} ч</td>
 			<td>{$row[5]} ч</td>
