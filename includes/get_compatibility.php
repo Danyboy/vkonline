@@ -39,19 +39,14 @@ class OnlineHistoryCompatibility extends OnlineHistory{
 		    $compatibility_coef = number_format($row[4] * $their_coef, 2, '.', '');
 
 		    echo "<tr>
-			<td><input type='checkbox' name='mycheckbox' value='{$row[0]}'></td>
-			<td><a href='http://vk.com/id{$row[0]}'>
-			    <img src='{$row[1]}' alt='$row[2]'></a>
+			<td><input type='checkbox' name='mycheckbox' value='{$row[0]}'></td>";
 
-			    <a href='./c?cu={$current_user}&u={$row[0]}'> {$row[2]}	
-			    </a>
+		    $this->show_chart($my_date, $current_user, $row[0], $row[2], $row[1]);
 
-			    <a href='./u?u={$current_user}&users=[{$row[0]},$this->current_id,$user]&d={$my_date}'>
-			    <img src='img/chart.png' alt='$row[2]' align='right'></a></td>
-			<td>{$time_together} ч</td>
+		    echo "<td>{$time_together} ч</td>
+			<td>{$compatibility_coef}</td>
 			<td>{$my_coef_percent}</td>
 			<td>{$their_coef_percent}</td>
-			<td>{$compatibility_coef}</td>
 		      </tr>";
 	        }
 	}

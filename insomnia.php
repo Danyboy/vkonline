@@ -24,9 +24,11 @@ include 'includes/start.php';
               <thead>
                 <tr>
 		<th class="sorttable_nosort">
-                    <a href="u?"
-                    onclick="my_users=get_checked_users(document.querySelectorAll('input[name=mycheckbox]:checked'));
-                    location.href=this.href+'users=['+my_users+']';return false;">
+                    <a 
+		    href="u?u=<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>"
+                    onclick="
+			location.href=this.href+get_date_and_users();return false;
+		    ">
                     Сравнить</a>
                   </th>
                   <th class="sorttable_nosort"> Пользователи</th>

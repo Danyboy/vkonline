@@ -24,16 +24,17 @@ include 'includes/start.php';
               <thead>
                 <tr>
 		<th class="sorttable_nosort">
-                    <a href="u?"
-                    onclick="my_users=get_checked_users(document.querySelectorAll('input[name=mycheckbox]:checked'));
-                    location.href=this.href+'users=['+my_users+']';return false;">
-                    Сравнить</a>
+                    <a
+		    href="u?u=<?php echo $myOnlineHistiry->get_current_id($_GET['cu']); ?>"
+                    onclick="
+		    location.href=this.href+get_date_and_users();return false;">
+                    С</a>
                   </th>
                   <th class="sorttable_nosort"> Пользователи</th>
-                  <th class="sorttable_numeric"> Часов онлайн вместе</th>
+                  <th class="sorttable_numeric"> Онлайн <br> вместе</th>
+                  <th class="sorttable_numeric"> Коэф. <br> совместимости</th>
                   <th class="sorttable_numeric"> Твой процент онлайн вместе</th>
                   <th class="sorttable_numeric"> Их процент онлайн вместе</th>
-                  <th class="sorttable_numeric"> Коэф. совместимости</th>
                 </tr>
               </thead>
               <tbody>

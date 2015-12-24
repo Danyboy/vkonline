@@ -1,8 +1,6 @@
 <?php
 include 'includes/start.php';
 ?>
-<script src="includes/charts_model.js"></script>
-
 <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
       <div id="main_info" class="container">
@@ -43,7 +41,7 @@ include 'includes/start.php';
 <div>
   <div style="display: table; margin: 0 auto;">
 <div class="table-responsive">
-            <table class="table table-striped" id="users_statistics">
+            <table class="table table-striped scrollit" id="users_statistics">
               <thead>
                 <tr>
                   <th>
@@ -51,17 +49,12 @@ include 'includes/start.php';
                     title="Графики отмеченных пользователей"
                     href="u?u=<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>"
                     onclick="
-		    //my_users=get_checked_users(document.querySelectorAll('input[name=mycheckbox]:checked'));
-                    //my_date=$('.datepicker').val();
-                    //location.href=this.href+'&users=['+my_users+']'+'&d='+my_date;return false;
                     location.href=this.href+get_date_and_users();return false;
-
-                    //location.href=this.href+'&users=['+my_users+']'+'&d='+my_date;return false;
 		    ">
                     Сравнить</a>
                   </th>
                   <th>Графики пользователя</th>
-                  <th>Часов онлайн</th>
+                  <th>Онлайн</th>
                 </tr>
               </thead>
               <tbody>
