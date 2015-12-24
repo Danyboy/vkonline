@@ -11,7 +11,7 @@ include 'includes/start.php';
            или в 
 	    <a 
 		title="Выберите дату и нажмите на ссылку"
-    		href="u?u=<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>&users=[339229,<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>,<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>]" id="date_link"
+    		href="u?u=<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>&users=[<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>,<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>]" id="date_link"
 		onclick="
 		location.href=this.href+get_date_and_users();return false;
 		">
@@ -19,7 +19,7 @@ include 'includes/start.php';
             Есть поминутная статистика, 
 	    <a 
 	    title="Отображающие вашу дневную онлайн активность по часам"
-	    href="u?u=<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>&users=[339229,<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>,<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>]&d=">
+	    href="u?u=<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>&users=[<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>,<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>]&d=">
 	    красочные графики</a>,
 	    детектор 
 	    <a href="insomnia?u=<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>" 
@@ -38,10 +38,10 @@ include 'includes/start.php';
     <div class="container-fluid">
       <div class="row">
 
-<div>
-  <div style="display: table; margin: 0 auto;">
+<div class="scrollit">
+  <div stylee=" width: 807px; display: table; margin: 0 auto;">
 <div class="table-responsive">
-            <table class="table table-striped scrollit" id="users_statistics">
+            <table class="table table-striped" id="users_statistics">
               <thead>
                 <tr>
                   <th>
@@ -69,20 +69,32 @@ VK.init({
         apiId: 5121918
 });
 
+function frame_killer(){
+    if(self == top) {
+	document.documentElement.style.display = 'block'; 
+    } else {
+	top.location = self.location; 
+    }
+}
+
+function set_user_url(id){
+	//frame_killer();
+	if ( ! (location.search.indexOf("?u="+id) > -1)){
+	    document.location.assign("/?u=" + id);
+	}
+}
+
 function authInfo(response) {
     if (response.session) {
         add_logged_user(response.session.mid);
         document.getElementById('login_button').style.display = 'none';
         change_info_for_logged(response.session.mid);
-	myurl = location.search;
-	if ( ! (myurl.indexOf(response.session.mid) > -1)){
-	    document.location.assign("/?u=" + response.session.mid);
-	}
+	set_user_url(response.session.mid);
 	add_follower(response.session.mid);
-
     } else {
 	//alert('not auth');
   }
+    //set_user_url(response.session.mid);
 }
 
 VK.UI.button('login_button');

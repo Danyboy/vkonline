@@ -8,7 +8,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../img/favicon.ico">
 
-    <title>How much your friend online in vk</title>
+    <title>Сколько времени твои друзья проводят ВКонтакте</title>
 
     <!-- Bootstrap core CSS -->
 
