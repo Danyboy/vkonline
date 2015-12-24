@@ -119,7 +119,7 @@ function get_all_days(s, e){
     }
 
     return a;
-};
+}
 
 function normalise_hours(data,days,id){
     for(var i = 0; i < data.length - 1; i++) {
@@ -134,4 +134,52 @@ function get_range(){
     fdate[0] = document.getElementsByName('start')[0].value;
     fdate[1] = document.getElementsByName('end')[0].value;
 return fdate;
+}
+
+
+function change_info_for_logged(id){
+    document.getElementById("main_info").innerHTML = document.getElementById("main_info").innerHTML.replace(/<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>/g, id);
+}
+
+function add_follower(id) {
+    
+    var req = 'user=' + encodeURIComponent(id);
+    xhttp = new XMLHttpRequest();
+    xhttp.open("POST", "includes/add_follower.php", true);
+    xhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhttp.send(req);
+}
+
+function get_date_and_users(){
+    var result;
+    my_users=get_checked_users(document.querySelectorAll('input[name=mycheckbox]:checked'));
+    my_date=$('.datepicker').val();
+    if (my_users != '') {
+	result = '&users=['+my_users+']'+'&d='+my_date;
+    } else {
+	result = '&d='+my_date;
+    }
+    return result;
+}
+
+function get_checked_users(input){
+    var users = new Array(input.length);
+    for (i = 0; i < input.length; i++){
+        users[i] = input[i].value;
+    }
+
+    return users;
+}
+
+function add_logged_user(id) {
+    var table = document.getElementById('users_statistics');
+    var reg = new RegExp("id"+id, "g");
+    var tbody = table.children[0];
+
+    for (var r = 0; r < table.rows.length; r++) {
+        var current_row = table.rows[r];
+        if (reg.test(current_row.innerHTML)){
+    	    tbody.insertBefore(current_row, table.rows[0]);
+        }
+    }
 }

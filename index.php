@@ -1,10 +1,12 @@
 <?php
 include 'includes/start.php';
 ?>
+<script src="includes/charts_model.js"></script>
+
 <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
       <div id="main_info" class="container">
-	<p> Привет! Здесь можно узнать сколько времени вы провели онлайн ВКонтакте 
+	<p> Узнайте сколько времени вы провели онлайн ВКонтакте 
            <input class="datepicker" data-date-format="dd.mm.yy" size="5"
             onkeydown="if (event.keyCode == 13) document.getElementById('date_link').click()"
             value=<?php echo $myOnlineHistiry->get_correct_date($_GET['d']); ?>> 
@@ -15,8 +17,7 @@ include 'includes/start.php';
 		onclick="
 		location.href=this.href+get_date_and_users();return false;
 		">
-    		любую другую дату
-	    </a>.
+    		любую другую дату</a>.
             Есть поминутная статистика, 
 	    <a 
 	    title="Отображающие вашу дневную онлайн активность по часам"
@@ -69,7 +70,6 @@ include 'includes/start.php';
 $myOnlineHistiry->show_today_online_users($_GET['d'],$_GET['u']);
 ?>
 
-<script src="includes/charts_model.js"></script>
 <script language="javascript">
 
 VK.init({
@@ -92,44 +92,6 @@ function authInfo(response) {
   }
 }
 
-function change_info_for_logged(id){
-    document.getElementById("main_info").innerHTML = document.getElementById("main_info").innerHTML.replace(/<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>/g, id);
-}
-
-function add_follower(id) {
-    
-    var req = 'user=' + encodeURIComponent(id);
-    xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "includes/add_follower.php", true);
-    xhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhttp.send(req);
-}
-
-function get_date_and_users(){
-    var result;
-    my_users=get_checked_users(document.querySelectorAll('input[name=mycheckbox]:checked'));
-    my_date=$('.datepicker').val();
-    if (users != '') {
-	result = '&users=['+my_users+']'+'&d='+my_date;
-    } else {
-	result = '&d='+my_date;
-    }
-    return result;
-}
-
-function add_logged_user(id) {
-    var table = document.getElementById('users_statistics');
-    var reg = new RegExp("id"+id, "g");
-    var tbody = table.children[0];
-
-    for (var r = 0; r < table.rows.length; r++) {
-        var current_row = table.rows[r];
-        if (reg.test(current_row.innerHTML)){
-    	    tbody.insertBefore(current_row, table.rows[0]);
-        }
-    }
-}
-
 VK.UI.button('login_button');
 VK.Auth.getLoginStatus(authInfo);
 
@@ -141,14 +103,6 @@ $(".datepicker").datepicker({
     todayHighlight: true
 });
 
-function get_checked_users(input){
-    var users = new Array(input.length);
-    for (i = 0; i < input.length; i++){
-        users[i] = input[i].value;
-    }
-
-    return users;
-}
 </script>
 
  </div>
