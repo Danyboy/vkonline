@@ -238,7 +238,7 @@ class OnlineHistory
 		    $current_date = $this->get_previous_dates($i, $my_date);
 		    $current_url = preg_replace("/&d=.*/", '', $_SERVER['REQUEST_URI']);
 		    $my_link = preg_match("/\?/",$current_url) ? $current_url . "&d=" . $current_date : $current_url . "?&d=" . $current_date ;
-		    echo "<li><a href='{$my_link}'>" . $current_date . "</a></li>";
+		    echo "<li><a href='{$my_link}' data-toggle='collapse' data-target='.navbar-collapse'>" . $current_date . "</a></li>";
 		}
 	}
 	

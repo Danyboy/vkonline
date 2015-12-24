@@ -40,7 +40,7 @@
 	    ?>
 
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-      <div class="container-fluid">
+      <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="sr-only">Toggle navigation</span>
@@ -50,24 +50,22 @@
           </button>
           <a class="navbar-brand" href="/?u=<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>">VKonline</a>
         </div>
-       <nav id="bs-navbar" class="collapse navbar-collapse">
+    <div class="collapse navbar-collapse">
       <ul class="nav navbar-nav">
-        <li>
 	    <?php
 	    $myOnlineHistiry->show_previous_dates($myOnlineHistiry->get_correct_date($_GET['d']));
 	    ?>
-<!--
+
+<!-- 
 <li>
-	    <input class="datepicker" data-date-format="dd.mm.yy" size="5"
+	    <input data-date-format="dd.mm.yy" size="5"
              onkeydown="if (event.keyCode == 13) document.getElementById('date_link').click()"
              value=<?php echo $myOnlineHistiry->get_correct_date($_GET['d']); ?> >
 </li>
 -->
-
-        </li>
       </ul>
-        </nav>
 
 
+    </div>
       </div>
     </div>
