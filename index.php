@@ -69,29 +69,6 @@ VK.init({
         apiId: 5121918
 });
 
-function frame_killer(){
-    if(self == top) {
-	document.documentElement.style.display = 'block'; 
-    } else {
-	top.location = self.location; 
-    }
-}
-
-function set_user_url(id){
-	//frame_killer();
-	if ( ! (location.search.indexOf("?u="+id) > -1)){
-	    document.location.assign("/?u=" + id);
-	}
-}
-
-function stateChange(id) {
-    setTimeout(function () {
-	    console.log("runned");
-	    set_user_url(id);
-    	    change_info_for_logged(id);
-    }, 2000);
-}
-
 function authInfo(response) {
     if (response.session) {
 	id = response.session.mid;
