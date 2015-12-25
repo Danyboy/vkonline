@@ -134,7 +134,6 @@ include 'includes/chart_year.php';
 <div id="chart_interval" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
-<script src="includes/charts_model.js"></script>
 
 <script type="text/javascript">
 var data_by_day = <?php echo json_encode($myOnlineHistiry->get_user_activity_by_day($users, $my_date, $myOnlineHistiry->get_current_id($current_user))) ?>;
