@@ -4,7 +4,7 @@ include '../online_table.php';
 class OnlineHistoryFollower extends OnlineHistory{
 
 	function add_follower($user){
-		error_log("test user {$user}");
+		//error_log("test user {$user}");
 
 		$check_user_query = "SELECT COUNT(id) FROM followers WHERE id={$user};";
                 $insert_follower_query = "INSERT INTO followers (id) VALUES ($user);";
@@ -16,6 +16,7 @@ class OnlineHistoryFollower extends OnlineHistory{
 			$this->query_to_json($insert_follower_query);
 			$this->query_to_json($create_users_db);
 			$this->query_to_json($create_online_db);
+			$this->add_user_activity($user);
 		}
 	}
 //Add follower
