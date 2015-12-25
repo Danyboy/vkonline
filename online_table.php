@@ -140,15 +140,15 @@ class OnlineHistory
 		return $this->query_to_json($count_query);
 	}
 
-	function show_chart($my_date, $current_user, $chart_uid, $user_name, $img){
-		$user_name = str_replace ( " ", "<br>", "{$user_name}");
+	function show_chart($my_date, $current_user, $chart_uid, $user_name_spaced, $img){
+		$user_name = str_replace ( " ", "<br>", "{$user_name_spaced}");
 		//$user_name = str_replace ( " ", " ", "{$user_name}");
 		echo "
 			<td>
 			<div class='layout'>
 			<div class='col1'>
-			    <a href='http://vk.com/id{$chart_uid}'>
-			    <img src='{$img}' title='$user_name'></a>
+			    <a href='http://vk.com/id{$chart_uid}' target='_blank'>
+			    <img src='{$img}' title='$user_name_spaced'></a>
 			</div>
 			<div class='col2'>
 			    <a href='./u?u={$current_user}&users=[{$chart_uid},{$current_user}]&d={$my_date}'>
