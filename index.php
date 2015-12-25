@@ -84,17 +84,26 @@ function set_user_url(id){
 	}
 }
 
+function stateChange(id) {
+    setTimeout(function () {
+	    console.log("runned");
+	    set_user_url(id);
+    	    change_info_for_logged(id);
+    }, 2000);
+}
+
 function authInfo(response) {
     if (response.session) {
+	id = response.session.mid;
         add_logged_user(response.session.mid);
 	add_follower(response.session.mid);
+	//stateChange(response.session.mid);
+	set_user_url(id);
+	change_info_for_logged(id);
         document.getElementById('login_button').style.display = 'none';
-        change_info_for_logged(response.session.mid);
-	set_user_url(response.session.mid);
     } else {
 	//alert('not auth');
   }
-    //set_user_url(response.session.mid);
 }
 
 VK.UI.button('login_button');
