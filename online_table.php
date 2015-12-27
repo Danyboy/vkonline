@@ -80,8 +80,13 @@ class OnlineHistory
 		$result = pg_query($this->dbconn, "$query");
 
 		if (!$result) {
-			echo "Произошла ошибка.\n";
-			echo pg_last_error($this->dbconn);
+			//error_log("Произошла ошибка.\n");
+			error_log(pg_last_error($this->dbconn));
+			echo "
+			    <div class='alert alert-success' id='after_login'>
+			        <p>Ваша статистика записывается. Зайдите через пять минут.</p>
+			    </div>
+			";
 			exit;
 		}
 		

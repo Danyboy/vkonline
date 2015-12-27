@@ -152,6 +152,7 @@ function add_follower(id) {
 
 function get_date_and_users(){
     var result;
+    //TODO maybe always added current user?
     //result += "u?u=<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>";
     my_users=get_checked_users(document.querySelectorAll('input[name=mycheckbox]:checked'));
     my_date=$('.datepicker').val();
