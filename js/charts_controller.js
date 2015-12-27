@@ -208,3 +208,11 @@ function stateChange(id) {
     	    change_info_for_logged(id);
     }, 2000);
 }
+
+function check_all_checkbox(){
+    var aa= document.getElementsByTagName("input");
+    for (var i =0; i < aa.length; i++){
+        if (aa[i].type == 'checkbox')
+            aa[i].checked = true;
+    }
+}
