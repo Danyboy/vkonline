@@ -20,7 +20,10 @@ include 'includes/start.php';
             Есть поминутная статистика, 
 	    <a 
 	    title="Отображающие вашу дневную онлайн активность по часам"
-	    href="u?u=<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>&users=[<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>,<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>]&d=">
+    		href="u?u=<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>&users=[<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>,<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>]" id="date_link"
+		onclick="
+		location.href=this.href+get_date_and_users();return false;
+	    ">
 	    красочные графики</a>,
 	    детектор 
 	    <a href="insomnia?u=<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>" 
