@@ -195,7 +195,8 @@ class OnlineHistory
 	}
 
         function save_to_db($value, $current_user){
-                $my_name = $value->first_name . " " . $value->last_name;
+                $my_name = addcslashes ($value->first_name . " " . $value->last_name,  "'");
+                //$my_name_2 = mysqli::real_escape_string($value->first_name . " " . $value->last_name);
 		
 	        $check_user_query = "SELECT COUNT(id) FROM users{$current_user} WHERE id={$value->uid};";
 	        $insert_user_query = "INSERT INTO users{$current_user} (id, name, link) VALUES ({$value->uid}, '{$my_name}', '{$value->photo_50}');";

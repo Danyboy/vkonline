@@ -28,9 +28,13 @@ include 'includes/start.php';
 	    title="Покажет сколько времени вы были онлайн одновременно с другими пользователям"
 	    href="c?cu=<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>&u=<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>">совместимости <img src='img/heart.png' alt='$row[2]'></a>
         </p>
+    <div class="alert alert-info" id="login">
 	<div style="width: 10%; margin: 0 auto;">
-	    <div id="login_button" onclick="VK.Auth.login(authInfo);" 
-	    title="Войти через ВКонтакте для отображения вашей статистики и сохранения онлайн-истории ваших друзей"></div>
+	    <div id="login_button" data-toggle="tooltip" onclick="VK.Auth.login(authInfo);"
+	    title="Войти через ВКонтакте для отображения вашей статистики и сохранения онлайн-истории ваших друзей">
+	    </div>
+	</div>
+	<p>Войдите через ВКонтакте для отображения вашей статистики и сохранения онлайн-истории ваших друзей. </p>
 	</div>
       </div>
     </div>
@@ -77,7 +81,7 @@ function authInfo(response) {
 	//stateChange(response.session.mid);
 	set_user_url(id);
 	change_info_for_logged(id);
-        document.getElementById('login_button').style.display = 'none';
+        document.getElementById('login').style.display = 'none';
     } else {
 	//alert('not auth');
   }
@@ -85,6 +89,10 @@ function authInfo(response) {
 
 VK.UI.button('login_button');
 VK.Auth.getLoginStatus(authInfo);
+
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip(); 
+});
 
 $(".datepicker").datepicker({
     format: "dd.mm.yy",
