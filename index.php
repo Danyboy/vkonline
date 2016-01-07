@@ -47,7 +47,7 @@ include 'includes/start.php';
     <div class="container-fluid">
       <div class="row">
 
-<div class="scrollit">
+<div class="" id="scroll-table">
   <div stylee=" width: 807px; display: table; margin: 0 auto;">
 <div class="table-responsive">
             <table class="table table-striped" id="users_statistics">
@@ -92,6 +92,10 @@ function authInfo(response) {
 	//alert('not auth');
         document.getElementById('main_info_overwiev').style.display = 'none';
   }
+}
+
+if (window!=window.top) {
+    document.getElementById('scroll-table').className = 'scrollit';
 }
 
 VK.UI.button('login_button');
