@@ -156,12 +156,22 @@ class OnlineHistory
 			    <img src='{$img}' title='$user_name_spaced'></a>
 			</div>
 			<div class='col2'>
-			    <a href='./u?u={$current_user}&users=[{$chart_uid},{$current_user}]&d={$my_date}'>
+			    <a 
+			    href=\"u?u=" . $this->get_current_id($_GET['u']) . 
+			    "&users=[" . $this->get_current_id($_GET['u']). ",". $chart_uid . "]\" id=\"date_link\"
+	                    onclick=\"
+        		    location.href=this.href+get_date_and_users();return false;
+			    \">
 				    {$user_name}
 			    </a>
 			</div>
 			<div class='col3'>
-			    <a href='./u?u={$current_user}&users=[{$chart_uid},{$current_user}]&d={$my_date}'>
+			    <a 
+			    href=\"u?u=" . $this->get_current_id($_GET['u']) . 
+			    "&users=[" . $this->get_current_id($_GET['u']). ",". $chart_uid . "]\" id=\"date_link\"
+	                    onclick=\"
+        		    location.href=this.href+get_date_and_users();return false;
+			    \">
 			    <img src='img/chart.png' align='right' 
 					title='Сравнить график активности с {$user_name}'>
 			    </a>
