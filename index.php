@@ -56,7 +56,7 @@ include 'includes/start.php';
                 <tr>
                   <th>
                     <a 
-                    title="Графики отмеченных пользователей"
+                    title="Сравнить графики отмеченных пользователей"
                     href="u?u=<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>"
                     onclick="
                     location.href=this.href+get_date_and_users();return false;
