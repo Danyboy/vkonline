@@ -50,7 +50,10 @@ Custom styles for this template -->
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/?u=<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>">ВКонлайн</a>
+          <a style='' class="navbar-brand" href="/?u=<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>">
+	<!--    <img src='img/vkonline_50.png' title='ВКонлайн'> -->
+	    ВКонлайн
+	  </a>
         </div>
     <div class="collapse navbar-collapse">
       <ul class="nav navbar-nav">

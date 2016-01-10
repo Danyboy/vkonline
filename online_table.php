@@ -82,15 +82,19 @@ class OnlineHistory
 		if (!$result) {
 			//error_log("Произошла ошибка.\n");
 			error_log(pg_last_error($this->dbconn));
-			echo "
-			    <div class='alert alert-success' id='after_login'>
-			        <p>Ваша статистика записывается. Зайдите через пять минут.</p>
-			    </div>
-			";
+			$this->echo_error();
 			exit;
 		}
 		
 		return $result;
+	}
+
+	function echo_error(){
+		echo "
+		    <div class='alert alert-success' id='after_login'>
+		        <p>Ваша статистика записывается. Зайдите через пять минут.</p>
+		    </div>
+		";
 	}
 	
 	function query_to_json($query){
