@@ -12,7 +12,8 @@ include 'includes/start.php';
            или в 
 	    <a 
 		title="Выберите дату и нажмите на ссылку"
-    		href="u?u=<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>&users=[<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>,<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>]" id="date_link"
+    		href="u?u=<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>&users=[<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>
+		,<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>]" id="date_link"
 		onclick="
 		location.href=this.href+get_date_and_users();return false;
 		">
@@ -31,7 +32,7 @@ include 'includes/start.php';
 	    title="Покажет сколько часов вы были онлайн днём и ночью, и отношение этих величин">бессоницы</a> и 
 	    <a 
 	    title="Покажет сколько времени вы были онлайн одновременно с другими пользователям"
-	    href="c?cu=<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>&u=<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>">совместимости <img src='img/heart.png' alt='$row[2]'></a>
+	    href="c?u=<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>&cu=<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>">совместимости <img src='img/heart.png' alt='$row[2]'></a>
         </p>
     </div>
     <div class="alert alert-info" id="login">

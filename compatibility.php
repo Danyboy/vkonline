@@ -24,7 +24,7 @@ include 'includes/start.php';
                 <tr>
 		<th class="sorttable_nosort">
                     <a
-		    href="u?u=<?php echo $myOnlineHistiry->get_current_id($_GET['cu']); ?>"
+		    href="u?u=<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>"
                     onclick="
 		    location.href=this.href+get_date_and_users();return false;">
                     С</a>
@@ -41,7 +41,7 @@ include 'includes/start.php';
 <?php
 include 'includes/get_compatibility.php';
 $myOnlineCompatibility = new OnlineHistoryCompatibility();
-$myOnlineCompatibility->show_users_compatibility($_GET['u'], $_GET['cu']);
+$myOnlineCompatibility->show_users_compatibility($_GET['cu'], $_GET['u']);
 ?>
 
 <script language="javascript">
