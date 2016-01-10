@@ -19,17 +19,17 @@ Custom styles for this template -->
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+      <script src="//oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="//oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     <script src="//vk.com/js/api/openapi.js" type="text/javascript"></script>
     <script src="js/charts_controller.js"></script>
-    <script src="https://f.efnez.ru/js/sorttable.js"></script>
+    <script src="//f.efnez.ru/js/sorttable.js"></script>
     <!-- ... -->
   <script type="text/javascript" src="/bower_components/jquery/jquery.min.js"></script>
   <script type="text/javascript" src="/bower_components/moment/min/moment.min.js"></script>
   <script type="text/javascript" src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
 
   <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css" />
   <link rel="stylesheet" href="/dist/css/bootstrap-datepicker3.min.css" />  

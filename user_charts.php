@@ -104,7 +104,7 @@ $myOnlineHistiry = new OnlineHistoryCharts();
 <div id="chart_year" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 </div>
 
-<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="//code.highcharts.com/highcharts.js"></script>
 
 <?php
 include 'includes/chart_day.php';
@@ -133,7 +133,7 @@ include 'includes/chart_year.php';
 
 <div id="chart_interval" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
 
 <script type="text/javascript">
 var data_by_day = <?php echo json_encode($myOnlineHistiry->get_user_activity_by_day($users, $my_date, $myOnlineHistiry->get_current_id($current_user))) ?>;
