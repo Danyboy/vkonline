@@ -195,7 +195,7 @@ class OnlineHistory
 			$this->show_chart($my_date, $current_user, $row[0], $row[2], $row[1]);
 			
 			echo "
-			<td><a href='c?cu={$current_user}&u={$row[0]}'>
+			<td><a href='c?u={$current_user}&cu={$row[0]}'>
 			    {$my_time} <br> <img src='img/heart.png' alt='$row[2]' alight='right'
 				title='Показать совместимость $row[2] c другими пользователями'>
 			    </a></td>
