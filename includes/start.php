@@ -10,29 +10,31 @@
 
     <title>Сколько времени твои друзья проводят ВКонтакте</title>
 
-    <!-- Bootstrap core CSS -->
 
-    <!--     <link href="../../dist/css/bootstrap.min.css" rel="stylesheet">
-
-Custom styles for this template -->
-    <link href="css/dashboard.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="//oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="//oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+
     <script src="//vk.com/js/api/openapi.js" type="text/javascript"></script>
     <script src="js/charts_controller.js"></script>
     <script src="//f.efnez.ru/js/sorttable.js"></script>
-    <!-- ... -->
   <script type="text/javascript" src="/bower_components/jquery/jquery.min.js"></script>
   <script type="text/javascript" src="/bower_components/moment/min/moment.min.js"></script>
   <script type="text/javascript" src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
 
+    <!-- ... -->
+    <!-- Bootstrap core CSS -->
+
   <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css" />
   <link rel="stylesheet" href="/dist/css/bootstrap-datepicker3.min.css" />  
+
+    <!-- Custom styles for this template -->
+
+  <link rel="stylesheet" href="css/dashboard.css">
  </head>
   <body>
 	    <?php
@@ -41,7 +43,7 @@ Custom styles for this template -->
 	    $myOnlineHistiry = new OnlineHistory();
 	    ?>
 
-    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
