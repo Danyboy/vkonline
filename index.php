@@ -52,7 +52,7 @@ include 'includes/start.php';
 <div class="" id="scroll-table">
   <div stylee=" width: 807px; display: table; margin: 0 auto;">
 <div class="table-responsive">
-            <table class="table table-striped" id="users_statistics">
+            <table class="table table" id="users_statistics">
               <thead>
                 <tr>
                   <th>
