@@ -59,7 +59,7 @@ class OnlineHistory
 	}
 
 	function get_online_part($str) {
-	     $url="https://api.vk.com/method/users.get?user_ids=" . $str . ",\&fields=online,photo_50,\&lang=ru";
+	     $url="https://api.vk.com/method/users.get?user_ids=" . $str . ",\&fields=online,photo_50,\&lang=ru&https=1";
 	     return $this->send_req($url);
 	}
 	
