@@ -83,7 +83,7 @@ class OnlineHistory
 			//error_log("Произошла ошибка.\n");
 			error_log(pg_last_error($this->dbconn));
 			$this->echo_error();
-			exit;
+			//exit;
 		}
 		
 		return $result;
@@ -177,7 +177,7 @@ class OnlineHistory
         		    location.href=this.href+get_date_and_users();return false;
 			    \">
 			    <img src='img/chart.png' align='right' 
-					title='Сравнить график активности с {$user_name}'>
+					title='Сравнить график активности с {$user_name_spaced}'>
 			    </a>
 			</div>
 			</div>

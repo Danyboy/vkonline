@@ -20,7 +20,7 @@
 
     <script src="//vk.com/js/api/openapi.js" type="text/javascript"></script>
     <script src="js/charts_controller.js"></script>
-    <script src="//f.efnez.ru/js/sorttable.js"></script>
+    <script src="//efnez.ru/js/sorttable.js"></script>
   <script type="text/javascript" src="/bower_components/jquery/jquery.min.js"></script>
   <script type="text/javascript" src="/bower_components/moment/min/moment.min.js"></script>
   <script type="text/javascript" src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>

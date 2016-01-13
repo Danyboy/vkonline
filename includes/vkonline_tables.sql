@@ -16,9 +16,9 @@
 
 --UPDATE user_online SET (status = status - INTERVAL(1 HOUR)) WHERE status between '2015-10-25 00:00:00' and '2015-10-26 17:00:00';
 
+-- INSERT INTO online749972 SELECT * FROM user_online WHERE status between '2014-10-25 00:00:00' and '2015-12-15 00:00:01';
 
-
-
+DELETE FROM online749972 WHERE status between '2014-10-25 00:00:00' and '2015-12-15 00:00:01';
 UPDATE user_online SET status = status - INTERVAL '1 HOUR' WHERE status between '2015-10-26 17:00:00' and '2015-10-26 19:00:00';
 
 SELECT user_id, EXTRACT(hour FROM status) AS hours, COUNT (EXTRACT(hour FROM status)) * 5 AS count 
