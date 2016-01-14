@@ -25,20 +25,22 @@ function generate_array_for_graphs(data, php_names, length){
 
         if (current_id == next_id){
     	    categories[cat_counter][i - new_user_index] = data[i][1];
-	    my_hours_count[i - new_user_index] = parseInt(data[i][2], 10);
+	    my_hours_count[i - new_user_index] = parseFloat(data[i][2], 10);
 
 	    categories[cat_counter][i + 1 - new_user_index] = data[i + 1][1];
-	    my_hours_count[i + 1 - new_user_index] = parseInt(data[i + 1][2], 10);
+	    my_hours_count[i + 1 - new_user_index] = parseFloat(data[i + 1][2], 10);
         } else {
 	    save_cleared_series(length);    	    
             current_user_number++;
 
+	    new_user_index = i;
 	    categories[cat_counter] = new Array(length);
 	    my_hours_count = new Array(length);
 	    categories[cat_counter][i + 1 - new_user_index] = data[i + 1][1];
-	    my_hours_count[i + 1 - new_user_index] = parseInt(data[i + 1][2], 10);
+	    my_hours_count[i + 1 - new_user_index] = parseFloat(data[i + 1][2], 10);
 	    new_user_index = i + 1;
         }
+    console.log(my_hours_count,current_id,next_id);
     }
     save_cleared_series(length);
     cat_counter++;
@@ -50,6 +52,8 @@ function save_cleared_series(length){
     //If not hours clearing run without checking data
     if (length == 24){
 	my_hours_count = remove_empty_hourse(categories[cat_counter],my_hours_count,length);
+    } else if (length == 19){
+	my_hours_count = remove_empty_dates_without_year(categories[cat_counter],my_hours_count,length);
     } else {
 	my_hours_count = remove_empty_dates(categories[cat_counter],my_hours_count,length);
     }
@@ -73,6 +77,10 @@ function remove_empty_hourse(hours, data, length){
 
 function remove_empty_dates(raw_dates, data, length){
     return data_corrector(get_curren_interval(), raw_dates, data);
+}
+
+function remove_empty_dates_without_year(raw_dates, data, length){
+    return data_corrector(get_curren_interval_without_year(), raw_dates, data);
 }
 
 function data_corrector(correct_categories, raw_categories, data){
@@ -100,7 +108,18 @@ function to_date(str){
 }
 
 function get_curren_interval(){
-    return get_all_days(to_date(get_range()[0]), to_date(get_range()[1]));
+    return convert_date(get_all_days(to_date(get_range()[0]), to_date(get_range()[1])));
+}
+
+function get_curren_interval_without_year(){
+    return convert_date_without_year(get_all_days(to_date(get_range()[0]), to_date(get_range()[1])));
+}
+
+function get_range(){
+    var fdate = new Array(2);
+    fdate[0] = document.getElementsByName('start')[0].value;
+    fdate[1] = document.getElementsByName('end')[0].value;
+return fdate;
 }
 
 function get_all_days(s, e){
@@ -113,9 +132,22 @@ function get_all_days(s, e){
         ))
     }
 
+    return a;
+}
+
+function convert_date(a){
     //Convert date format to like 2015-11-04
     for (i = 0; i < a.length; i++){
 	a[i] = a[i].toISOString().slice(0,10);
+    }
+
+    return a;
+}
+
+function convert_date_without_year(a){
+    //Convert date format to like 2015-11-04
+    for (i = 0; i < a.length; i++){
+	a[i] = a[i].toISOString().slice(5,10);
     }
 
     return a;
@@ -129,12 +161,6 @@ function normalise_hours(data,days,id){
 }
 
 
-function get_range(){
-    var fdate = new Array(2);
-    fdate[0] = document.getElementsByName('start')[0].value;
-    fdate[1] = document.getElementsByName('end')[0].value;
-return fdate;
-}
 
 
 function change_info_for_logged(id){
