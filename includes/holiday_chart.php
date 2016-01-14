@@ -11,14 +11,14 @@ theme = 'default';
             //type: 'spline'
         },
         title: {
-	    text: 'Сколько часов были онлайн все ваши друзья с <?php echo $myOnlineHistiry->get_correct_date_interval($_GET['d'])[0]; ?> по <?php echo $myOnlineHistiry->get_correct_date_interval($_GET['d'])[1]; ?>'
+	    text: 'Сколько часов были онлайн все ваши друзья в новогодние праздники'
         },
         legend: {
             layout: 'vertical',
             align: 'left',
             verticalAlign: 'top',
-            x: 150,
-            y: 100,
+            x: 90,
+            y: 40,
             floating: true,
             borderWidth: 1,
             backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
@@ -32,13 +32,15 @@ theme = 'default';
             }
         },
         yAxis: {
+	    floor: 0,
+	    //min: 700,
             title: {
-                text: 'часов онлайн'
+                text: 'нормированных часов'
             }
         },
         tooltip: {
             shared: true,
-            valueSuffix: ' часов'
+            valueSuffix: ' нормированных часов'
         },
         credits: {
             enabled: false,
@@ -49,6 +51,8 @@ theme = 'default';
             }
         },
         series: series_activity_user_by_day
+	    //['2014-2015'],
+	    //['2014-2015','2015-2016']
     });
 });
 })(jQuery);
