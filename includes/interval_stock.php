@@ -13,7 +13,12 @@
         value="<?php echo $myOnlineHistiry->get_correct_date_interval($_GET['d'])[1]; ?>"/>
     <span class="input-group-addon">
         <a href="" onclick=
-        "my_date=get_range(); location.href=window.location.href+'&d=['+'%22'+my_date[0]+'%22'+','+'%22'+my_date[1]+'%22'+']';return false;">
+        "my_date=get_range(); 
+	location.href=window.location.href+'&d=['+'%22'+my_date[0]+'%22'+','+'%22'+my_date[1]+'%22'+']';
+	request_data(
+                    'includes/get_users_activity_by_days?&u=<?php echo $current_user;?>&users=<?php echo json_encode($users);?>&d=<?php echo $my_date;?>'
+                    , this, 365, true);
+	return false;">
         Узнать</a>
     </span>
     </div>
@@ -21,6 +26,8 @@
 </div>
 
 <script type="text/javascript">
+
+
 $('#chart_days').highcharts('StockChart', 
 	    {
 	chart: {

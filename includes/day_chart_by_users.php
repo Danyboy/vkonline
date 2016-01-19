@@ -2,11 +2,7 @@
 <div id="chart_day" style="min-width: 310px; margin: 0 auto"></div>
 </div>
 
-<script src="//code.highcharts.com/highcharts.js"></script>
-
 <script type="text/javascript">
-
-//chart.setOptions(Highcharts.dark-unica);
 
 $(document).ready(function() {
 var chart = new Highcharts.Chart({
