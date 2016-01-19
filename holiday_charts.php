@@ -57,7 +57,7 @@ $myOnlineHistiry = new OnlineHistoryCharts();
 </div>
 
 <?php
-include 'includes/holiday_chart.php';
+include 'includes/chart_holiday.php';
 ?>
 
 <script type="text/javascript">
