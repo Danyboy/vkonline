@@ -1,7 +1,5 @@
 <?php 
 include 'get_charts.php';
-
-
 $myOnlineHistiry = new OnlineHistoryCharts();
 
 $users = json_decode($_GET['users']);
@@ -14,5 +12,4 @@ echo "{
     \"data\": $data_by_days,
     \"names\": $my_names
     }";
-
 ?>
