@@ -57,7 +57,6 @@ function save_cleared_series(length){
     } else {
 	my_hours_count = remove_empty_dates(categories[cat_counter],my_hours_count,length);
     }
-    //my_hours_count = normalise_hours(remove_empty_hourse(categories,my_hours_count),days,current_user_number);
     
     my_series[current_user_number] = {
         name: names[current_user_number],
@@ -160,9 +159,6 @@ function normalise_hours(data,days,id){
     return data;
 }
 
-
-
-
 function change_info_for_logged(id){
     document.getElementById("main_info").innerHTML = document.getElementById("main_info").innerHTML.replace(/<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>/g, id);
 }
@@ -176,13 +172,12 @@ function add_follower(id) {
 }
 
 function send_request(path) {
-    var req = 'user=' + encodeURIComponent(id);
-    xhttp = new XMLHttpRequest();
     //xhttp.open("GET", path, true);
     var myjson;
     $.getJSON(path, function(json){
     myjson = json;
     });
+    return myjson;
 }
 
 function get_date_and_users(){

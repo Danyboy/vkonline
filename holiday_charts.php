@@ -1,11 +1,7 @@
 <?php 
 include 'includes/start.php';
-include 'includes/get_holiday_charts.php';
 
-$users = json_decode($_GET['users']);
 $my_date = $_GET['d'];
-$current_user = $_GET['u'];
-$myOnlineHistiry = new OnlineHistoryCharts();
 ?>
 
 <div>
@@ -32,18 +28,93 @@ $myOnlineHistiry = new OnlineHistoryCharts();
     </div>
 </div>
 
-<?php
-include 'includes/chart_holiday.php';
-?>
-
 <script type="text/javascript">
-//var data_by_day = send_request('includes/get_holiday_charts.php');
-<?php //echo json_encode($myOnlineHistiry->get_all_users_activity_by_day($my_date, $myOnlineHistiry->get_current_id($current_user))) ?>;
-var disable = false;
-series_activity_user_by_day = generate_array_for_graphs(data_by_day, php_names, 19);
-series_activity_user_by_day[0].name = ['2015-2016'];
-series_activity_user_by_day[1].name = ['2014-2015'];
-series_activity_user_by_day[1].color = '#ffa500';
+
+var chart;
+
+function requestData() 
+{
+    $.ajax({
+    url: 'includes/get_holiday_charts.php?&d=<?php echo $my_date;?>',
+    datatype: "json",
+    success: function(data) 
+    {
+	chart.hideLoading();
+	chart.series[0].setData(generate_array_for_graphs(data, [2014], 19)[0].data);
+	chart.series[1].setData(generate_array_for_graphs(data, [2014], 19)[1].data);
+	chart.xAxis[0].setCategories(categories[0]);
+    },      
+    });
+}
+
+$(document).ready(function() {
+chart = new Highcharts.Chart({
+	chart: {
+	    renderTo: 'chart_day',
+            type: 'spline',
+	    //type: 'stockchart',
+    	    height: 550,
+	    animation: {
+                duration: 1000,
+		easing: 'easeOutBounce'
+            },
+	    events: {
+        	load: function(){
+		    requestData();
+                    this.showLoading();
+                }
+    	    }
+        },
+        title: {
+        text: 'Сколько часов онлайн были все друзья в новогодние праздники'
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'left',
+            verticalAlign: 'top',
+            x: 90,
+            y: 40,
+            floating: true,
+            borderWidth: 1,
+            backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+        },
+        xAxis: {
+            categories: 
+            categories[0],
+        gridLineWidth: 1,
+            title: {
+                text: 'Дата'
+            }
+        },
+        yAxis: {
+        floor: 0,
+        min: 0.5,
+            title: {
+                text: 'Нормированных часов'
+            }
+        },
+        tooltip: {
+            shared: true,
+            valueSuffix: ' нормированных часов'
+        },
+        credits: {
+            enabled: false,
+        },
+        plotOptions: {
+            areaspline: {
+                fillOpacity: 0.5
+            }
+	},
+        series: [{
+            name: '2016',
+            data: [],
+	 },{
+            name: '2015',
+            data: [],
+	    color: '#ffa500',
+	 }]
+  });
+});
 </script>
 
 <script>
