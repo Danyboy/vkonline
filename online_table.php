@@ -256,7 +256,7 @@ class OnlineHistory
                     $my_date_start = $this->get_correct_date($my_date);
                     $my_date_end = $this->get_correct_date();
                 } else {
-                    $my_date_start = "01.01.16";
+                    $my_date_start = "01.01.15";
                     $my_date_end = $this->get_correct_date($my_date);
                 }
 
