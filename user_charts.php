@@ -90,6 +90,18 @@ class OnlineHistoryCharts extends OnlineHistory{
 		$count_query = "SELECT name FROM users{$current_user} WHERE id IN ({$users_string}) ORDER BY id;";
 		return $this->query_to_json($count_query);
 	}
+
+	function get_user_activity_by_day_with_names($users, $my_date, $current_user){
+		$data = json_decode($this->get_user_activity_by_day($users, $my_date, $current_user));
+		$users = array($data[0][0]);
+		foreach ($data as $user){
+		    if (end($users) != $user[0]){
+			array_push($users, $user[0]);
+		    }
+		}
+		return array(json_encode($data), $this->get_current_users_name($users, $current_user));
+	}
+
 }
 
 $users = json_decode($_GET['users']);
@@ -136,15 +148,18 @@ include 'includes/chart_year.php';
 <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
 
 <script type="text/javascript">
-var data_by_day = <?php echo json_encode($myOnlineHistiry->get_user_activity_by_day($users, $my_date, $myOnlineHistiry->get_current_id($current_user))) ?>;
+<?php
+$data_by_day_with_names = $myOnlineHistiry->get_user_activity_by_day_with_names($users, $my_date, $myOnlineHistiry->get_current_id($current_user))
+?>;
+var data_by_day = <?php echo json_encode($data_by_day_with_names[0])?>;
 var data_by_days = <?php echo json_encode($myOnlineHistiry->get_user_activity_by_days($users, $my_date, $myOnlineHistiry->get_current_id($current_user))) ?>;
-var data = <?php echo json_encode($myOnlineHistiry->get_activity_by_user($users, $myOnlineHistiry->get_current_id($current_user))) ?>;
-var php_names = <?php echo json_encode($myOnlineHistiry->get_current_users_name($users, $myOnlineHistiry->get_current_id($current_user))) ?>;
-//TODO bug with incorrect user names if sorting id in data and names is different 
+var data_by_users= <?php echo json_encode($myOnlineHistiry->get_activity_by_user($users, $myOnlineHistiry->get_current_id($current_user))) ?>;
+var php_names = <?php echo json_encode($data_by_day_with_names[1])?>;
+//FIXED bug with incorrect user names if sorting id in data and names is different 
 //TODO check php query before json encode
 
-series_activity_by_user = generate_array_for_graphs(data, php_names, 24);
 series_activity_user_by_day = generate_array_for_graphs(data_by_day, php_names, 24);
+series_activity_by_user = generate_array_for_graphs(data_by_users, php_names, 24);
 series_activity_user_by_days = generate_array_for_graphs(data_by_days, php_names, 315);
 </script>
 
