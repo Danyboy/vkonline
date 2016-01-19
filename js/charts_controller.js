@@ -168,12 +168,21 @@ function change_info_for_logged(id){
 }
 
 function add_follower(id) {
-    
     var req = 'user=' + encodeURIComponent(id);
     xhttp = new XMLHttpRequest();
     xhttp.open("POST", "includes/add_follower.php", true);
     xhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhttp.send(req);
+}
+
+function send_request(path) {
+    var req = 'user=' + encodeURIComponent(id);
+    xhttp = new XMLHttpRequest();
+    //xhttp.open("GET", path, true);
+    var myjson;
+    $.getJSON(path, function(json){
+    myjson = json;
+    });
 }
 
 function get_date_and_users(){
