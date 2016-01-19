@@ -25,20 +25,17 @@ function requestData()
     {
 	chart.hideLoading();
 	var my_data = JSON.parse(data);
-
-	//console.log(data);
-	//console.log(my_data.data);
-	//console.log(my_data.names);
-	//console.log(generate_array_for_graphs(JSON.stringify(my_data.data), JSON.stringify(my_data.names), 24));
-
 	var norm_data = generate_array_for_graphs(JSON.stringify(my_data.data), JSON.stringify(my_data.names), 24);
 	for (i = 0; i < norm_data.length; i++) {
-	    chart.series[i].setData(norm_data[i].data);
-	    chart.series[i].update({name:my_data.names[i]}, false);
+	    chart.addSeries({              
+                name: norm_data[i].name,
+                data: norm_data[i].data
+            }, false);
 	    chart.redraw();
 	}
 
 	chart.xAxis[0].setCategories(categories[0]);
+	chart.setOptions(Highcharts.dark-unica);
     },      
     });
 }
@@ -74,12 +71,10 @@ chart = new Highcharts.Chart({
             floating: true,
             borderWidth: 0,
             backgroundColor: 'rgba(255,255,255,0.6)'
-	    //(Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
         },
         xAxis: {
             categories: 
             categories[0],
-            //[1,2],
             title: {
                 text: 'Время дня'
             }
@@ -101,11 +96,7 @@ chart = new Highcharts.Chart({
                 fillOpacity: 0.5
             }
         },
-        series: [{
-            data: [],
-	 },{
-            data: [],
-	 }]
+        series: []
   });
 });
 </script>
