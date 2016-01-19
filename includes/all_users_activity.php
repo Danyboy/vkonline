@@ -2,8 +2,6 @@
 <div id="chart_all_activity" style="min-width: 310px; margin: 0 auto"></div>
 </div>
 
-<script src="//code.highcharts.com/highcharts.js"></script>
-
 <script type="text/javascript">
 
 $(document).ready(function() {
