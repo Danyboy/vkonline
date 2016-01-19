@@ -156,7 +156,7 @@ class OnlineHistory
 			<td>
 			<div class='layout'>
 			<div class='col1'>
-			    <a href='http://vk.com/id{$chart_uid}' target='_blank'>
+			    <a href='//vk.com/id{$chart_uid}' target='_blank'>
 			    <img src='{$img}' title='$user_name_spaced'></a>
 			</div>
 			<div class='col2'>
