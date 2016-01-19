@@ -39,6 +39,7 @@ $('#chart_days').highcharts('StockChart',
 	chart: {
 	    renderTo: 'chart_days',
             type: 'areaspline',
+	    height: 550,
 	    events: {
         	load: function(){
 		    request_data(
@@ -48,35 +49,43 @@ $('#chart_days').highcharts('StockChart',
                 }
     	    }
         },
+	title: {
+            text: 'Сколько часов вы были онлайн с <?php echo $myOnlineHistiry->get_correct_date_interval($_GET['d'])[0]; ?>
+                 по <?php echo $myOnlineHistiry->get_correct_date_interval($_GET['d'])[1]; ?>'
+        },
 	legend: {
-            layout: 'vertical',
-            align: 'left',
-            verticalAlign: 'top',
-            x: 150,
-            y: 100,
+            enabled: true,
             floating: true,
-            borderWidth: 1,
-            backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+            align: 'left',
+            backgroundColor: 'rgba(255,255,255,0.6)',
+            borderColor: 'black',
+            borderWidth: 0,
+            layout: 'vertical',
+            verticalAlign: 'top',
+            y: 100,
+            x: 150
         },
         rangeSelector: {
             selected: 0,
 	    inputEnabled: false,
-//	    buttonTheme: {
-//	        visibility: 'hidden'
-//	    },
-//	    labelStyle: {
-//	        visibility: 'hidden'
-//	    }
         },
 	credits: {
             enabled: false,
         },
 	xAxis: {
             type: 'datetime',
+	    title: {
+                text: 'День'
+            }
         },
         yAxis: {
-            labels: {
+	    title: {
+//		align: 'left',
+                text: 'Часов онлайн'
             },
+	    labels: {
+		align: 'left'
+	    },
             plotLines: [{
                 value: 0,
                 width: 2,
@@ -84,6 +93,7 @@ $('#chart_days').highcharts('StockChart',
             }]
         },
         tooltip: {
+	    valueSuffix: ' часов',
             valueDecimals: 2
         },
         });

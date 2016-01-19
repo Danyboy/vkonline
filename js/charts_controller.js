@@ -116,13 +116,14 @@ function update_charts(chart, data, length, convert){
     var my_data = JSON.parse(data);
     var norm_data = generate_array_for_graphs(JSON.stringify(my_data.data), JSON.stringify(my_data.names), length);
     for (i = 0; i < norm_data.length; i++) {
+	//console.log(categories);
 	if (convert) {
 	    for (j = 0; j < norm_data[i].data.length; j++){
-	        norm_data[i].data[j] = [Date.parse(categories[0][j]),norm_data[i].data[j]];
+	        norm_data[i].data[j] = [Date.parse(categories.slice(-1).pop()[j]),norm_data[i].data[j]];
 	        //.getTime()
-		console.log(norm_data[i].data[j]);
+		//console.log(norm_data[i].data[j]);
 	    }
-	    console.log(norm_data[i].data);
+	    //console.log(norm_data[i].data);
 	}
         chart.addSeries({              
             name: norm_data[i].name,
