@@ -116,14 +116,11 @@ function update_charts(chart, data, length, convert){
     var my_data = JSON.parse(data);
     var norm_data = generate_array_for_graphs(JSON.stringify(my_data.data), JSON.stringify(my_data.names), length);
     for (i = 0; i < norm_data.length; i++) {
-	//console.log(categories);
 	if (convert) {
 	    for (j = 0; j < norm_data[i].data.length; j++){
+		//TODO bug with categories if all activity charts loads fast
 	        norm_data[i].data[j] = [Date.parse(categories.slice(-1).pop()[j]),norm_data[i].data[j]];
-	        //.getTime()
-		//console.log(norm_data[i].data[j]);
 	    }
-	    //console.log(norm_data[i].data);
 	}
         chart.addSeries({              
             name: norm_data[i].name,
@@ -204,15 +201,6 @@ function add_follower(id) {
     xhttp.open("POST", "includes/add_follower.php", true);
     xhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhttp.send(req);
-}
-
-function send_request(path) {
-    //xhttp.open("GET", path, true);
-    var myjson;
-    $.getJSON(path, function(json){
-    myjson = json;
-    });
-    return myjson;
 }
 
 function get_date_and_users(){
