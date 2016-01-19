@@ -100,6 +100,32 @@ function data_corrector(correct_categories, raw_categories, data){
     return corrected_data;    
 }
 
+function request_data(request, chart) {
+    $.ajax({
+    url: request,
+    datatype: "json",
+    success: function(data) 
+    {
+        update_charts(chart, data);
+    },      
+    });
+}
+
+function update_charts(chart, data){
+    chart.hideLoading();
+    var my_data = JSON.parse(data);
+    var norm_data = generate_array_for_graphs(JSON.stringify(my_data.data), JSON.stringify(my_data.names), 24);
+    for (i = 0; i < norm_data.length; i++) {
+        chart.addSeries({              
+            name: norm_data[i].name,
+            data: norm_data[i].data
+        }, false);
+        chart.redraw();
+    }
+
+    chart.xAxis[0].setCategories(categories[0]);
+}
+
 function to_date(str){
     //Detect date from 13.11.15 like format
     var res = str.split(".");
