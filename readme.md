@@ -1,4 +1,7 @@
 Service for analize online user activty on vk.com
 http://vko.efnez.ru
 
-<a href="http://vko.efnez.ru"><img src="img/screenshots/vko_new_day_year_chart.png" align="left" height="480"></a>
+![alt tag](./img/screenshots/vko_new_day_year_chart.png)
+![alt tag](./img/screenshots/vko_new_interval_chart.png)
+![alt tag](./img/screenshots/vk_online_holiday_norm_good_new_style_big.png)
+
