@@ -40,7 +40,7 @@ function generate_array_for_graphs(data, php_names, length){
 	    my_hours_count[i + 1 - new_user_index] = parseFloat(data[i + 1][2], 10);
 	    new_user_index = i + 1;
         }
-    console.log(my_hours_count,current_id,next_id);
+    //console.log(my_hours_count,current_id,next_id);
     }
     save_cleared_series(length);
     cat_counter++;
