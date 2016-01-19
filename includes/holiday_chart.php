@@ -7,11 +7,12 @@ theme = 'default';
     $(function () {
     $('#chart_day').highcharts({
         chart: {
-            type: 'areaspline'
-            //type: 'spline'
+            //type: 'areaspline'
+            type: 'spline',
+	    height: 550
         },
         title: {
-	    text: 'Сколько часов были онлайн все ваши друзья в новогодние праздники'
+	    text: 'Сколько часов онлайн были все друзья в новогодние праздники'
         },
         legend: {
             layout: 'vertical',
@@ -27,13 +28,14 @@ theme = 'default';
             categories: 
             categories[0],
             //[1,2],
+	    gridLineWidth: 1,
             title: {
                 text: 'Дата'
             }
         },
         yAxis: {
 	    floor: 0,
-	    //min: 700,
+	    min: 0.5,
             title: {
                 text: 'нормированных часов'
             }

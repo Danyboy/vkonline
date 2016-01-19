@@ -16,7 +16,7 @@ class OnlineHistoryCharts extends OnlineHistory{
 		$my_date_end_prev = $this->get_previous_dates(365,$my_date_end);
 		$my_date_start_prev = $this->get_previous_dates(365,$my_date_start);
 
-		$count_query_prev = "SELECT '2014', to_char(status,'MM-DD') AS day, to_char(COUNT (EXTRACT(hour FROM status))::float / (12 * 1488), 'FM99.00') AS count 
+		$count_query_prev = "SELECT '2014', to_char(status,'MM-DD') AS day, to_char(COUNT (EXTRACT(hour FROM status))::float / (12 * 1268), 'FM99.00') AS count 
                                 FROM online749972
                                 WHERE status between '{$my_date_start_prev}' and '{$my_date_end_prev} 23:59:59'
                                 GROUP BY day, status::timestamp::date 
@@ -33,7 +33,7 @@ $myOnlineHistiry = new OnlineHistoryCharts();
 ?>
 
 <div>
-<div id="chart_day" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+<div id="chart_day" style="min-width: 310px; margin: 0 auto"></div>
 </div>
 
 <script src="//code.highcharts.com/highcharts.js"></script>
@@ -41,7 +41,7 @@ $myOnlineHistiry = new OnlineHistoryCharts();
 <div class="jumbotron">
     <div class="container" id="interval">
     <div class="input-daterange input-group" id="datepicker">
-    <span class="input-group-addon">Сколько часов вы были онлайн с </span>
+    <span class="input-group-addon">Сколько часов все были онлайн с </span>
     <input type="text" class="input-sm form-control" name="start" data-date-format="dd.mm.yy" size="5" 
         value="<?php echo $myOnlineHistiry->get_correct_date_interval($_GET['d'])[0]; ?>"/>
     <span class="input-group-addon">по</span>
@@ -67,6 +67,7 @@ var disable = false;
 series_activity_user_by_day = generate_array_for_graphs(data_by_day, php_names, 19);
 series_activity_user_by_day[0].name = ['2015-2016'];
 series_activity_user_by_day[1].name = ['2014-2015'];
+series_activity_user_by_day[1].color = '#ffa500';
 </script>
 
 <script>
