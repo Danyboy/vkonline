@@ -25,7 +25,7 @@ var chart = new Highcharts.Chart({
         	load: function(){
 		    request_data(
 		    'includes/get_user_activity_by_day.php?&u=<?php echo $current_user;?>&users=<?php echo json_encode($users);?>&d=<?php echo $my_date;?>'
-		    , this);
+		    , this, 24);
                     this.showLoading();
                 }
     	    }
