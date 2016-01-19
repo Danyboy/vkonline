@@ -63,7 +63,13 @@ var chart = new Highcharts.Chart({
         plotOptions: {
             areaspline: {
                 fillOpacity: 0.5
+            },
+	    series: {
+                marker: {
+                    enabled: true
+                }
             }
+
         },
   });
 });
