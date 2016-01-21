@@ -1,5 +1,5 @@
 <div>
-<div id="chart_all_activity" style="min-width: 310px; margin: 0 auto"></div>
+<div id="chart_day" style="min-width: 310px; margin: 0 auto"></div>
 </div>
 
 <script type="text/javascript">
@@ -7,19 +7,19 @@
 $(document).ready(function() {
 var chart = new Highcharts.Chart({
 	chart: {
-	    renderTo: 'chart_all_activity',
+	    renderTo: 'chart_day',
             type: 'areaspline',
 	    events: {
         	load: function(){
 		    request_data(
-		    'includes/get_all_users_activity?&u=<?php echo $current_user;?>&users=<?php echo json_encode($users);?>&d=<?php echo $my_date;?>'
+		    'includes/get_user_activity_by_day.php?&u=<?php echo $current_user;?>&users=<?php echo json_encode($users);?>&d=<?php echo $my_date;?>'
 		    , this, 24);
                     this.showLoading();
                 }
     	    }
         },
         title: {
-            text: 'Когда и сколько вы были онлайн за последении два года'
+            text: 'Когда и сколько вы были онлайн за <?php echo $myOnlineHistiry->get_correct_date($_GET['d']); ?>'
         },
         legend: {
             layout: 'vertical',
@@ -43,7 +43,7 @@ var chart = new Highcharts.Chart({
         },
         tooltip: {
             shared: true,
-            valueSuffix: ' минут'
+            valueSuffix: ' минут',
 	    valueDecimals: 2
         },
         credits: {
