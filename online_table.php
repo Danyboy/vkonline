@@ -288,7 +288,7 @@ class OnlineHistory
 	}
 
         function add_star_activity($current_category){
-                foreach($this->get_online($current_category, $this->get_star_users($current_category)) as $value){
+                foreach($this->get_online($current_category, explode(',', $this->get_star_users($current_category))) as $value){
             	    global $current_id; //, $current_category;
 		    $current_id = $current_category;
 		    $this->save_online_users($value, $current_category);
@@ -302,7 +302,7 @@ class OnlineHistory
 	}
 
 	function get_star_users($category){
-		$count_query = "SELECT users FROM stars WHERE category={$category}";
+		$count_query = "SELECT users FROM stars WHERE category='{$category}'";
 		return $this->query_to_json($count_query);
 	}
 
@@ -325,7 +325,7 @@ class OnlineHistory
 if (strcmp("{$argv[1]}", "add_data") == 0){
     $myOnlineHistiry = new OnlineHistory();
     $myOnlineHistiry->add_users_activity();
-//    $myOnlineHistiry->add_stars_activity();
+    $myOnlineHistiry->add_stars_activity();
 } 
 
 ?>
