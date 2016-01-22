@@ -34,7 +34,7 @@ class OnlineHistoryInsomnia extends OnlineHistory{
 		    echo "<tr>
 			<td><input type='checkbox' name='mycheckbox' value='{$row[0]}'></td>";
 
-		    $this->show_chart($my_date, $current_user, $row[0], $row[2], $row[1]);
+		    $this->show_chart($current_user, $row[0], $row[2], $row[1]);
 		    echo "		    
 			<td>{$num}</td>
 			<td>{$row[4]} ч</td>
