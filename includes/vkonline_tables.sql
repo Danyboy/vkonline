@@ -12,6 +12,8 @@
 --3)
 --GRANT ALL ON followers TO root;
 --GRANT ALL ON stars TO root;
+--GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO root;
+
 
 --insert into stars (category, users) values ($cat, $users);
 --insert into users (id, name, link) values ($my_id, '${my_name}', '${my_link}');
