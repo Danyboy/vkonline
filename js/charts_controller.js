@@ -118,7 +118,6 @@ function update_charts(chart, data, length, convert){
     for (i = 0; i < norm_data.length; i++) {
 	if (convert) {
 	    for (j = 0; j < norm_data[i].data.length; j++){
-		//TODO bug with categories if all activity charts loads fast
 	        norm_data[i].data[j] = [Date.parse(categories.slice(-1).pop()[j]),norm_data[i].data[j]];
 	    }
 	}
@@ -126,10 +125,20 @@ function update_charts(chart, data, length, convert){
             name: norm_data[i].name,
             data: norm_data[i].data
         }, false);
-        chart.redraw();
     }
 
-    convert ? false : chart.xAxis[0].setCategories(categories[0]);
+    chart.redraw();
+    convert ? false : chart.xAxis[0].setCategories(get_correct_array(norm_data[i - 1].data.length));
+}
+
+function get_correct_array(length){
+    for (i = 0; i < categories.length; i++){
+	if (categories[i].length == length){
+	    return categories[i];
+	} else if (24 != length && categories[i].length != length){
+	    return categories[i];
+	}
+    }
 }
 
 function to_date(str){
