@@ -7,10 +7,14 @@
 --create table users (id int primary key, name varchar, link varchar);
 --create table user_online (user_id int, status timestamp, foreign key (user_id) references users (id));
 --create table followers (id int primary key);
+--create table stars (category varchar primary key, users varchar);
 
 --3)
 --GRANT ALL ON followers TO root;
+--GRANT ALL ON stars TO root;
 
+--insert into stars (category, users) values ($cat, $users);
+--insert into users (id, name, link) values ($my_id, '${my_name}', '${my_link}');
 --insert into users (id, name, link) values ($my_id, '${my_name}', '${my_link}');
 --insert into user_online (user_id, status) value ($my_id, to_timestamp($my_date));
 
