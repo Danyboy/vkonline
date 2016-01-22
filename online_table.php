@@ -13,7 +13,7 @@ class OnlineHistory
 
 	function send_req($url){
 	     $ch = curl_init(); 
-	     $timeout = 5; 
+	     $timeout = 15; 
 	     curl_setopt($ch, CURLOPT_URL, $url);
 	     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 	     curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
@@ -27,20 +27,14 @@ class OnlineHistory
 		$count_query = "SELECT id FROM followers";
 		return $this->query_to_json($count_query);
 	}
-	
+
 	function get_friends($current_user) {
 	     $url="https://api.vk.com/method/friends.get?user_id={$current_user}"; //https://api.vk.com/method/friends.get?user_id=$id\&access_token=$vkapi_token
-	     return $this->send_req($url);
+	     return json_decode($this->send_req($url))->response;
 	}
 
-	function get_online_for_all_followers(){
-	     foreach (json_decode($this->get_followers()) as $current_user) {	
-		    $this->get_online($current_user);
-	     }
-	}
-
-	function get_online($current_user){
-	     $chunked = array_chunk(json_decode($this->get_friends($current_user))->response, 400);
+	function get_online($current_user, $users){
+	     $chunked = array_chunk($users, 400);
 	     $result = array();
 	     $owner = true;
 
@@ -280,11 +274,11 @@ class OnlineHistory
 	}
 	
         function add_user_activity($current_user){
-                foreach($this->get_online($current_user) as $value){
+                foreach($this->get_online($current_user, $this->get_friends($current_user)) as $value){
             	    global $current_id; //, $current_user;
 		    $current_id = $current_user;
 		    $this->save_online_users($value, $current_user);
-                }	
+                }
 	}
 
         function add_users_activity(){
@@ -293,6 +287,30 @@ class OnlineHistory
 	        }
 	}
 
+        function add_star_activity($current_category){
+                foreach($this->get_online($current_category, $this->get_star_users($current_category)) as $value){
+            	    global $current_id; //, $current_category;
+		    $current_id = $current_category;
+		    $this->save_online_users($value, $current_category);
+                }
+	}
+
+        function add_stars_activity(){
+		foreach (json_decode($this->get_stars()) as $current_category) {
+		    $this->add_star_activity($current_category[0]); //why multy array
+	        }
+	}
+
+	function get_star_users($category){
+		$count_query = "SELECT users FROM stars WHERE category={$category}";
+		return $this->query_to_json($count_query);
+	}
+
+	function get_stars(){
+		$count_query = "SELECT category FROM stars";
+		return $this->query_to_json($count_query);
+	}
+	
 	function get_current_id($id){
                 if (!empty($id)){
 		    return $id;
@@ -307,6 +325,7 @@ class OnlineHistory
 if (strcmp("{$argv[1]}", "add_data") == 0){
     $myOnlineHistiry = new OnlineHistory();
     $myOnlineHistiry->add_users_activity();
+//    $myOnlineHistiry->add_stars_activity();
 } 
 
 ?>
