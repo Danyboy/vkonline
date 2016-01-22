@@ -38,13 +38,13 @@ var chart = new Highcharts.Chart({
         },
         yAxis: {
             title: {
-                text: 'Минут онлайн'
+                text: 'Часов онлайн'
             }
         },
         tooltip: {
             shared: true,
-            valueSuffix: ' минут',
-	    valueDecimals: 2
+            valueSuffix: ' часов',
+	    valueDecimals: 0
         },
         credits: {
             enabled: false,

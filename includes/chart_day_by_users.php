@@ -44,7 +44,7 @@ var chart = new Highcharts.Chart({
         tooltip: {
             shared: true,
             valueSuffix: ' минут',
-	    valueDecimals: 2
+	    valueDecimals: 0
         },
         credits: {
             enabled: false,
