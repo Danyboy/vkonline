@@ -2,13 +2,9 @@
 
 class OnlineHistory
 {
-	//public $id="385525";
-	//public $id="749972";
-	//public $current_id="749972";
 	public $current_id="53083705";
 	public $json;
 	public $dbconn; 	//Why working if remove this?
-	private $vkapi_token='cd7781010610415dd8d3a039d5cbaedc0309b19ff19c58d3e8ab67294fa7ab85ed5d29837bedd1a05758a';
 	public $result;
 
 	function send_req($url){
@@ -60,7 +56,6 @@ class OnlineHistory
 	function connect() {	
 		$username = "root";
 		$password = "***REMOVED***";
-		$hostname = "localhost"; 
 		$my_db = "vk";
 
 		//connection to the database
@@ -115,26 +110,10 @@ class OnlineHistory
 		return $this->query_to_json($count_query);
 	}
 	
-	function get_user_online_minutes_by_hourse(){
-		//Temporary not used request
-		$user_online_minutes_by_hourse = "SELECT user_id, EXTRACT(hour FROM status) AS hours, COUNT (EXTRACT(hour FROM status)) * 5 AS count 
-                                FROM user_online 
-                                WHERE user_id IN ($this->current_id) AND DATE(status) = '11-9-2015' GROUP BY hours, user_id ORDER BY user_id, hours ASC;";
-                                
-		$user_online_minutes = "SELECT user_id, COUNT (EXTRACT(hour FROM status)) * 5 AS count 
-                                FROM user_online 
-                                WHERE user_id IN ($this->current_id) AND DATE(status) = '11-9-2015' GROUP BY user_id;";
-		return $this->query_to_json($user_online_minutes_by_hourse);;
-	}
-
 	function get_users_online_hours($my_date, $current_user){
 	
 		$my_date = $this->get_correct_date($my_date);
 		
-		$count_query_without_data = "SELECT user_id, COUNT (EXTRACT(hour FROM status)) * 5 AS count 
-                                FROM online{$current_user}
-                                WHERE DATE(status) = '11-9-2015' GROUP BY user_id;";
-                                
                 $count_query = "SELECT user_id, link, name, COUNT (EXTRACT(hour FROM status)) * 5 AS minutes 
                                 FROM online{$current_user} JOIN users{$current_user} ON (online{$current_user}.user_id = users{$current_user}.id)
 				WHERE DATE(status) = '{$my_date}'
@@ -143,9 +122,9 @@ class OnlineHistory
 		return $this->query_to_json($count_query);
 	}
 
-	function show_chart($my_date, $current_user, $chart_uid, $user_name_spaced, $img){
+	function show_chart($current_user, $chart_uid, $user_name_spaced, $img){
 		$user_name = str_replace ( " ", "<br>", "{$user_name_spaced}");
-		//$user_name = str_replace ( " ", " ", "{$user_name}");
+
 		echo "
 			<td>
 			<div class='layout'>
@@ -155,8 +134,8 @@ class OnlineHistory
 			</div>
 			<div class='col2'>
 			    <a 
-			    href=\"u?u=" . $this->get_current_id($_GET['u']) . 
-			    "&users=[" . $this->get_current_id($_GET['u']). ",". $chart_uid . "]\" id=\"date_link\"
+			    href=\"u?u=" . $current_user . 
+			    "&users=[" . $current_user . ",". $chart_uid . "]\" id=\"date_link\"
 	                    onclick=\"
         		    location.href=this.href+get_date_and_users();return false;
 			    \">
@@ -165,8 +144,8 @@ class OnlineHistory
 			</div>
 			<div class='col3'>
 			    <a 
-			    href=\"u?u=" . $this->get_current_id($_GET['u']) . 
-			    "&users=[" . $this->get_current_id($_GET['u']). ",". $chart_uid . "]\" id=\"date_link\"
+			    href=\"u?u=" . $current_user . 
+			    "&users=[" . $current_user . ",". $chart_uid . "]\" id=\"date_link\"
 	                    onclick=\"
         		    location.href=this.href+get_date_and_users();return false;
 			    \">
@@ -190,7 +169,7 @@ class OnlineHistory
 			<input type='checkbox' name='mycheckbox' value='{$row[0]}'>
 			</td>";
 
-			$this->show_chart($my_date, $current_user, $row[0], $row[2], $row[1]);
+			$this->show_chart($current_user, $row[0], $row[2], $row[1]);
 			
 			echo "
 			<td><a href='c?u={$current_user}&cu={$row[0]}'>
@@ -209,7 +188,6 @@ class OnlineHistory
 
         function save_to_db($value, $current_user){
                 $my_name = addcslashes ($value->first_name . " " . $value->last_name,  "'");
-                //$my_name_2 = mysqli::real_escape_string($value->first_name . " " . $value->last_name);
 		
 	        $check_user_query = "SELECT COUNT(id) FROM users{$current_user} WHERE id={$value->uid};";
 	        $insert_user_query = "INSERT INTO users{$current_user} (id, name, link) VALUES ({$value->uid}, '{$my_name}', '{$value->photo_50}');";
@@ -217,7 +195,7 @@ class OnlineHistory
 	        $insert_date_query = "INSERT INTO online{$current_user} (user_id, status) VALUES ({$value->uid}, CURRENT_TIMESTAMP(0));";
 
                 if ($this->user_non_exists($check_user_query)){
-                    $myqr = $this->my_query($insert_user_query);
+                    $this->my_query($insert_user_query);
                 } else {
             	    $this->my_query($update_user_query);
 		}
