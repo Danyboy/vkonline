@@ -36,12 +36,12 @@ include 'includes/start.php';
         </p>
     </div>
     <div class="alert alert-info" id="login">
+	<p>Войдите через ВКонтакте для отображения вашей статистики и сохранения онлайн-истории ваших друзей. </p>
 	<div style="width: 10%; margin: 0 auto;">
 	    <div id="login_button" data-toggle="tooltip" onclick="VK.Auth.login(authInfo);"
 	    title="Войти через ВКонтакте для отображения вашей статистики и сохранения онлайн-истории ваших друзей">
 	    </div>
 	</div>
-	<p>Войдите через ВКонтакте для отображения вашей статистики и сохранения онлайн-истории ваших друзей. </p>
 	</div>
       </div>
     </div>
@@ -68,13 +68,21 @@ include 'includes/start.php';
                   <th>Онлайн</th>
                 </tr>
               </thead>
-              <tbody>
-
-<?php
-$myOnlineHistiry->show_today_online_users($_GET['d'],$_GET['u']);
-?>
+		<div class="modal" id="modal"><!-- Place at bottom of page --></div>
+              <tbody id='ajaxTable'>
 
 <script language="javascript">
+
+$body = $('div');
+
+$(document).on({
+    ajaxStart: function() { $body.addClass("loading");    },
+    ajaxStop: function() { $body.removeClass("loading"); }    
+});
+
+$.get("includes/get_table?&u=<?php echo "{$_GET['u']}&d={$_GET['d']}";?>", function(data, status){
+    document.getElementById('ajaxTable').innerHTML = data;
+});
 
 VK.init({
         apiId: 5121918
