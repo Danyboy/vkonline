@@ -2,7 +2,7 @@
 include 'includes/start.php';
 ?>
 <!-- Main jumbotron for a primary marketing message or call to action -->
-    <div class="jumbotron">
+    <div class="jumbotron" style="z-index:    1001">
       <div id="main_info" class="container">
       <div id="main_info_overwiev">
 	<p> Узнайте сколько времени вы провели онлайн ВКонтакте 
@@ -68,7 +68,6 @@ include 'includes/start.php';
                   <th>Онлайн</th>
                 </tr>
               </thead>
-		<div class="modal" id="modal"><!-- Place at bottom of page --></div>
               <tbody id='ajaxTable'>
 
 <script language="javascript">
@@ -135,6 +134,7 @@ $(".datepicker").datepicker({
         </div>
       </div>
     </div>
+		<div class="modal" id="modal"><!-- Place at bottom of page --></div>
 
 <?php
 include 'includes/end.php';
