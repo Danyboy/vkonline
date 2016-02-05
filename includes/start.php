@@ -65,7 +65,7 @@
 
 
 <li>
-	    <input data-date-format="dd.mm.yy" size="5" style="margin: 12px; border: 0px; padding: 3px;"
+	    <input class="datepicker" data-date-format="dd.mm.yy" size="5" style="margin: 12px; border: 0px; padding: 3px;"
              onkeydown="if (event.keyCode == 13) document.getElementById('date_link').click()"
              value=<?php echo $myOnlineHistiry->get_correct_date($_GET['d']); ?> >
 </li>
