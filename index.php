@@ -122,6 +122,11 @@ $(".datepicker").datepicker({
     todayHighlight: true
 });
 
+$('.datepicker').datepicker()
+    .on('changeDate', function(e) {
+	document.getElementById('date_link').click()
+});
+
 </script>
 
  </div>
