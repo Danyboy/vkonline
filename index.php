@@ -6,7 +6,7 @@ include 'includes/start.php';
       <div id="main_info" class="container">
       <div id="main_info_overwiev">
 	<p> Узнайте сколько времени вы провели онлайн ВКонтакте 
-           <input class="datepicker" data-date-format="dd.mm.yy" size="5"
+           <input id="main_datepicker" class="datepicker" data-date-format="dd.mm.yy" size="5"
             onkeydown="if (event.keyCode == 13) document.getElementById('date_link').click()"
             value=<?php echo $myOnlineHistiry->get_correct_date($_GET['d']); ?>> 
            или в 
@@ -114,7 +114,7 @@ $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip(); 
 });
 
-$(".datepicker").datepicker({
+$("#main_datepicker").datepicker({
     format: "dd.mm.yy",
     startDate: "22/12/14",
     endDate: new Date(),
@@ -122,7 +122,7 @@ $(".datepicker").datepicker({
     todayHighlight: true
 });
 
-$('.datepicker').datepicker()
+$('#main_datepicker').datepicker()
     .on('changeDate', function(e) {
 	document.getElementById('date_link').click()
 });

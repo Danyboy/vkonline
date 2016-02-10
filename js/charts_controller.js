@@ -226,6 +226,11 @@ function get_date_and_users(){
     return result;
 }
 
+function change_date_url(){
+	my_date = $('#navigation_datepicker').val();
+	document.location.assign(URI(document.location).setQuery("d", my_date));
+}
+
 function get_checked_users(input){
     var users = new Array(input.length);
     for (i = 0; i < input.length; i++){
