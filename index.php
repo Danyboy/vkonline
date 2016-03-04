@@ -52,7 +52,7 @@ include 'includes/start.php';
 <div class="" id="scroll-table">
   <div stylee=" width: 807px; display: table; margin: 0 auto;">
 <div class="table-responsive">
-            <table class="table table" id="users_statistics">
+            <table class="table" id="users_statistics">
               <thead>
                 <tr>
                   <th>
@@ -103,9 +103,6 @@ function authInfo(response) {
   }
 }
 
-if (window!=window.top) {
-    document.getElementById('scroll-table').className = 'scrollit';
-}
 
 VK.UI.button('login_button');
 VK.Auth.getLoginStatus(authInfo);
@@ -127,6 +124,10 @@ $('#main_datepicker').datepicker()
 	document.getElementById('date_link').click()
 });
 
+$('table').stickyTableHeaders();
+if (window!=window.top) {
+    document.getElementById('scroll-table').className = 'scrollit';
+}
 </script>
 
  </div>

@@ -24,6 +24,7 @@
     <script type="text/javascript" src="/bower_components/moment/min/moment.min.js"></script>
     <script type="text/javascript" src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
+    <script type="text/javascript" src="//cdn.rawgit.com/jmosbech/StickyTableHeaders/master/js/jquery.stickytableheaders.min.js"></script>
 
     <!--    -->
     <!-- Bootstrap core CSS -->
@@ -37,12 +38,13 @@
  </head>
   <body>
 	    <?php
-	    include '/var/www/html/online_table.php';
+	    //include '/var/www/vkn/online_table.php';
 	    //include '../online_table.php';
+	    include '/home/danil/Projects/vkonline/online_table.php';
 	    $myOnlineHistiry = new OnlineHistory();
 	    ?>
 
-    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="navbar navbar-default navbar-static-top" role="navigation">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">

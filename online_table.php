@@ -56,7 +56,7 @@ class OnlineHistory
 	function connect() {	
 		$username = "root";
 		$password = "***REMOVED***";
-		$my_db = "vk";
+		$my_db = "vko";
 
 		//connection to the database
 		$this->dbconn = pg_connect("dbname={$my_db} user={$username} password={$password}")
@@ -295,6 +295,18 @@ class OnlineHistory
                 }
 
                 return $this->current_id;
+        }
+        
+        function myThread($current_user){
+	    $pid = pcntl_fork();
+	    if ($pid == -1) {
+	         die('could not fork');
+	    } else if ($pid) {
+		return;
+	    } else {
+		$this->add_user_activity($current_user);
+		exit;
+	    }
         }
 }
 
