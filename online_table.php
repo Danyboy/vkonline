@@ -7,6 +7,10 @@ class OnlineHistory
 	public $dbconn; 	//Why working if remove this?
 	public $result;
 
+	function __construct(){
+		$this->connect();
+	}
+
 	function send_req($url){
 	     $ch = curl_init(); 
 	     $timeout = 15; 
@@ -56,16 +60,16 @@ class OnlineHistory
 	function connect() {	
 		$username = "root";
 		$password = "***REMOVED***";
-		$my_db = "vko";
+		$my_db = "vk";
 
 		//connection to the database
 		$this->dbconn = pg_connect("dbname={$my_db} user={$username} password={$password}")
 		  or die("Unable to connect to PostgreSQL");
+		//PQsetnonblocking($this->dbconn, 1);
 		//echo "Connected to PostgreSQL<br>";
 	}
 
 	function my_query($query){
-		$this->connect();
 		$result = pg_query($this->dbconn, "$query");
 
 		if (!$result) {
@@ -262,6 +266,7 @@ class OnlineHistory
         function add_users_activity(){
 		foreach (json_decode($this->get_followers()) as $current_user) {
 		    $this->add_user_activity($current_user[0]); //why multy array
+		    //$this->myThread($current_user[0]);
 	        }
 	}
 
