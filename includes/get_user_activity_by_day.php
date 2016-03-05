@@ -12,8 +12,8 @@ $data_by_day_with_names = $myOnlineHistiry->get_user_activity_by_day_with_names(
 
 //echo $data_by_day_with_names;
 echo "{ 
-    \"data\": $data_by_day_with_names[0],
-    \"names\": $data_by_day_with_names[1]
-    }";
+	\"data\": $data_by_day_with_names[0],
+	\"names\": $data_by_day_with_names[1]
+}";
 
 ?>

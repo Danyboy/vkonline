@@ -7,6 +7,10 @@ class OnlineHistory
 	public $dbconn; 	//Why working if remove this?
 	public $result;
 
+	function __construct(){
+		$this->connect();
+	}
+
 	function send_req($url){
 		$ch = curl_init(); 
 		$timeout = 15; 
@@ -262,6 +266,7 @@ function add_user_activity($current_user){
             function add_users_activity(){
             	foreach (json_decode($this->get_followers()) as $current_user) {
 		    $this->add_user_activity($current_user[0]); //why multy array
+		    //$this->myThread($current_user[0]);
 		}
 	}
 
