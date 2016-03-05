@@ -7,7 +7,7 @@ class OnlineHistoryFollower extends OnlineHistory{
 		//error_log("test user {$user}");
 
 		$check_user_query = "SELECT COUNT(id) FROM followers WHERE id={$user};";
-                $insert_follower_query = "INSERT INTO followers (id) VALUES ($user);";
+		$insert_follower_query = "INSERT INTO followers (id) VALUES ($user);";
 		$create_users_db = "CREATE TABLE users{$user} (id int primary key, name varchar, link varchar);";
 		$create_online_db = "CREATE TABLE online{$user} (user_id int, status timestamp, foreign key (user_id) references users{$user} (id));";
 

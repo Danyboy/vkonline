@@ -10,7 +10,7 @@ $all_data = $myOnlineHistiry->get_activity_by_user($users, $myOnlineHistiry->get
 $my_names = $myOnlineHistiry->get_current_users_name($users, $myOnlineHistiry->get_current_id($current_user));
 
 echo "{ 
-    \"data\": $all_data,
-    \"names\": $my_names
-    }";
+	\"data\": $all_data,
+	\"names\": $my_names
+}";
 ?>
