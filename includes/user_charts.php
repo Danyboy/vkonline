@@ -1,6 +1,6 @@
 <?php 
 include 'includes/start.php';
-include 'includes/get_charts.php';
+include 'includes/getters/get_charts.php';
 
 $users = json_decode($_GET['users']);
 $my_date = $_GET['d'];

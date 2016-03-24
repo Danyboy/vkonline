@@ -41,7 +41,7 @@ include 'includes/start.php';
             <tbody>
 
               <?php
-              include 'includes/get_insomnia.php';
+              include 'includes/getters/get_insomnia.php';
               $myOnlineInsomnia = new OnlineHistoryInsomnia();
               $myOnlineInsomnia->show_insomnia_users($_GET['u']);
               ?>

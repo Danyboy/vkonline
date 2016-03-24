@@ -39,7 +39,7 @@ include 'includes/start.php';
             <tbody>
 
               <?php
-              include 'includes/get_compatibility.php';
+              include 'includes/getters/get_compatibility.php';
               $myOnlineCompatibility = new OnlineHistoryCompatibility();
               $myOnlineCompatibility->show_users_compatibility($_GET['cu'], $_GET['u']);
               ?>

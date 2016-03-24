@@ -35,7 +35,7 @@ $my_date = $_GET['d'];
     function requestData() 
     {
         $.ajax({
-            url: 'includes/get_holiday_charts.php?&d=<?php echo $my_date;?>',
+            url: 'includes/getters/get_holiday_charts.php?&d=<?php echo $my_date;?>',
             datatype: "json",
             success: function(data) 
             {

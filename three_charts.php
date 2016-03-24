@@ -11,9 +11,9 @@ $current_user = $_GET['u'];
 <?php
 //<script src="//code.highcharts.com/stock/modules/exporting.js"></script>
 
-include 'includes/chart_day_by_users.php';
-include 'includes/chart_all_users_activity.php';
-include 'includes/chart_interval_stock.php';
+include 'includes/charts/chart_day_by_users.php';
+include 'includes/charts/chart_all_users_activity.php';
+include 'includes/charts/chart_interval_stock.php';
 ?>
 
 <?php 

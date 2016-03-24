@@ -79,7 +79,7 @@ include 'includes/start.php';
                   ajaxStop: function() { $body.removeClass("loading"); }    
                 });
 
-                $.get("includes/get_table?&u=<?php echo "{$_GET['u']}&d={$_GET['d']}";?>", function(data, status){
+                $.get("includes/getters/get_table?&u=<?php echo "{$_GET['u']}&d={$_GET['d']}";?>", function(data, status){
                   document.getElementById('ajaxTable').innerHTML = data;
                 });
 

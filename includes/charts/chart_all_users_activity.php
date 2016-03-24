@@ -12,7 +12,7 @@
                events: {
                    load: function(){
                       request_data(
-                          'includes/get_all_users_activity?&u=<?php echo $current_user;?>&users=<?php echo json_encode($users);?>&d=<?php echo $my_date;?>'
+                          'includes/getters/get_all_users_activity?&u=<?php echo $current_user;?>&users=<?php echo json_encode($users);?>&d=<?php echo $my_date;?>'
                           , this, 24);
                       this.showLoading();
                   }

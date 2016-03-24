@@ -39,7 +39,7 @@ $current_user = $_GET['u'];
                events: {
                    load: function(){
                       request_data(
-                          'includes/get_users_activity_by_days?&u=<?php echo $current_user;?>&users=<?php echo json_encode($users);?>&d=<?php echo $my_date;?>'
+                          'includes/getters/get_users_activity_by_days?&u=<?php echo $current_user;?>&users=<?php echo json_encode($users);?>&d=<?php echo $my_date;?>'
                           , this);
                       this.showLoading();
                   }

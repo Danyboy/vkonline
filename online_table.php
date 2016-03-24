@@ -50,7 +50,7 @@ class OnlineHistory
 
 	return $result;
 
-}
+	}
 
 function get_online_part($str) {
 	$url="https://api.vk.com/method/users.get?user_ids=" . $str . ",\&fields=online,photo_50,\&lang=ru&https=1";
@@ -60,7 +60,7 @@ function get_online_part($str) {
 function connect() {	
 	$username = "root";
 	$password = "***REMOVED***";
-	$my_db = "vko";
+	$my_db = "vk";
 
 		//connection to the database
 	$this->dbconn = pg_connect("dbname={$my_db} user={$username} password={$password}")

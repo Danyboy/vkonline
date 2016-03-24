@@ -1,5 +1,5 @@
 <?php 
-include '../online_table.php';
+include '../../online_table.php';
 
 class OnlineHistoryCompatibility extends OnlineHistory{
 

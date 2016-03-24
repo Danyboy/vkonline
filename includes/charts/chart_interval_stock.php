@@ -16,7 +16,7 @@
                 "my_date=get_range(); 
                 location.href=window.location.href+'&d=['+'%22'+my_date[0]+'%22'+','+'%22'+my_date[1]+'%22'+']';
                 request_data(
-                'includes/get_users_activity_by_days?&u=<?php echo $current_user;?>&users=<?php echo json_encode($users);?>&d=<?php echo $my_date;?>'
+                'includes/getters/get_users_activity_by_days?&u=<?php echo $current_user;?>&users=<?php echo json_encode($users);?>&d=<?php echo $my_date;?>'
                 , this, 365, true);
                 return false;">
                 Узнать</a>
@@ -37,7 +37,7 @@
            events: {
                load: function(){
                   request_data(
-                      'includes/get_users_activity_by_days?&u=<?php echo $current_user;?>&users=<?php echo json_encode($users);?>&d=<?php echo $my_date;?>'
+                      'includes/getters/get_users_activity_by_days?&u=<?php echo $current_user;?>&users=<?php echo json_encode($users);?>&d=<?php echo $my_date;?>'
                       , this, 365, true);
                   this.showLoading();
               }
