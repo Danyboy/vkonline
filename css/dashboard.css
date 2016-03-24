@@ -2,8 +2,8 @@
  * Base structure
  */
 
-/* Move down content because we have a fixed navbar that is 50px tall */
-body {
+ /* Move down content because we have a fixed navbar that is 50px tall */
+ body {
   padding-top: 50px;
 }
 
@@ -12,7 +12,7 @@ body {
  * Global add-ons
  */
 
-.sub-header {
+ .sub-header {
   padding-bottom: 10px;
   border-bottom: 1px solid #eee;
 }
@@ -21,7 +21,7 @@ body {
  * Top navigation
  * Hide default border to remove 1px line.
  */
-.navbar-fixed-top {
+ .navbar-fixed-top {
   border: 0;
 }
 
@@ -29,8 +29,8 @@ body {
  * Sidebar
  */
 
-/* Hide for mobile, show later */
-.sidebar {
+ /* Hide for mobile, show later */
+ .sidebar {
   display: none;
 }
 @media (min-width: 768px) {
@@ -71,7 +71,7 @@ body {
  * Main content
  */
 
-.main {
+ .main {
   padding: 20px;
 }
 @media (min-width: 768px) {
@@ -89,7 +89,7 @@ body {
  * Placeholder dashboard ideas
  */
 
-.placeholders {
+ .placeholders {
   margin-bottom: 30px;
   text-align: center;
 }
@@ -108,7 +108,7 @@ body {
  * Placeholder dashboard ideas
 .rubber { left: 0; right: 200px; }
 .layout { position: relative; width: 200px; hight: 65px;}
- */
+*/
 
 .layout { position: relative; width: 200px; height: 55px;}
 .layout DIV { position: absolute; }
@@ -117,13 +117,13 @@ body {
 .col3 { width: 50px; right: 0;}
 
 .scrollit {
-    overflow: scroll;
-    height: 3800px;
+  overflow: scroll;
+  height: 3800px;
 }
 
 /*
 Vk theme
- */
+*/
 
 .navbar-default {
   background-color: #507195;
@@ -190,7 +190,7 @@ Vk theme
    with position:fixed. Width, height, top and left speak
    for themselves. Background we set to 80% white with
    our animation centered, and no-repeating */
-.modal {
+   .modal {
     display:    none;
     position:   fixed;
     z-index:    1000;
@@ -199,26 +199,26 @@ Vk theme
     height:     100%;
     width:      100%;
     background: rgba( 255, 255, 255, .0 ) 
-                url('//vk.com/images/progress7.gif') 
-                50% 50% 
-                no-repeat;
-}
+    url('//vk.com/images/progress7.gif') 
+    50% 50% 
+    no-repeat;
+  }
 
 /* When the body has the loading class, we turn
-   the scrollbar off with overflow:hidden */
+the scrollbar off with overflow:hidden */
 .loading {
-    overflow: hidden;   
+  overflow: hidden;   
 }
 
 /* Anytime the body has the loading class, our
-   modal element will be visible */
+modal element will be visible */
 .loading .modal {
-    display: block;
+  display: block;
 }
 
 
 .highcharts-container {
-    width: auto!important;
+  width: auto!important;
 }
 
 /*
@@ -226,52 +226,57 @@ body {
   color: #45688e;
 }
 
-Bug fix for emty space on head of page with fixed nav bar
 */
+
+/* Good solution for table with fixed header in bootstrap  */
+
+table {
+  border: 0;
+  padding: 0 40px!important;
+  border-collapse: collapse;
+}
+th {
+  /*padding: 5px;*/
+  /* NOTE: th padding must be set explicitly in order to support IE */
+  text-align: left;
+  font-weight:bold;
+  line-height: 4em;
+  font-size: 16px;
+  color: #000;
+  background-color: #FFF;
+}
+tbody td {
+  padding: 0;
+  line-height: 0;
+  border-top: 0 solid #E0E0E0;
+}
+td {
+  text-align: right;
+}
+td:first-child, th:first-child {
+  text-align: left;
+}
+
+
+/*fix for big padding after added table css*/
+/*Bug fix for emty space on head of page with fixed nav bar*/
 
 body {
  padding-top: 0px;
+ padding: 0px;
 }
 
 
-/* Good solution for table with fixed header in bootstrap  */
-body {
-    margin: 0 auto;
-    padding: 0 20px;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 12px;
-    color: #555;
+.jumbotron {
+  padding-top: 20px;
+  padding-bottom: 30px;
+  margin-bottom: 0px; 
+  color: inherit;
+  background-color: #eee;
 }
-table {
-    border: 0;
-    padding: 0;
-    margin: 0 0 20px 0;
-    border-collapse: collapse;
-}
-th {
-    padding: 5px;
-    /* NOTE: th padding must be set explicitly in order to support IE */
-    text-align: left;
-    font-weight:bold;
-    line-height: 4em;
-    font-size: 14px;
-    color: #000;
-    background-color: #FFF;
-}
+
 tbody td {
-    padding: 10px;
+    padding: 0px;
     line-height: 18px;
-    border-top: 1px solid #E0E0E0;
-}
-tbody tr:nth-child(2n) {
-    background-color: #F7F7F7;
-}
-tbody tr:hover {
-    background-color: #EEEEEE;
-}
-td {
-    text-align: right;
-}
-td:first-child, th:first-child {
-    text-align: left;
+    /*border-top: px solid #FFF;*/
 }

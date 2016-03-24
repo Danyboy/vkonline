@@ -229,7 +229,8 @@ function get_correct_date_interval($my_date){
 		$my_date_start = $this->get_correct_date($my_date[0]);
 		$my_date_end = $this->get_correct_date($my_date[1]);
 	} else if ($my_date !== '' && $this->get_correct_date($my_date) !== $this->get_correct_date()){
-		$my_date_start = $this->get_correct_date($my_date);
+		$my_date_start = "01.01.15";
+		// $my_date_start = $this->get_correct_date($my_date);
 		$my_date_end = $this->get_correct_date();
 	} else {
 		$my_date_start = "01.01.15";

@@ -5,7 +5,7 @@
 <div class="jumbotron">
     <div class="container" id="interval">
         <div class="input-daterange input-group" id="datepicker">
-            <span class="input-group-addon">Сколько часов вы были онлайн с </span>
+            <span class="input-group-addon">Часов онлайн с </span>
             <input type="text" class="input-sm form-control" name="start" data-date-format="dd.mm.yy" size="5" 
             value="<?php echo $myOnlineHistiry->get_correct_date_interval($_GET['d'])[0]; ?>"/>
             <span class="input-group-addon">по</span>
