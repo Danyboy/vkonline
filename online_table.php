@@ -1,5 +1,7 @@
 <?php 
 
+require ("configuration.php");
+
 class OnlineHistory
 {
 	public $current_id="53083705";
@@ -58,9 +60,9 @@ function get_online_part($str) {
 }
 
 function connect() {	
-	$username = "root";
-	$password = "***REMOVED***";
-	$my_db = "vk";
+	$username = DB_USER;
+	$password = DB_PASSWORD;
+	$my_db = DB_DATABASE;
 
 		//connection to the database
 	$this->dbconn = pg_connect("dbname={$my_db} user={$username} password={$password}")
