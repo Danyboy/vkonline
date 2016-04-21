@@ -92,7 +92,8 @@ class OnlineHistoryCharts extends OnlineHistory{
 		foreach (json_decode($this->query_to_json($count_query)) as $row) {
 		    $user_link = "<a href='//vk.com/id${row[1]}' target='_blank'>${row[0]}</a>";
 		    array_push($user_links,$user_link);
-		}
+		} 
+		//added link for user in names in charts, but not works (overrides by js highcharts)
 		return json_encode($user_links);
 	}
 

@@ -8,7 +8,7 @@
     var chart = new Highcharts.Chart({
      chart: {
        renderTo: 'chart_day',
-       type: 'areaspline',
+       type: 'spline',
        events: {
          load: function(){
           request_data(
