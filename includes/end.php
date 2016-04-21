@@ -5,6 +5,14 @@
     <script src="../../dist/js/bootstrap.min.js"></script>
 -->
 
+<script type="text/javascript">
+    $('table').stickyTableHeaders();
+    if (window!=window.top) {
+      document.getElementById('scroll-table').className = 'scrollit';
+    }
+</script>
+
+
 <!-- Yandex.Metrika counter -->
 <script type="text/javascript">
     (function (d, w, c) {

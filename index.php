@@ -123,11 +123,6 @@ include 'includes/start.php';
     .on('changeDate', function(e) {
      document.getElementById('date_link').click()
    });
-
-    $('table').stickyTableHeaders();
-    if (window!=window.top) {
-      document.getElementById('scroll-table').className = 'scrollit';
-    }
   </script>
 
 </div>
