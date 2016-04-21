@@ -283,3 +283,19 @@ function check_all_checkbox(){
             aa[i].checked = true;
     }
 }
+
+function authInfo(response) {
+    if (response.session) {
+	id = response.session.mid;
+	add_logged_user(response.session.mid);
+	add_follower(response.session.mid);
+        //stateChange(response.session.mid);
+        set_user_url(id);
+        change_info_for_logged(id);
+	document.getElementById('login').style.display = 'none';
+    } else {
+	document.getElementById('after_login').style.display = 'none';
+        //alert('not auth');
+        //document.getElementById('main_info_overwiev').style.display = 'none';
+    }
+}
