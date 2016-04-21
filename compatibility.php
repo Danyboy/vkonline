@@ -24,6 +24,7 @@ include 'includes/start.php';
               <tr>
                 <th class="sorttable_nosort">
                   <a
+                  title="Сравнить графики отмеченных пользователей"
                   href="u?u=<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>"
                   onclick="
                   location.href=this.href+get_date_and_users();return false;">
