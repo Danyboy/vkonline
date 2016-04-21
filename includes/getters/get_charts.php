@@ -87,8 +87,13 @@ class OnlineHistoryCharts extends OnlineHistory{
 
 	function get_current_users_name($users, $current_user){
 		$users_string = implode(",", $users);
-		$count_query = "SELECT name FROM users{$current_user} WHERE id IN ({$users_string}) ORDER BY id;";
-		return $this->query_to_json($count_query);
+		$count_query = "SELECT name, id FROM users{$current_user} WHERE id IN ({$users_string}) ORDER BY id;";
+		$user_links = array();
+		foreach (json_decode($this->query_to_json($count_query)) as $row) {
+		    $user_link = "<a href='//vk.com/id${row[1]}' target='_blank'>${row[0]}</a>";
+		    array_push($user_links,$user_link);
+		}
+		return json_encode($user_links);
 	}
 
 	function get_user_activity_by_day_with_names($users, $my_date, $current_user){
