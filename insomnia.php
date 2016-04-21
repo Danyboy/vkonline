@@ -62,42 +62,6 @@ include 'includes/start.php';
 }
 }
 
-function change_info_for_logged(id){
-  document.getElementById("main_info").innerHTML = document.getElementById("main_info").innerHTML.replace(/385525/g, id);
-}
-
-function add_logged_user(id) {
-  var table = document.getElementById('users_statistics');
-  var reg = new RegExp("id"+id, "g");
-  var tbody = table.children[0];
-
-  for (var r = 0; r < table.rows.length; r++) {
-    var current_row = table.rows[r];
-    if (reg.test(current_row.innerHTML)){
-     tbody.insertBefore(current_row, table.rows[0]);
-   }
- }
-}
-
-VK.UI.button('login_button');
-VK.Auth.getLoginStatus(authInfo);
-
-$(".datepicker").datepicker({
-  format: "dd.mm.yy",
-  startDate: "22/12/14",
-  endDate: new Date(),
-  autoclose: true,
-  todayHighlight: true
-});
-
-function get_checked_users(input){
-  var users = new Array(input.length);
-  for (i = 0; i < input.length; i++){
-    users[i] = input[i].value;
-  }
-
-  return users;
-}
 </script>
 
 </div>
