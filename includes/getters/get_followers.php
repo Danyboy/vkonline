@@ -16,23 +16,43 @@ class OnlineHistoryFollowers extends OnlineHistory{
     	    $current_user = $this->get_current_id($current_user);
     	    
     	    foreach (json_decode($this->get_all_followers($current_user)) as $row) {
-                //$my_time = date('H \ч i \м', mktime(0,$row[3]));
+                $follower = json_decode($this->get_users_online_hours($row[0]))[0];
+                
                 echo "
                 <tr hight>
                         <td>
                                 <input type='checkbox' name='mycheckbox' value='{$row[0]}'>
                         </td>";
  
-                        $this->show_chart($current_user, $row[0], "Test Name", "//vk.com/images/camera_50.png");
+                        $this->show_chart($current_user, $row[0], $follower[2], $follower[1]);
         
                         echo "
                         <td><a href='c?u={$current_user}&cu={$row[0]}'>
-                                {$my_time} <br> <img src='img/heart.png' alt='Test Name' alight='right'
-                                title='Показать совместимость Test Name c другими пользователями'>
+                                {$follower[3]} <br> <img src='img/heart.png' alt='$follower[2]' alight='right'
+                                title='Показать совместимость {$follower[2]} c другими пользователями'>
                         </a></td>
                 </tr>";
+                
 	    }
 	}
+	
+	function get_users_online_hours($current_user){
+                
+            $my_date = $this->get_correct_date();
+                    
+            $count_query = "
+            SELECT id, link, name FROM users{$current_user}  WHERE (id = {$current_user});
+            ";
+
+            $count_query_with_time = "
+	    SELECT user_id, link, name, COUNT (EXTRACT(hour FROM status)) * 5 AS minutes 
+            FROM online{$current_user} JOIN users{$current_user} ON (online{$current_user}.user_id = users{$current_user}.id)
+            WHERE (user_id = {$current_user}) AND DATE(status) = '{$my_date}'
+            GROUP BY user_id, link, name ORDER BY minutes DESC;
+            ";
+                
+    	    return $this->query_to_json($count_query);
+	}    
 
 }
 
