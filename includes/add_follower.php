@@ -16,11 +16,12 @@ class OnlineHistoryFollower extends OnlineHistory{
 			$this->query_to_json($insert_follower_query);
 			$this->query_to_json($create_users_db);
 			$this->query_to_json($create_online_db);
-			$this->add_user_activity($user);
+			$this->add_user_activity($user); //check working
 		}
 	}
 //Add follower
 //curl --data "user=749972" http://91.232.225.25:43480/includes/add_follower.php
+// curl --data "user=1502541" http://vko.efnez.ru/includes/add_follower
 //Check
 //SELECT id FROM followers;
 }

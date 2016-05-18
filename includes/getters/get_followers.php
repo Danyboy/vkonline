@@ -27,7 +27,7 @@ class OnlineHistoryFollowers extends OnlineHistory{
                         $this->show_chart($current_user, $row[0], $follower[2], $follower[1]);
         
                         echo "
-                        <td><a href='c?u={$current_user}&cu={$row[0]}'>
+                        <td><a href='c?u={$row[0]}&cu={$row[0]}'>
                                 {$follower[3]} <br> <img src='img/heart.png' alt='$follower[2]' alight='right'
                                 title='Показать совместимость {$follower[2]} c другими пользователями'>
                         </a></td>
