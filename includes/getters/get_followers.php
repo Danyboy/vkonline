@@ -24,7 +24,7 @@ class OnlineHistoryFollowers extends OnlineHistory{
                                 <input type='checkbox' name='mycheckbox' value='{$row[0]}'>
                         </td>";
  
-                        $this->show_chart($current_user, $row[0], $follower[2], $follower[1]);
+                        $this->show_followers_chart($current_user, $row[0], $follower[2], $follower[1]);
         
                         echo "
                         <td><a href='c?u={$row[0]}&cu={$row[0]}'>
@@ -52,7 +52,45 @@ class OnlineHistoryFollowers extends OnlineHistory{
             ";
                 
     	    return $this->query_to_json($count_query);
-	}    
+	}
+	
+	function show_followers_chart($current_user, $chart_uid, $user_name_spaced, $img){
+	$user_name = str_replace ( " ", "<br>", "{$user_name_spaced}");
+
+	echo "
+	<td>
+		<div class='layout'>
+			<div class='col1'>
+				<a href='//vk.com/id{$chart_uid}' target='_blank'>
+					<img src='{$img}' title='$user_name_spaced'></a>
+				</div>
+				<div class='col2'>
+					<a 
+					href=\"/?u=" . $chart_uid . 
+					"\" id=\"date_link\"
+					onclick=\"
+					location.href=this.href+get_date_and_users();return false;
+					\">
+					{$user_name}
+				</a>
+			</div>
+			<div class='col3'>
+				<a 
+				href=\"u?u=" . $current_user . 
+				"&users=[" . $current_user . ",". $chart_uid . "]\" id=\"date_link\"
+				onclick=\"
+				location.href=this.href+get_date_and_users();return false;
+				\">
+				<img src='img/chart.png' align='right' 
+				title='Сравнить график активности с {$user_name_spaced}'>
+			</a>
+		</div>
+	</div>
+</td>
+
+";
+}
+    
 
 }
 
