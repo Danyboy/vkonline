@@ -121,8 +121,8 @@ function get_users_online_hours($my_date, $current_user){
 	$my_date = $this->get_correct_date($my_date);
 	
 	$count_query = "SELECT user_id, link, name, COUNT (EXTRACT(hour FROM status)) * 5 AS minutes 
-	FROM online{$current_user} JOIN users{$current_user} ON (online{$current_user}.user_id = users{$current_user}.id)
-	WHERE DATE(status) = '{$my_date}'
+	FROM online{$current_user} LEFT JOIN users{$current_user} ON (online{$current_user}.user_id = users{$current_user}.id)
+	WHERE status BETWEEN '{$my_date}' and '{$my_date} 23:59'
 	GROUP BY user_id, link, name ORDER BY minutes DESC;";
 	
 	return $this->query_to_json($count_query);
