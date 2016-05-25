@@ -76,8 +76,8 @@ class OnlineHistoryFollowers extends OnlineHistory{
 			</div>
 			<div class='col3'>
 				<a 
-				href=\"u?u=" . $current_user . 
-				"&users=[" . $current_user . ",". $chart_uid . "]\" id=\"date_link\"
+				href=\"u?u=" . $chart_uid . 
+				"&users=[" . $chart_uid . ",". $current_user . "]\" id=\"date_link\"
 				onclick=\"
 				location.href=this.href+get_date_and_users();return false;
 				\">
