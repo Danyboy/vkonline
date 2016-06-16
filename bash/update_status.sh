@@ -2,7 +2,7 @@
 
 my_run(){
     cd $HOME/Projects/vkonline/
-    php ./online_table.php get_followers | tr ' ' '\n' | xargs -n1 -i --max-procs=10 bash -c "echo start {}; php ./online_table.php add_user {}; echo done {}"
+    php ./online_table.php get_followers | tr ' ' '\n' | xargs -n1 -i --max-procs=10 bash -c "php ./online_table.php add_user {}"
 }
 
 my_run
