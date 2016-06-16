@@ -258,13 +258,13 @@ function show_previous_dates($my_date){
 	}
 }
 
-function add_user_activity($current_user){
-	foreach($this->get_online($current_user, $this->get_friends($current_user)) as $value){
+	function add_user_activity($current_user){
+	    foreach($this->get_online($current_user, $this->get_friends($current_user)) as $value){
             	    global $current_id; //, $current_user;
             	    $current_id = $current_user;
             	    $this->save_online_users($value, $current_user);
-            	}
-            }
+    	    }
+        }
 
             function add_users_activity(){
             	foreach (json_decode($this->get_followers()) as $current_user) {
@@ -324,6 +324,18 @@ if (strcmp("{$argv[1]}", "add_data") == 0){
 	$myOnlineHistiry = new OnlineHistory();
 	$myOnlineHistiry->add_users_activity();
 	$myOnlineHistiry->add_stars_activity();
+} 
+
+if (strcmp("{$argv[1]}", "get_followers") == 0){
+	$myOnlineHistiry = new OnlineHistory();
+        foreach (json_decode($myOnlineHistiry->get_followers()) as $current_user) {
+            echo($current_user[0] . " ");
+        }
+}
+
+if (strcmp("{$argv[1]}", "add_user") == 0){
+	$myOnlineHistiry = new OnlineHistory();
+	$myOnlineHistiry->add_user_activity($argv[2]);
 } 
 
 ?>

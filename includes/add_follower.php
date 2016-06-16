@@ -23,6 +23,7 @@ class OnlineHistoryFollower extends OnlineHistory{
 	}
 //Add follower
 //curl --data "user=749972" http://91.232.225.25:43480/includes/add_follower.php
+//curl --data "user=749972" http://91.232.225.25:43380/includes/add_follower.php
 // curl --data "user=1502541" http://vko.efnez.ru/includes/add_follower
 //Check
 //SELECT id FROM followers;
