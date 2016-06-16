@@ -86,29 +86,11 @@ include 'includes/start.php';
                 VK.init({
                   apiId: 5121918
                 });
-
-                function authInfo(response) {
-                  if (response.session) {
-                   id = response.session.mid;
-                   add_logged_user(response.session.mid);
-                   add_follower(response.session.mid);
-	//stateChange(response.session.mid);
-	set_user_url(id);
-	change_info_for_logged(id);
-  document.getElementById('login').style.display = 'none';
-} else {
-  document.getElementById('after_login').style.display = 'none';
-	//alert('not auth');
-        //document.getElementById('main_info_overwiev').style.display = 'none';
-      }
-    }
-
-
-    VK.UI.button('login_button');
-    VK.Auth.getLoginStatus(authInfo);
+	        VK.UI.button('login_button');
 
     $(document).ready(function(){
       $('[data-toggle="tooltip"]').tooltip(); 
+      VK.Auth.getLoginStatus(authInfo);
     });
 
     $("#main_datepicker").datepicker({
