@@ -19,7 +19,7 @@
       }
     },
     title: {
-      text: 'Когда и сколько вы были онлайн за <?php echo $myOnlineHistiry->get_correct_date($_GET['d']); ?>'
+      text: 'Время онлайн за <?php echo $myOnlineHistiry->get_correct_date($_GET['d']); ?>'
     },
     legend: {
       layout: 'vertical',
