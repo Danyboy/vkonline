@@ -240,7 +240,7 @@ th {
   /* NOTE: th padding must be set explicitly in order to support IE */
   text-align: left;
   font-weight:bold;
-  line-height: 4em;
+  line-height: 1em;
   font-size: 16px;
   color: #000;
   background-color: #FFF;
@@ -266,7 +266,6 @@ body {
  padding: 0px;
 }
 
-
 .jumbotron {
   padding-top: 20px;
   padding-bottom: 30px;
@@ -279,4 +278,10 @@ tbody td {
     padding: 0px;
     line-height: 18px;
     /*border-top: px solid #FFF;*/
+}
+
+/*Bug fix for emty space after head*/
+
+.navbar {
+    margin-bottom: 5px;
 }
