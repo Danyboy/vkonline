@@ -1,34 +1,35 @@
 <?php
 include 'includes/start.php';
 ?>
-<!-- Main jumbotron for a primary marketing message or call to action -->
-<div class="jumbotron">
-  <div id="main_info" class="container">
-    <p> Здесь можно узнать свой коэффициент совместимости с разными пользователями - сколько часов вы провели онлайн вместе. 
-     Для сортировки по определённому столбцу нужно нажать на его заголовок.
-   </p>
-   <div style="width: 10%; margin: 0 auto;">
-     <div id="login_button" onclick="VK.Auth.login(authInfo);"></div>
-   </div>
- </div>
-</div>
+  <!-- Main jumbotron for a primary marketing message or call to action -->
+  <div class="jumbotron">
+    <div id="main_info" class="container">
+      <p> Здесь можно узнать свой коэффициент совместимости с разными пользователями - сколько часов вы провели онлайн
+        вместе.
+        Для сортировки по определённому столбцу нужно нажать на его заголовок.
+      </p>
+      <div style="width: 10%; margin: 0 auto;">
+        <div id="login_button" onclick="VK.Auth.login(authInfo);"></div>
+      </div>
+    </div>
+  </div>
 
-<div class="container-fluid">
-  <div class="row">
+  <div class="container-fluid">
+    <div class="row">
 
-    <div>
-      <div style="display: table; margin: 0 auto;">
-        <div class="table-responsive">
-          <table class="table table-striped sortable" id="users_statistics">
-            <thead>
+      <div>
+        <div style="display: table; margin: 0 auto;">
+          <div class="table-responsive">
+            <table class="table table-striped sortable" id="users_statistics">
+              <thead>
               <tr>
                 <th class="sorttable_nosort">
                   <a
-                  title="Сравнить графики отмеченных пользователей"
-                  href="u?u=<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>"
-                  onclick="
+                    title="Сравнить графики отмеченных пользователей"
+                    href="u?u=<?php echo $myOnlineHistiry->get_current_id($_GET['u']); ?>"
+                    onclick="
                   location.href=this.href+get_date_and_users();return false;">
-                  С</a>
+                    С</a>
                 </th>
                 <th class="sorttable_nosort"> Пользователи</th>
                 <th class="sorttable_numeric"> Онлайн <br> вместе</th>
@@ -36,8 +37,8 @@ include 'includes/start.php';
                 <th class="sorttable_numeric"> Твой процент онлайн вместе</th>
                 <th class="sorttable_numeric"> Их процент онлайн вместе</th>
               </tr>
-            </thead>
-            <tbody>
+              </thead>
+              <tbody>
 
               <?php
               include 'includes/getters/get_compatibility.php';
@@ -56,32 +57,32 @@ include 'includes/start.php';
                     document.getElementById('login_button').style.display = 'none';
                     change_info_for_logged(response.session.mid);
                   } else {
-	//alert('not auth');
-}
-}
+                    //alert('not auth');
+                  }
+                }
 
-VK.UI.button('login_button');
-VK.Auth.getLoginStatus(authInfo);
+                VK.UI.button('login_button');
+                VK.Auth.getLoginStatus(authInfo);
 
-$(".datepicker").datepicker({
-  format: "dd.mm.yy",
-  startDate: "22/12/14",
-  endDate: new Date(),
-  autoclose: true,
-  todayHighlight: true
-});
-</script>
+                $(".datepicker").datepicker({
+                  format: "dd.mm.yy",
+                  startDate: "22/12/14",
+                  endDate: new Date(),
+                  autoclose: true,
+                  todayHighlight: true
+                });
+              </script>
 
-</div>
-</div>
+          </div>
+        </div>
 
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-</div>
+        </tr>
+        </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  </div>
 
 <?php
 include 'includes/end.php';

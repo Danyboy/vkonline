@@ -1,4 +1,4 @@
-<?php 
+<?php
 include 'get_charts.php';
 $myOnlineHistiry = new OnlineHistoryCharts();
 
