@@ -288,8 +288,8 @@ class OnlineHistory
     $my_name = addcslashes($value->first_name . " " . $value->last_name, "'");
 
     $check_user_query = "SELECT COUNT(id) FROM users{$current_user} WHERE id={$value->uid};";
-    $insert_user_query = "INSERT INTO users{$current_user} (id, name, link) VALUES ({$value->uid}, $tap${$my_name}$tap$, '{$value->photo_50}');";
-    $update_user_query = "UPDATE users{$current_user} SET name = $tap${$my_name}$tap$, link = '{$value->photo_50}' WHERE id = {$value->uid};";
+    $insert_user_query = "INSERT INTO users{$current_user} (id, name, link) VALUES ({$value->uid}, \$tap\$" . $my_name . "\$tap\$, '{$value->photo_50}');";
+    $update_user_query = "UPDATE users{$current_user} SET name = \$tap\$" . $my_name . "\$tap\$, link = '{$value->photo_50}' WHERE id = {$value->uid};";
     $insert_date_query = "INSERT INTO online{$current_user} (user_id, status) VALUES ({$value->uid}, CURRENT_TIMESTAMP(0));";
 
     if ($this->user_non_exists($check_user_query)) {
