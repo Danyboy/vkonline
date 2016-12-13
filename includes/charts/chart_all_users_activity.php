@@ -19,7 +19,8 @@
         }
       },
       title: {
-        text: 'Распределение время онлайн за последении два года по часам'
+        text: 'Почасовая активность с <?php echo $myOnlineHistiry->get_correct_date_interval($_GET['d'])[0]; ?>
+        по <?php echo $myOnlineHistiry->get_correct_date_interval($_GET['d'])[1]; ?>'
       },
       legend: {
         layout: 'vertical',

@@ -49,13 +49,15 @@ class OnlineHistoryCharts extends OnlineHistory
     return $this->query_to_json($count_query);
   }
 
-  function get_activity_by_user($users, $current_user)
+  function get_activity_by_user($users, $my_date, $current_user)
   {
+    $my_date_start = $this->get_correct_date_interval($my_date)[0];
+    $my_date_end = $this->get_correct_date_interval($my_date)[1];
 
     $users_string = implode(",", $users);
     $count_query = "SELECT user_id, EXTRACT(hour FROM status) AS hours, COUNT (EXTRACT(hour FROM status))::float / 12 AS count 
 		FROM online{$current_user} 
-		WHERE user_id IN ({$users_string}) 
+		WHERE user_id IN ({$users_string}) AND status between '{$my_date_start}' and '{$my_date_end} 23:59:59'
 		GROUP BY hours, user_id 
 		ORDER BY user_id, hours;";
 
@@ -70,7 +72,7 @@ class OnlineHistoryCharts extends OnlineHistory
     $users_string = implode(",", $users);
     $count_query = "SELECT user_id, status::timestamp::date AS day, COUNT (EXTRACT(hour FROM status))::float / 12 AS count 
 		FROM online{$current_user}
-		WHERE user_id IN ({$users_string}) AND status between '{$my_date_start}' and '{$my_date_end} 23:59:59' 
+		WHERE user_id IN ({$users_string}) AND status between '{$my_date_start}' and '{$my_date_end} 23:59:59'
 		GROUP BY user_id, day 
 		ORDER BY user_id, day;";
 
